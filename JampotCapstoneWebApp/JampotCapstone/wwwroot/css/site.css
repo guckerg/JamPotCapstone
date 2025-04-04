@@ -1,3 +1,8 @@
+:root{
+  --JampotYellow: #FECD2A;
+  --JampotGreen: #01A955;
+}
+
 html {
   font-size: 14px;
 }
@@ -19,4 +24,16 @@ html {
 
 body {
   margin-bottom: 60px;
+}
+
+.logo {
+  width: 100px;
+}
+
+.navbar .btn {
+  background-color: var(--JampotYellow);
+}
+
+.menu-btn {
+  background-color: var(--JampotGreen);
 }
