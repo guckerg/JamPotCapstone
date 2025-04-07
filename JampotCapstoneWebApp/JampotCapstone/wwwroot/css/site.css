@@ -3,6 +3,11 @@
   --JampotGreen: #01A955;
 }
 
+@font-face {
+  font-family: 'Zinjaro';
+  src: url('../fonts/zinjaro-2.ttf');
+}
+
 html {
   font-size: 14px;
 }
@@ -28,6 +33,10 @@ body {
 
 .logo {
   width: 100px;
+}
+
+.navbar a {
+  font-family: "Zinjaro";
 }
 
 .navbar .btn-warning {

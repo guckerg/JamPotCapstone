@@ -9,4 +9,6 @@ public class ApplicationDbContext : IdentityDbContext
         : base(options)
     {
     }
+    
+    // public DbSet<Models.File> Files { get; set; }
 }
