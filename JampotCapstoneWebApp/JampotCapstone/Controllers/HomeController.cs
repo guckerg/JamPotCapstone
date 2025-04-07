@@ -2,6 +2,7 @@ using System.Diagnostics;
 using JampotCapstone.Data;
 using Microsoft.AspNetCore.Mvc;
 using JampotCapstone.Models;
+using JampotCapstone.Models.ViewModels;
 using Microsoft.EntityFrameworkCore;
 
 namespace JampotCapstone.Controllers;
@@ -19,8 +20,11 @@ public class HomeController : Controller
 
     public async Task<IActionResult> Index()
     {
-        //var photos = _context.Files.ToListAsync();
-        return View();
+        HomeViewModel model = new HomeViewModel();
+        model.Map = await _context.Files.Where(m => m.FileName.Contains("map")).FirstOrDefaultAsync();
+        model.Special = await _context.Files.Where(m => m.FileName.Contains("special")).FirstOrDefaultAsync();
+        model.Photos = await _context.Files.ToListAsync();
+        return View(model);
     }
 
     public IActionResult Privacy()

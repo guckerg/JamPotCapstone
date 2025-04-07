@@ -1,4 +1,4 @@
-namespace JampotPrototype.Models;
+namespace JampotCapstone.Models;
 
 public class File
 {

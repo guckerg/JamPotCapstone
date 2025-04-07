@@ -10,5 +10,5 @@ public class ApplicationDbContext : IdentityDbContext
     {
     }
     
-    // public DbSet<Models.File> Files { get; set; }
+    public DbSet<Models.File> Files { get; set; }
 }
