@@ -21,7 +21,8 @@ public class SeedData
         AppUser admin = new AppUser
         {
             UserName = "admin@example.com",
-            SignUpDate = DateTime.UtcNow
+            SignUpDate = DateTime.UtcNow,
+            EmailConfirmed = true
         };
         bool isSuccess = userManager.CreateAsync(admin, password).Result.Succeeded;
         if (isSuccess)
