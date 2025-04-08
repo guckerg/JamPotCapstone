@@ -1,0 +1,46 @@
+﻿@model Messages
+@{
+    ViewData["Title"] = "Contact Us";
+}
+
+<div class="text-center">
+    <h1 class="display-4">Contact Us</h1>
+    <div class="container">
+        <div class="row">
+            <!--Address/Mailing Details-->
+            <div class="col-md">
+                <h1 class="display-6">Address</h1>
+                <p>
+                    65-1158 Mamalahoa Hwy <br />
+                    Waimea, HI 96743 <br />
+                </p>
+            </div>
+            <!--Phone/Call Details-->
+            <div class="col-md">
+                <h1 class="display-6">Phone</h1>
+                <p>
+                    (808) 238 - 0671 <br />
+                </p>
+            </div>
+            <!--Weekly Business Hours Details-->
+            <div class="col-md">
+                <h1 class="display-6">Hours</h1>
+                <p>
+                    Monday - Friday: 7:00am - 5:00pm <br />
+                    Saturday: 8:00am - 5:00pm <br />
+                </p>
+            </div>
+        </div>
+        <!--Form for customer to contact Jam Pot-->
+        <form asp-controller="ContactUs" asp-action="SendMessage" method="post" class="container">
+            @Html.AntiForgeryToken()
+            <div class="row md">
+                <label for="name" class="control-label col-md-2">Name</label>
+                <div class="col-md-10">
+                    <span asp-validation-for="Sender" class="text-danger"></span>
+                    <input id="title" name="PostTitle" class="form-control col-md-10" /><br />
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
