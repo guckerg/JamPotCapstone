@@ -58,6 +58,7 @@ body {
 
 .title{
   font-family: "Zinjaro", serif;
+  color: var(--JampotGreen);
 }
 
 #instagram {

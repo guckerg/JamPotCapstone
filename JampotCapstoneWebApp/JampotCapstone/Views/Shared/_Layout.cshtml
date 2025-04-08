@@ -18,26 +18,26 @@
                 <span class="navbar-toggler-icon"></span>
             </button>
             <div class="navbar-collapse collapse d-lg-inline-flex justify-content-between">
-                <ul class="navbar-nav flex-grow-1 align-items-center fs-3">
+                <ul class="navbar-nav flex-grow-1 align-items-center">
                     <li class="nav-item mx-5">
-                        <a class="btn btn-warning text-dark" asp-area="" asp-controller="Order" asp-action="Index">Order Now</a>
+                        <a class="btn btn-warning text-dark fs-4" asp-area="" asp-controller="Order" asp-action="Index">ORDER NOW</a>
                     </li>
                     <li class="nav-item me-5">
-                        <a class="btn btn-warning text-dark" asp-area="" asp-controller="Catering" asp-action="Index">Catering</a>
+                        <a class="btn btn-warning text-dark fs-4" asp-area="" asp-controller="Catering" asp-action="Index">CATERING</a>
                     </li>
                     <li class="nav-item mx-5">
-                        <a class="btn btn-success text-dark px-5 py-3" asp-area="" asp-controller="Menu" asp-action="Index">Menu</a>
+                        <a class="btn btn-success text-dark fs-1" asp-area="" asp-controller="Menu" asp-action="Index">MENU</a>
                     </li>
                     <li class="nav-item mx-5">
-                        <a class="btn btn-warning text-dark" asp-area="" asp-controller="About" asp-action="Index">About</a>
+                        <a class="btn btn-warning text-dark fs-4" asp-area="" asp-controller="About" asp-action="Index">ABOUT</a>
                     </li>
                     <li class="nav-item me-5">
-                        <a class="btn btn-warning text-dark" asp-area="" asp-controller="About" asp-action="Contact">Contact</a>
+                        <a class="btn btn-warning text-dark fs-4" asp-area="" asp-controller="About" asp-action="Contact">CONTACT</a>
                     </li>
                     @if (User.IsInRole("Admin"))
                     {
                         <li class="nav-item">
-                            <a class="btn btn-warning text-dark" asp-area="" asp-controller="Admin" asp-action="Index">Admin</a>
+                            <a class="btn btn-warning text-dark" asp-area="" asp-controller="Admin" asp-action="Index">ADMIN</a>
                         </li>
                     }
                 </ul>
