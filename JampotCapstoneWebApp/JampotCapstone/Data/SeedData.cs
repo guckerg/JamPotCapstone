@@ -21,6 +21,7 @@ public class SeedData
         AppUser admin = new AppUser
         {
             UserName = "admin@example.com",
+            Name = "admin",
             SignUpDate = DateTime.UtcNow,
             EmailConfirmed = true
         };
