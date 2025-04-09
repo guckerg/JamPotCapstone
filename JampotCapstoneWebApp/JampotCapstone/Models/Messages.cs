@@ -6,7 +6,7 @@ namespace JampotCapstone.Models
     {
         public int MessageId { get; set; }
         [StringLength(50), Required]
-        public string Sender { get; set; } = "";
+        public string Name { get; set; } = "";
         public int PhoneNumber { get; set; }
 
         [RegularExpression(@"^[A-Za-z0-9\.]+@[A-Za-z0-9\.]+$")]
