@@ -1,5 +1,6 @@
 using JampotCapstone.Models;
 using Microsoft.AspNetCore.Identity;
+using File = JampotCapstone.Models.File;
 
 namespace JampotCapstone.Data;
 
@@ -29,6 +30,34 @@ public class SeedData
         if (isSuccess)
         {
             userManager.AddToRoleAsync(admin, role).Wait();
+        }
+
+        if (!ctx.Files.Any())
+        {
+            File landing1 = new File
+            {
+                FileID = 1,
+                FileName = "/pics/JampotDrink.png",
+                ContentType = "image/png"
+            };
+            ctx.Files.Add(landing1);
+            
+            File landing2 = new File
+            {
+                FileID = 2,
+                FileName = "/pics/jackfruit-wrap.png",
+                ContentType = "image/png"
+            };
+            ctx.Files.Add(landing2);
+            
+            File landing3 = new File
+            {
+                FileID = 3,
+                FileName = "/pics/ReggaeChiaPudding.png",
+                ContentType = "image/png"
+            };
+            ctx.Files.Add(landing3);
+            ctx.SaveChanges();
         }
     }
 }

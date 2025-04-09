@@ -270,6 +270,9 @@ paket-files/
 __pycache__/
 *.pyc
 
+# Mac-specific system files
+**/.DS_Store*
+
 # Cake - Uncomment if you are using it
 # tools/
 

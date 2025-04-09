@@ -6,3 +6,12 @@
 <div class="text-center">
     <h1 class="display-4 title">JAMAICAN STYLE CAFE & JUICE BAR</h1> @*NOTE TO SELF: Zinjaro font will not display unless it's all caps!!*@
 </div>
+
+@if (Model.Photos.Count > 0)
+{
+    foreach (File photo in Model.Photos)
+    {
+        <img src="@photo.FileName" alt="Description" style="width: 200px;"/>
+
+    }
+}
