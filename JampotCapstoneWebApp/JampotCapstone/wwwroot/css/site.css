@@ -79,3 +79,8 @@ body {
 #facebook {
   width: 50px;
 }
+
+.menu-container {
+    display: flex;
+    justify-content: center;
+}
