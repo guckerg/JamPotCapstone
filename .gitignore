@@ -10,8 +10,8 @@
 *.user
 *.userosscache
 *.sln.docstates
-*.appsettings.Development.json
-*.appsettings.Production.json
+**/appsettings.Development.json
+**/appsettings.Production.json
 
 # User-specific files (MonoDevelop/Xamarin Studio)
 *.userprefs
@@ -269,6 +269,9 @@ paket-files/
 # Python Tools for Visual Studio (PTVS)
 __pycache__/
 *.pyc
+
+# Mac-specific system files
+**/.DS_Store*
 
 # Cake - Uncomment if you are using it
 # tools/
