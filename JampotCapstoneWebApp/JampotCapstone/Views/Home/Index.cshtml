@@ -3,15 +3,31 @@
     ViewData["Title"] = "Jampot Home Page";
 }
 
-<div class="text-center">
+<div class="text-center" xmlns="http://www.w3.org/1999/html">
     <h1 class="display-4 title">JAMAICAN STYLE CAFE & JUICE BAR</h1> @*NOTE TO SELF: Zinjaro font will not display unless it's all caps!!*@
 </div>
+<div class="container">
+    <div class="row p-3">
+        <div class="col"><img class="landing-special" src="@Model.Map.FileName" alt="Description"/></div>
+        <div class="col text-jampot">
+            7am-5pm Monday-Friday<br/>
+            8am-5pm Saturday<br/>
+            65-1158 Mamalahoa Hwy<br/>
+            Waimea, HI 96743<br/>
+            (808) 238-0671
+        </div>
+        <div class="col"><img class="landing-special" src="@Model.Special.FileName" alt="Description"/></div>
+    </div>
+    <div class="row">
+        @if (Model.Photos.Count > 0)
+        {
+            foreach (File photo in Model.Photos)
+            {
+                <div class="col">
+                    <img class="p-3 landing-photo" src="@photo.FileName" alt="Description"/>
+                </div>
+            }
+        }
+    </div>
+</div>
 
-@if (Model.Photos.Count > 0)
-{
-    foreach (File photo in Model.Photos)
-    {
-        <img src="@photo.FileName" alt="Description" style="width: 200px;"/>
-
-    }
-}
