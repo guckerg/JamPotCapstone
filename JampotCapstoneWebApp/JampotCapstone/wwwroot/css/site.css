@@ -8,6 +8,11 @@
   src: url('../fonts/zinjaro-plain-fontzone.ttf');
 }
 
+@font-face {
+    font-family: 'Itim';
+    src: url('../fonts/Itim-Regular.ttf');
+}
+
 html {
   font-size: 14px;
 }
@@ -72,6 +77,12 @@ body {
 
 .landing-photo{
   width: 500px;
+}
+
+.bodyText {
+    font-family: "Itim", serif;
+    font-size: 20px;
+    color: var(--JampotYellow);
 }
 
 #instagram {
