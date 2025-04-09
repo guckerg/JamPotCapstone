@@ -79,3 +79,99 @@ body {
 #facebook {
   width: 50px;
 }
+
+.slideshow-container {
+    position: relative;
+    max-width: 900px;
+    margin: 0 auto;
+    border-radius: 10px;
+    overflow: hidden;
+}
+
+.slide {
+    display: none;
+}
+
+    .slide img {
+        width: 100%;
+        height: 500px;
+        object-fit: cover;
+        border-radius: 10px;
+    }
+/* Next & previous buttons */
+.prev, .next {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    color: white;
+    font-size: 40px;
+    padding: 8px;
+    cursor: pointer;
+    z-index: 10;
+    border-radius: 25%;
+    text-decoration: none;
+}
+
+.prev {
+    left: 10px;
+}
+
+.next {
+    right: 10px;
+}
+    /* On hover, add a black background color with a little bit see-through */
+    .prev:hover, .next:hover {
+        background-color: rgba(0,0,0,0.8);
+        color: #FECD2A;
+    }
+/* Caption text */
+.capText {
+    color: white;
+    font-family: 'Itim';
+    font-size: 16px;
+    padding: 10px;
+    position: absolute;
+    bottom: 10px;
+    width: 100%;
+    text-align: center;
+    background: rgba(0,0,0,0.4);
+    border-radius: 0 0 10px 10px;
+}
+/* Number text (1/3 etc) */
+.numberText {
+    color: #f2f2f2;
+    font-size: 14px;
+    font-family: 'Itim';
+    padding: 8px 12px;
+    position: absolute;
+    top: 0;
+}
+/* The dots */
+.dot {
+    height: 12px;
+    width: 12px;
+    margin: 0 3px;
+    background-color: #bbb;
+    border-radius: 50%;
+    display: inline-block;
+    transition: background-color 0.3s;
+}
+
+    .active, .dot:hover {
+        background-color: #717171;
+    }
+/* Fading animation */
+.fade {
+    animation-name: fade;
+    animation-duration: 1.5s;
+}
+
+@keyframes fade {
+    from {
+        opacity: .6
+    }
+
+    to {
+        opacity: 1
+    }
+}
