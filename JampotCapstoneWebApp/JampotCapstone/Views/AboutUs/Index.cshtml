@@ -5,91 +5,85 @@
     <style>
         .slideshow-container {
             position: relative;
-            margin: auto;
+            max-width: 900px; 
+            margin: 0 auto; 
+            border-radius: 10px;
+            overflow: hidden; 
         }
-
-        .slide { 
-            display:none;
-        }
-
+        .slide {  
+            display:none; 
+        } 
         .slide img {
-            width: 80%;
-            /* display: block; */
-            /* margin: 0 auto; */
+            width: 100%; 
+            height: 500px; 
             object-fit: cover;
+            border-radius: 10px;
         }
-
-
         /* Next & previous buttons */
         .prev, .next {
-            cursor: pointer;
             position: absolute;
             top: 50%;
-            width: auto;
-            margin-top: -22px;
-            padding: 16px;
+            transform: translateY(-50%);
             color: white;
-            font-weight: bold;
-            font-size: 18px;
-            transition: 0.6s ease;
-            border-radius: 0 3px 3px 0;
+            font-size: 40px;
+            padding: 8px;
+            cursor: pointer;
+            z-index: 10;
+            border-radius: 25%;
+            text-decoration: none;
         }
-
-        /* Position the "next button" to the right */
+        .prev {
+            left: 10px;
+        }
         .next {
-            right: 0;
-            border-radius: 3px 0 0 3px;
+            right: 10px;
         }
-
         /* On hover, add a black background color with a little bit see-through */
         .prev:hover, .next:hover {
             background-color: rgba(0,0,0,0.8);
-         }
-
+            color: #FECD2A;
+        }
         /* Caption text */
         .capText {
-            color: #f2f2f2;
-            font-size: 15px;
-            padding: 8px 12px;
+            color: white;
+            font-size: 16px;
+            padding: 10px;
             position: absolute;
-            bottom: 8px;
+            bottom: 10px;
             width: 100%;
             text-align: center;
+            background: rgba(0,0,0,0.4);
+            border-radius: 0 0 10px 10px;
         }
-
         /* Number text (1/3 etc) */
-        .numbertext {
+        .numberText {
             color: #f2f2f2;
-            font-size: 12px;
+            font-size: 14px;
             padding: 8px 12px;
             position: absolute;
-            top: 0;
+            top:0;
+            
         }
-
-        /* The dots/bullets/indicators */
+        /* The dots */
         .dot {
-            cursor: pointer;
-            height: 15px;
-            width: 15px;
-            margin: 0 2px;
+            height: 12px;
+            width: 12px;
+            margin: 0 3px;
             background-color: #bbb;
             border-radius: 50%;
             display: inline-block;
-            transition: background-color 0.6s ease;
+            transition: background-color 0.3s;
         }
-
         .active, .dot:hover {
             background-color: #717171;
         }
-
         /* Fading animation */
         .fade {
             animation-name: fade;
             animation-duration: 1.5s;
         }
-
         @@keyframes fade {
-            from { opacity: .4 }
+            from { opacity: .6 }
             to { opacity: 1 }
         }
     </style>
@@ -118,7 +112,7 @@
         <a class="next" onclick="plusSlides(1)">&#10095;</a>
     </div>
     <br />
-    <!-- The dots/circles -->
+    <!-- The dots -->
     <div style="text-align:center">
         <span class="dot" onclick="currentSlide(1)"></span>
         <span class="dot" onclick="currentSlide(2)"></span>
@@ -135,30 +129,48 @@
 <!--JavaScript for Slideshow-->
 <script>
     let slideIndex = 1;
+    let autoSlideInterval;
     showSlides(slideIndex);
 
     function plusSlides(n) {
-      showSlides(slideIndex += n);
+        clearInterval(autoSlideInterval); // Reset timer
+        showSlides(slideIndex += n);
+        startAutoSlide(); // Restart the timer user clicks to next img
     }
 
     function currentSlide(n) {
-      showSlides(slideIndex = n);
+        clearInterval(autoSlideInterval); 
+        showSlides(slideIndex = n);
+        startAutoSlide();
     }
 
     function showSlides(n) {
       let i;
       let slides = document.getElementsByClassName("slide");
       let dots = document.getElementsByClassName("dot");
+
       if (n > slides.length) {slideIndex = 1}
       if (n < 1) {slideIndex = slides.length}
+
       for (i = 0; i < slides.length; i++) {
-        slides[i].style.display = "none";
+          slides[i].style.display = "none";
+          slides[i].style.opacity = 0;
       }
+
       for (i = 0; i < dots.length; i++) {
-        dots[i].className = dots[i].className.replace(" active", "");
+            dots[i].className = dots[i].className.replace(" active", "");
       }
+
       slides[slideIndex-1].style.display = "block";
+      slides[slideIndex-1].style.opacity = 1;
       dots[slideIndex-1].className += " active";
     }
+
+     function startAutoSlide() {
+         autoSlideInterval = setInterval(() => {
+             showSlides(++slideIndex);
+        }, 5000); // change image every 5 seconds
+    }
+    startAutoSlide();
 </script>
 
