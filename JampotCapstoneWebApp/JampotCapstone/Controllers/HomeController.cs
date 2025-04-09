@@ -1,21 +1,30 @@
 using System.Diagnostics;
+using JampotCapstone.Data;
 using Microsoft.AspNetCore.Mvc;
 using JampotCapstone.Models;
+using JampotCapstone.Models.ViewModels;
+using Microsoft.EntityFrameworkCore;
 
 namespace JampotCapstone.Controllers;
 
 public class HomeController : Controller
 {
     private readonly ILogger<HomeController> _logger;
+    private readonly ApplicationDbContext _context;
 
-    public HomeController(ILogger<HomeController> logger)
+    public HomeController(ILogger<HomeController> logger, ApplicationDbContext ctx)
     {
+        _context = ctx;
         _logger = logger;
     }
 
-    public IActionResult Index()
+    public async Task<IActionResult> Index()
     {
-        return View();
+        HomeViewModel model = new HomeViewModel();
+        model.Map = await _context.Files.Where(m => m.FileName.Contains("map")).FirstOrDefaultAsync();
+        model.Special = await _context.Files.Where(m => m.FileName.Contains("special")).FirstOrDefaultAsync();
+        model.Photos = await _context.Files.ToListAsync();
+        return View(model);
     }
 
     public IActionResult Privacy()

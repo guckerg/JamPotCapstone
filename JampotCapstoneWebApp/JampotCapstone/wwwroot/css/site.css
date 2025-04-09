@@ -1,3 +1,18 @@
+:root{
+  --JampotYellow: #FECD2A;
+  --JampotGreen: #01A955;
+}
+
+@font-face {
+  font-family: 'Zinjaro';
+  src: url('../fonts/zinjaro-plain-fontzone.ttf');
+}
+
+@font-face {
+    font-family: 'Itim';
+    src: url('../fonts/Itim-Regular.ttf');
+}
+
 html {
   font-size: 14px;
 }
@@ -19,4 +34,48 @@ html {
 
 body {
   margin-bottom: 60px;
+}
+
+.logo {
+  width: 100px;
+}
+
+.navbar a {
+  font-family: "Zinjaro";
+}
+
+.navbar .btn-warning {
+  background-color: var(--JampotYellow);
+}
+
+.navbar .btn-success {
+  background-color: var(--JampotGreen);
+  border-radius: 1.3rem;
+}
+
+.text-jampot, .text-jampot a {
+  color: var(--JampotGreen);
+}
+
+.footer {
+  line-height: normal;
+}
+
+.title{
+  font-family: "Zinjaro", serif;
+  color: var(--JampotGreen);
+}
+
+.bodyText {
+    font-family: "Itim", serif;
+    font-size: 20px;
+    color: var(--JampotYellow);
+}
+
+#instagram {
+  width: 65px;
+}
+
+#facebook {
+  width: 50px;
 }
