@@ -6,25 +6,40 @@
     <title>@ViewData["Title"] - JampotCapstone</title>
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css"/>
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true"/>
-    <link rel="stylesheet" href="~/JampotCapstone.styles.css" asp-append-version="true"/>
+    @*<link rel="stylesheet" href="~/JampotCapstone.styles.css" asp-append-version="true"/>*@
 </head>
-<body>
+<body class="bg-black text-white">
 <header>
-    <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
+    <nav class="navbar navbar-expand-lg navbar-toggleable-lg navbar-dark bg-black border-bottom box-shadow mb-3">
         <div class="container-fluid">
-            <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">JampotCapstone</a>
+            <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index"><img src="~/pics/JampotLogo.png" alt="image of the Jampot logo" class="logo"/></a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
                     aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>
-            <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
-                <ul class="navbar-nav flex-grow-1">
-                    <li class="nav-item">
-                        <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
+            <div class="navbar-collapse collapse d-lg-inline-flex justify-content-between">
+                <ul class="navbar-nav flex-grow-1 align-items-center">
+                    <li class="nav-item me-2">
+                        <a class="btn btn-warning text-dark fs-4" asp-area="" asp-controller="Order" asp-action="Index">ORDER NOW</a>
                     </li>
-                    <li class="nav-item">
-                        <a class="nav-link text-dark" asp-area="" asp-controller="ContactUs" asp-action="Index">Contact Us</a>
+                    <li class="nav-item me-2">
+                        <a class="btn btn-warning text-dark fs-4" asp-area="" asp-controller="Catering" asp-action="Index">CATERING</a>
                     </li>
+                    <li class="nav-item me-2">
+                        <a class="btn btn-success text-dark fs-1" asp-area="" asp-controller="Menu" asp-action="Index">MENU</a>
+                    </li>
+                    <li class="nav-item me-2">
+                        <a class="btn btn-warning text-dark fs-4" asp-area="" asp-controller="AboutUs" asp-action="Index">ABOUT</a>
+                    </li>
+                    <li class="nav-item me-2">
+                        <a class="btn btn-warning text-dark fs-4" asp-area="" asp-controller="About" asp-action="Contact">CONTACT US</a>
+                    </li>
+                    @if (User.IsInRole("Admin"))
+                    {
+                        <li class="nav-item">
+                            <a class="btn btn-warning text-dark fs-4" asp-area="" asp-controller="Admin" asp-action="Index">ADMIN</a>
+                        </li>
+                    }
                 </ul>
                 <partial name="_LoginPartial"/>
             </div>
@@ -37,14 +52,33 @@
     </main>
 </div>
 
-<footer class="border-top footer text-muted">
+<footer class="border-top footer text-jampot">
     <div class="container">
+        <div class="row align-items-center text-center">
+            <ul class="col list-unstyled">
+                <li><a asp-area="" asp-controller="About" asp-action="Contact">Contact</a></li>
+                <li><a asp-area="" asp-controller="About" asp-action="Index">About</a></li>
+                <li><a asp-controller="About" asp-action="Ask">FAQ</a></li>
+            </ul>
+            <ul class="col list-unstyled">
+                <li><a asp-area="" asp-controller="Career" asp-action="Index">Careers</a></li>
+                <li><a asp-area="" asp-controller="Menu" asp-action="Specials">Specials</a></li>
+                <li><a asp-area="" asp-controller="Order" asp-action="Index">Ordering</a></li>
+            </ul>
+            <div class="col align-self-center text-center">
+                <a href="https://www.instagram.com/jampothawaii?igsh=amZxYXk5OG0yeTdi" class="fab fa-instagram fs-1 text-danger me-5"></a>
+                <a href="#" class="fab fa-facebook fs-1"></a>
+                @*<img src="pics/instagram-icon.png" alt="instagram logo" id="instagram"/>
+                <img src="pics/facebook-icon.png" alt="facebook logo" id="facebook"/>*@
+            </div>
+        </div>
         &copy; 2025 - JampotCapstone - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
     </div>
 </footer>
 <script src="~/lib/jquery/dist/jquery.min.js"></script>
 <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
 <script src="~/js/site.js" asp-append-version="true"></script>
+<script src="https://kit.fontawesome.com/c15e31b1d9.js" crossorigin="anonymous"></script>
 @await RenderSectionAsync("Scripts", required: false)
 </body>
 </html>
