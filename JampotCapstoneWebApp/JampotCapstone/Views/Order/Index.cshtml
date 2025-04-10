@@ -5,6 +5,14 @@
 }
 
 <h2 class="text-jampot">Order Page</h2>
-<div class="border-warning">
-    
+<div class="row order-filter">
+    <div id="food" class="col">
+        <a class="btn col m-3" asp-action="Filter" asp-controller="Order" asp-route-type="food">Food</a>
+        <a class="btn col m-3" asp-action="Filter" asp-controller="Order" asp-route-type="drink">Drinks</a>
+        <a class="btn col m-3" asp-action="Filter" asp-controller="Order" asp-route-type="dessert">Desserts</a>
+    </div>
+    <div id="allergen" class="col">
+        <a class="btn col m-3" asp-action="Filter" asp-controller="Order" asp-route-type="vegan">Vegan</a>
+        <a class="btn col m-3" asp-action="Filter" asp-controller="Order" asp-route-type="gluten-free">Gluten-Free</a>    
+    </div>
 </div>

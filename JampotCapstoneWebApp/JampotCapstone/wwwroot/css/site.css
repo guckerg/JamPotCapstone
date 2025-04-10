@@ -48,6 +48,21 @@ body {
   background-color: var(--JampotYellow);
 }
 
+.order-filter {
+  border-color: var(--JampotYellow);
+  border-style: solid none;
+  border-width: 1px;
+}
+
+.order-filter a {
+  background-color: var(--JampotYellow);
+  font-family: "Itim", serif;
+}
+
+.order-filter a:visited {
+  border-color: var(--JampotGreen);
+}
+
 .navbar .btn-success {
   background-color: var(--JampotGreen);
   border-radius: 1.3rem;
@@ -78,4 +93,8 @@ body {
 
 #facebook {
   width: 50px;
+}
+
+#food {
+  border-right: 1px solid var(--JampotYellow);
 }
