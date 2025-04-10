@@ -58,12 +58,25 @@ body {
 }
 
 .footer {
-  line-height: normal;
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  white-space: nowrap;
+  line-height: 20px;
+  background-color: black;
 }
 
 .title{
   font-family: "Zinjaro", serif;
   color: var(--JampotGreen);
+}
+
+.landing-special{
+  width: 400px;
+}
+
+.landing-photo{
+  width: 500px;
 }
 
 .bodyText {

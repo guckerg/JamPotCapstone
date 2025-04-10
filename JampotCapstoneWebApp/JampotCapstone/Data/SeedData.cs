@@ -57,6 +57,30 @@ public class SeedData
                 ContentType = "image/png"
             };
             ctx.Files.Add(landing3);
+            
+            File landing4 = new File
+            {
+                FileID = 4,
+                FileName = "/pics/map.png",
+                ContentType = "image/png"
+            };
+            ctx.Files.Add(landing4);
+
+            File landing5 = new File
+            {
+                FileID = 5,
+                FileName = "/pics/special.png",
+                ContentType = "image/png"
+            };
+            ctx.Files.Add(landing5);
+            
+            File landing6 = new File
+            {
+                FileID = 6,
+                FileName = "/pics/people.png",
+                ContentType = "image/png"
+            };
+            ctx.Files.Add(landing6);
             ctx.SaveChanges();
         }
     }
