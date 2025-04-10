@@ -112,7 +112,7 @@ namespace JampotCapstone.Migrations
 
                     b.HasKey("FileID");
 
-                    b.ToTable("Files");
+                    b.ToTable("Files", (string)null);
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
