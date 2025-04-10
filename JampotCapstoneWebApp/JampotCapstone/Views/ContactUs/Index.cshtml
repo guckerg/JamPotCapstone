@@ -4,42 +4,77 @@
 }
 
 <div class="text-center">
-    <h1 class="display-4">Contact Us</h1>
+    <h1 class="display-4 title">CONTACT US</h1>
     <div class="container">
         <div class="row">
             <!--Address/Mailing Details-->
-            <div class="col-md">
-                <h1 class="display-6">Address</h1>
-                <p>
+            <div class="col-lg">
+                <h1 class="display-6 title">ADDRESS</h1>
+                <p class="bodyText">
                     65-1158 Mamalahoa Hwy <br />
                     Waimea, HI 96743 <br />
                 </p>
             </div>
             <!--Phone/Call Details-->
-            <div class="col-md">
-                <h1 class="display-6">Phone</h1>
-                <p>
+            <div class="col-lg">
+                <h1 class="display-6 title">PHONE</h1>
+                <p class="bodyText">
                     (808) 238 - 0671 <br />
                 </p>
             </div>
             <!--Weekly Business Hours Details-->
-            <div class="col-md">
-                <h1 class="display-6">Hours</h1>
-                <p>
+            <div class="col-lg">
+                <h1 class="display-6 title">HOURS</h1>
+                <p class="bodyText">
                     Monday - Friday: 7:00am - 5:00pm <br />
                     Saturday: 8:00am - 5:00pm <br />
                 </p>
             </div>
         </div>
+        <div class="row">
+            <p class="bodyText">Send Us A Message!</p>
+        </div>
         <!--Form for customer to contact Jam Pot-->
         <form asp-controller="ContactUs" asp-action="SendMessage" method="post" class="container">
             @Html.AntiForgeryToken()
-            <div class="row md">
-                <label for="name" class="control-label col-md-2">Name</label>
-                <div class="col-md-10">
-                    <span asp-validation-for="Sender" class="text-danger"></span>
-                    <input id="title" name="PostTitle" class="form-control col-md-10" /><br />
+            <div class="row lg">
+                <label for="name" class="control-label col-lg-2 bodyText">Name</label>
+                <div class="col-lg-10">
+                    <span asp-validation-for="Name" class="text-danger"></span>
+                    <input id="name" name="Name" class="form-control col-lg-10" /><br />
                 </div>
+            </div>
+            <div class="row lg">
+                <label for="phoneNumber" class="control-label col-lg-2 bodyText">Phone Number</label>
+                <div class="col-lg-10">
+                    <span asp-validation-for="PhoneNumber" class="text-danger"></span>
+                    <input id="phoneNumber" name="PhoneNumber" class="form-control col-lg-10" /><br />
+                </div>
+            </div>
+            <div class="row lg">
+                <label for="name" class="control-label col-lg-2 bodyText">Email</label>
+                <div class="col-lg-10">
+                    <span asp-validation-for="Email" class="text-danger"></span>
+                    <input id="title" name="PostTitle" class="form-control col-lg-10" /><br />
+                </div>
+            </div>
+            <div class="row lg">
+                <label for="name" class="control-label col-lg-2 bodyText">Subject</label>
+                <div class="col-lg-10">
+                    <span asp-validation-for="Subject" class="text-danger"></span>
+                    <input id="subject" name="Subject" class="form-control col-lg-10" /><br />
+                </div>
+            </div>
+            <div class="row lg">
+                <label for="name" class="control-label col-lg-2 bodyText">Message</label>
+                <div class="col-lg-10">
+                    <span asp-validation-for="MessageText" class="text-danger"></span>
+                    <textarea id="messageText" name="MessageText" class="form-control col-lg-10" 
+                    placeholder="Tell Us What you think!"></textarea>
+                </div>
+            </div>
+            <div class="row">
+                <button type="submit" class="btn btn-warning col-3 mx-auto m-3 title">SEND MESSAGE</button>
             </div>
         </form>
     </div>
