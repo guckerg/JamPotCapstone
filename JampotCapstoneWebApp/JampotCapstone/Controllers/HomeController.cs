@@ -23,7 +23,7 @@ public class HomeController : Controller
         HomeViewModel model = new HomeViewModel();
         model.Map = await _context.Files.Where(m => m.FileName.Contains("map")).FirstOrDefaultAsync();
         model.Special = await _context.Files.Where(m => m.FileName.Contains("special")).FirstOrDefaultAsync();
-        model.Photos = await _context.Files.ToListAsync();
+        model.Photos = await _context.Files.Where(m => !m.FileName.Contains("map") && !m.FileName.Contains("special")).ToListAsync();
         return View(model);
     }
 
