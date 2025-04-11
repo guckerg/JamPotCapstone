@@ -32,7 +32,7 @@ public class SeedData
             userManager.AddToRoleAsync(admin, role).Wait();
         }
 
-        if (!ctx.Files.Any())
+        if (!ctx.Products.Any())
         {
             #region files
             File landing1 = new File
@@ -82,11 +82,18 @@ public class SeedData
                 ContentType = "image/png"
             };
             ctx.Files.Add(landing6);
+
+            File placeholder = new File
+            {
+                FileID = 7,
+                FileName = "/pics/DesertBowl.png",
+                ContentType = "image/png"
+            };
+            ctx.Files.Add(placeholder);
             
             #endregion
             ctx.SaveChanges();
-        }
-        if(!ctx.Products.Any()){
+        
             #region products
 
             Product p1 = new Product
@@ -246,11 +253,7 @@ public class SeedData
                 ProductName = "Lilikoi Lemonade",
                 ProductIngredients = "Lilikoi, Lemon, Sugarcane",
                 ProductPrice = 10,
-                ProductPhoto = new File
-                {
-                    FileName = "/pics/DesertBowl.png",
-                    ContentType = "image/png"
-                },
+                ProductPhoto = placeholder,
                 ProductCategory = new List<ProductType>()
                 {
                     new ProductType
@@ -267,11 +270,7 @@ public class SeedData
                 ProductName = "Ginger Lemonade",
                 ProductIngredients = "Ginger, Lime, Sugarcane",
                 ProductPrice = 10,
-                ProductPhoto = new File
-                {
-                    FileName = "/pics/DesertBowl.png",
-                    ContentType = "image/png"
-                },
+                ProductPhoto = placeholder,
                 ProductCategory = new List<ProductType>()
                 {
                     new ProductType
@@ -288,11 +287,7 @@ public class SeedData
                 ProductName = "Black Magic",
                 ProductIngredients = "Young Coconut Water, Activated Charcoal, Edible Gold",
                 ProductPrice = 10,
-                ProductPhoto = new File
-                {
-                    FileName = "/pics/DesertBowl.png",
-                    ContentType = "image/png"
-                },
+                ProductPhoto = placeholder,
                 ProductCategory = new List<ProductType>()
                 {
                     new ProductType
@@ -309,11 +304,7 @@ public class SeedData
                 ProductName = "Yummy Yummy",
                 ProductIngredients = "Mangos, strawberries, and tasty things",
                 ProductPrice = 9.99M,
-                ProductPhoto = new File
-                {
-                    FileName = "/pics/DesertBowl.png",
-                    ContentType = "image/png"
-                },
+                ProductPhoto = placeholder,
                 ProductCategory = new List<ProductType>()
                 {
                     new ProductType
