@@ -34,6 +34,7 @@ public class SeedData
 
         if (!ctx.Files.Any())
         {
+            #region files
             File landing1 = new File
             {
                 FileID = 1,
@@ -57,6 +58,248 @@ public class SeedData
                 ContentType = "image/png"
             };
             ctx.Files.Add(landing3);
+            
+            #endregion
+            ctx.SaveChanges();
+        }
+        if(!ctx.Products.Any()){
+            #region products
+
+            Product p1 = new Product
+            {
+                ProductId = 1,
+                ProductName = "Garden Wrap",
+                ProductIngredients = "Spinach Tortilla, Lettuce, Carrot, Purple Cabbage, Tomato, Cucumber, Bell Pepper, Alfalfa Sprouts, Roasted Red Pepper Hummus",
+                ProductPrice = 14,
+                ProductPhoto = new File
+                {
+                    FileName = "/pics/GardenWrap.png",
+                    ContentType = "image/png"
+                },
+                ProductCategory = new List<ProductType>()
+                {
+                    new ProductType
+                    {
+                        Type = "Food"
+                    }
+                },
+                Tags = new List<ProductTag>()
+                {
+                    new ProductTag
+                    {
+                        Tag = "Vegan"
+                    }
+                }
+            };
+            ctx.Products.Add(p1);
+            
+            Product p2 = new Product
+            {
+                ProductId = 2,
+                ProductName = "Jerk Chicken Wrap",
+                ProductIngredients = "Spinach Tortilla, Lettuce, Carrot, Purple Cabbage, Bell Pepper, Alfalfa Sprouts, Jerk Sauce",
+                ProductPrice = 15,
+                ProductPhoto = new File
+                {
+                    FileName = "/pics/JerkChickenWrap.png",
+                    ContentType = "image/png"
+                },
+                ProductCategory = new List<ProductType>()
+                {
+                    new ProductType
+                    {
+                        Type = "Food"
+                    }
+                },
+                Tags = new List<ProductTag>()
+                {
+                    new ProductTag
+                    {
+                        Tag = "Spicy"
+                    }
+                }
+            };
+            ctx.Products.Add(p2);
+            
+            Product p3 = new Product
+            {
+                ProductId = 3,
+                ProductName = "Reggae Chia Pudding",
+                ProductIngredients = "Coconut milk chia pudding with Hawaiian spirulina, topped with fresh strawberry, mango, and hemp hearts.",
+                ProductPrice = 7.50M,
+                ProductPhoto = new File
+                {
+                    FileName = "/pics/ReggaeChiaPudding.png",
+                    ContentType = "image/png"
+                },
+                ProductCategory = new List<ProductType>()
+                {
+                    new ProductType
+                    {
+                        Type = "Dessert"
+                    }
+                },
+                Tags = new List<ProductTag>()
+                {
+                    new ProductTag
+                    {
+                        Tag = "Vegan"
+                    },
+                    new ProductTag
+                    {
+                        Tag = "Gluten-Free"
+                    }
+                }
+            };
+            ctx.Products.Add(p3);
+            
+            Product p4 = new Product
+            {
+                ProductId = 4,
+                ProductName = "Electrolyte Refresh",
+                ProductIngredients = "Cucumber, Honeydew, Pineapple, Mint, Watermelon, Lime",
+                ProductPrice = 10,
+                ProductPhoto = new File
+                {
+                    FileName = "/pics/ElectrolyteRefresh.png",
+                    ContentType = "image/png"
+                },
+                ProductCategory = new List<ProductType>()
+                {
+                    new ProductType
+                    {
+                        Type = "Drink"
+                    }
+                }
+            };
+            ctx.Products.Add(p4);
+            
+            Product p5 = new Product
+            {
+                ProductId = 5,
+                ProductName = "Lycheehoo",
+                ProductIngredients = "Lychee, Young Coconut Water",
+                ProductPrice = 12,
+                ProductPhoto = new File
+                {
+                    FileName = "/pics/Lycheehoi.png",
+                    ContentType = "image/png"
+                },
+                ProductCategory = new List<ProductType>()
+                {
+                    new ProductType
+                    {
+                        Type = "Drink"
+                    }
+                }
+            };
+            ctx.Products.Add(p5);
+            
+            Product p6 = new Product
+            {
+                ProductId = 6,
+                ProductName = "Soursop Juice",
+                ProductIngredients = "Soursop, White Nutmeg, Cinnamon, Vanilla, Lime, Sugarcane",
+                ProductPrice = 10,
+                ProductPhoto = new File
+                {
+                    FileName = "/pics/soursop.png",
+                    ContentType = "image/png"
+                },
+                ProductCategory = new List<ProductType>()
+                {
+                    new ProductType
+                    {
+                        Type = "Drink"
+                    }
+                }
+            };
+            ctx.Products.Add(p6);
+            
+            Product p7 = new Product
+            {
+                ProductId = 7,
+                ProductName = "Lilikoi Lemonade",
+                ProductIngredients = "Lilikoi, Lemon, Sugarcane",
+                ProductPrice = 10,
+                ProductPhoto = new File
+                {
+                    FileName = "/pics/DesertBowl.png",
+                    ContentType = "image/png"
+                },
+                ProductCategory = new List<ProductType>()
+                {
+                    new ProductType
+                    {
+                        Type = "Drink"
+                    }
+                }
+            };
+            ctx.Products.Add(p7);
+            
+            Product p8 = new Product
+            {
+                ProductId = 8,
+                ProductName = "Ginger Lemonade",
+                ProductIngredients = "Ginger, Lime, Sugarcane",
+                ProductPrice = 10,
+                ProductPhoto = new File
+                {
+                    FileName = "/pics/DesertBowl.png",
+                    ContentType = "image/png"
+                },
+                ProductCategory = new List<ProductType>()
+                {
+                    new ProductType
+                    {
+                        Type = "Drink"
+                    }
+                }
+            };
+            ctx.Products.Add(p8);
+            
+            Product p9 = new Product
+            {
+                ProductId = 9,
+                ProductName = "Black Magic",
+                ProductIngredients = "Young Coconut Water, Activated Charcoal, Edible Gold",
+                ProductPrice = 10,
+                ProductPhoto = new File
+                {
+                    FileName = "/pics/DesertBowl.png",
+                    ContentType = "image/png"
+                },
+                ProductCategory = new List<ProductType>()
+                {
+                    new ProductType
+                    {
+                        Type = "Drink"
+                    }
+                }
+            };
+            ctx.Products.Add(p9);
+            
+            Product p10 = new Product
+            {
+                ProductId = 10,
+                ProductName = "Yummy Yummy",
+                ProductIngredients = "Mangos, strawberries, and tasty things",
+                ProductPrice = 9.99M,
+                ProductPhoto = new File
+                {
+                    FileName = "/pics/DesertBowl.png",
+                    ContentType = "image/png"
+                },
+                ProductCategory = new List<ProductType>()
+                {
+                    new ProductType
+                    {
+                        Type = "Dessert"
+                    }
+                }
+            };
+            ctx.Products.Add(p10);
+            #endregion
             ctx.SaveChanges();
         }
     }
