@@ -186,11 +186,7 @@ public class SeedData
                 ProductName = "Reggae Chia Pudding",
                 ProductIngredients = "Coconut milk chia pudding with Hawaiian spirulina, topped with fresh strawberry, mango, and hemp hearts.",
                 ProductPrice = 7.50M,
-                ProductPhoto = new File
-                {
-                    FileName = "/pics/ReggaeChiaPudding.png",
-                    ContentType = "image/png"
-                },
+                ProductPhoto = landing3,
                 ProductCategory = new List<ProductType>()
                 {
                     dessert
