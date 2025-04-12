@@ -52,6 +52,29 @@ body {
   background-color: var(--JampotYellow);
 }
 
+.banner {
+  background-color: var(--JampotYellow);
+}
+
+.btn-jampot {
+  background-color: var(--JampotGreen);
+}
+
+.order-filter {
+  border-color: var(--JampotYellow);
+  border-style: solid none;
+  border-width: 1px;
+}
+
+.order-filter a {
+  background-color: var(--JampotYellow);
+  font-family: "Itim", serif;
+}
+
+.order-filter a:visited {
+  border-color: var(--JampotGreen);
+}
+
 .navbar .btn-success {
   background-color: var(--JampotGreen);
   border-radius: 1.3rem;
@@ -76,12 +99,20 @@ body {
   color: var(--JampotGreen);
 }
 
+.content {
+  font-family: "Itim", serif;
+}
+
 .landing-special{
   width: 400px;
 }
 
 .landing-photo{
   width: 500px;
+}
+
+.photo{
+  width: 365px;
 }
 
 .bodyText {
@@ -96,6 +127,10 @@ body {
 
 #facebook {
   width: 50px;
+}
+
+#food {
+  border-right: 1px solid var(--JampotYellow);
 }
 
 .menu-container {
