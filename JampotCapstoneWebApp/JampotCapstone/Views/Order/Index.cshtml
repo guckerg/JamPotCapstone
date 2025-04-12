@@ -28,12 +28,12 @@
                 {
                     if (p.ProductCategory.Contains(c))
                     {
-                        <div class="col-4 p-2">
+                        <div class="col-lg-4 p-2">
                             <img src="@p.ProductPhoto.FileName" alt="product image" class="photo rounded"/>
                             <div class="container banner text-dark content rounded-bottom">
                                 <div class="row">
                                     <p class="col fs-4">@p.ProductName</p>
-                                    <p class="col-3">@p.ProductPrice.ToString("C", new CultureInfo("en-us"))</p>
+                                    <p class="col-lg-3">@p.ProductPrice.ToString("C", new CultureInfo("en-us"))</p>
                                 </div>
                                 <div class="row">
                                     <p class="col">@p.ProductIngredients</p>
