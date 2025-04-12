@@ -35,6 +35,7 @@ public class SeedData
         if (!ctx.Products.Any())
         {
             #region files
+
             File landing1 = new File
             {
                 FileID = 1,
@@ -42,7 +43,7 @@ public class SeedData
                 ContentType = "image/png"
             };
             ctx.Files.Add(landing1);
-            
+
             File landing2 = new File
             {
                 FileID = 2,
@@ -50,7 +51,7 @@ public class SeedData
                 ContentType = "image/png"
             };
             ctx.Files.Add(landing2);
-            
+
             File landing3 = new File
             {
                 FileID = 3,
@@ -58,7 +59,7 @@ public class SeedData
                 ContentType = "image/png"
             };
             ctx.Files.Add(landing3);
-            
+
             File landing4 = new File
             {
                 FileID = 4,
@@ -74,7 +75,7 @@ public class SeedData
                 ContentType = "image/png"
             };
             ctx.Files.Add(landing5);
-            
+
             File landing6 = new File
             {
                 FileID = 6,
@@ -90,12 +91,32 @@ public class SeedData
                 ContentType = "image/png"
             };
             ctx.Files.Add(placeholder);
-            
+
             #endregion
+
             ctx.SaveChanges();
-        
+
             #region products
 
+            ProductType food = new ProductType
+            {
+                TypeId = 1,
+                Type = "Food"
+            };
+            ctx.ProductTypes.Add(food);
+            ProductType drink = new ProductType
+            {
+                TypeId = 2,
+                Type = "Drink"
+            };
+            ctx.ProductTypes.Add(drink);
+            ProductType dessert = new ProductType
+            {
+                TypeId = 3,
+                Type = "Dessert"
+            };
+            ctx.ProductTypes.Add(dessert);
+            
             Product p1 = new Product
             {
                 ProductId = 1,
@@ -109,10 +130,7 @@ public class SeedData
                 },
                 ProductCategory = new List<ProductType>()
                 {
-                    new ProductType
-                    {
-                        Type = "Food"
-                    }
+                    food
                 },
                 Tags = new List<ProductTag>()
                 {
@@ -137,10 +155,7 @@ public class SeedData
                 },
                 ProductCategory = new List<ProductType>()
                 {
-                    new ProductType
-                    {
-                        Type = "Food"
-                    }
+                    food
                 },
                 Tags = new List<ProductTag>()
                 {
@@ -165,10 +180,7 @@ public class SeedData
                 },
                 ProductCategory = new List<ProductType>()
                 {
-                    new ProductType
-                    {
-                        Type = "Dessert"
-                    }
+                    dessert
                 },
                 Tags = new List<ProductTag>()
                 {
@@ -197,10 +209,7 @@ public class SeedData
                 },
                 ProductCategory = new List<ProductType>()
                 {
-                    new ProductType
-                    {
-                        Type = "Drink"
-                    }
+                    drink
                 }
             };
             ctx.Products.Add(p4);
@@ -218,10 +227,7 @@ public class SeedData
                 },
                 ProductCategory = new List<ProductType>()
                 {
-                    new ProductType
-                    {
-                        Type = "Drink"
-                    }
+                    drink
                 }
             };
             ctx.Products.Add(p5);
@@ -239,10 +245,7 @@ public class SeedData
                 },
                 ProductCategory = new List<ProductType>()
                 {
-                    new ProductType
-                    {
-                        Type = "Drink"
-                    }
+                    drink
                 }
             };
             ctx.Products.Add(p6);
@@ -256,10 +259,7 @@ public class SeedData
                 ProductPhoto = placeholder,
                 ProductCategory = new List<ProductType>()
                 {
-                    new ProductType
-                    {
-                        Type = "Drink"
-                    }
+                    drink
                 }
             };
             ctx.Products.Add(p7);
@@ -273,10 +273,7 @@ public class SeedData
                 ProductPhoto = placeholder,
                 ProductCategory = new List<ProductType>()
                 {
-                    new ProductType
-                    {
-                        Type = "Drink"
-                    }
+                    drink
                 }
             };
             ctx.Products.Add(p8);
@@ -290,10 +287,7 @@ public class SeedData
                 ProductPhoto = placeholder,
                 ProductCategory = new List<ProductType>()
                 {
-                    new ProductType
-                    {
-                        Type = "Drink"
-                    }
+                    drink
                 }
             };
             ctx.Products.Add(p9);
@@ -307,10 +301,7 @@ public class SeedData
                 ProductPhoto = placeholder,
                 ProductCategory = new List<ProductType>()
                 {
-                    new ProductType
-                    {
-                        Type = "Dessert"
-                    }
+                    dessert
                 }
             };
             ctx.Products.Add(p10);

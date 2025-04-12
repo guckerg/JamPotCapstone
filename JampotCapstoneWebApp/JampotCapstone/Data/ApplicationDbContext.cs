@@ -13,4 +13,6 @@ public class ApplicationDbContext : IdentityDbContext<AppUser>
     
     public DbSet<Models.File> Files { get; set; }
     public DbSet<Product> Products { get; set; }
+    
+    public DbSet<ProductType> ProductTypes { get; set; }
 }

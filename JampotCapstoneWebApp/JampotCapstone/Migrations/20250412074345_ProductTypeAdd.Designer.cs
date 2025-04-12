@@ -4,6 +4,7 @@ using JampotCapstone.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace JampotCapstone.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250412074345_ProductTypeAdd")]
+    partial class ProductTypeAdd
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -171,11 +174,16 @@ namespace JampotCapstone.Migrations
 
                     MySqlPropertyBuilderExtensions.UseMySqlIdentityColumn(b.Property<int>("TypeId"));
 
+                    b.Property<int?>("ProductId")
+                        .HasColumnType("int");
+
                     b.Property<string>("Type")
                         .IsRequired()
                         .HasColumnType("longtext");
 
                     b.HasKey("TypeId");
+
+                    b.HasIndex("ProductId");
 
                     b.ToTable("ProductTypes");
                 });
@@ -331,21 +339,6 @@ namespace JampotCapstone.Migrations
                     b.ToTable("ProductProductTag");
                 });
 
-            modelBuilder.Entity("ProductProductType", b =>
-                {
-                    b.Property<int>("ProductCategoryTypeId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("ProductsProductId")
-                        .HasColumnType("int");
-
-                    b.HasKey("ProductCategoryTypeId", "ProductsProductId");
-
-                    b.HasIndex("ProductsProductId");
-
-                    b.ToTable("ProductProductType");
-                });
-
             modelBuilder.Entity("JampotCapstone.Models.Product", b =>
                 {
                     b.HasOne("JampotCapstone.Models.File", "ProductPhoto")
@@ -355,6 +348,13 @@ namespace JampotCapstone.Migrations
                         .IsRequired();
 
                     b.Navigation("ProductPhoto");
+                });
+
+            modelBuilder.Entity("JampotCapstone.Models.ProductType", b =>
+                {
+                    b.HasOne("JampotCapstone.Models.Product", null)
+                        .WithMany("ProductCategory")
+                        .HasForeignKey("ProductId");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
@@ -423,19 +423,9 @@ namespace JampotCapstone.Migrations
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("ProductProductType", b =>
+            modelBuilder.Entity("JampotCapstone.Models.Product", b =>
                 {
-                    b.HasOne("JampotCapstone.Models.ProductType", null)
-                        .WithMany()
-                        .HasForeignKey("ProductCategoryTypeId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("JampotCapstone.Models.Product", null)
-                        .WithMany()
-                        .HasForeignKey("ProductsProductId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                    b.Navigation("ProductCategory");
                 });
 #pragma warning restore 612, 618
         }

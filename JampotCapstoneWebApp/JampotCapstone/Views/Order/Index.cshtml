@@ -1,10 +1,9 @@
-
+@using System.Globalization
+@model OrderViewModel
 @{
     ViewBag.Title = "Order Page";
     Layout = "_Layout";
 }
-
-<h2 class="text-jampot">Order Page</h2>
 <div class="row order-filter">
     <div id="food" class="col">
         <a class="btn col m-3" asp-action="Filter" asp-controller="Order" asp-route-type="food">Food</a>
@@ -15,4 +14,36 @@
         <a class="btn col m-3" asp-action="Filter" asp-controller="Order" asp-route-type="vegan">Vegan</a>
         <a class="btn col m-3" asp-action="Filter" asp-controller="Order" asp-route-type="gluten-free">Gluten-Free</a>    
     </div>
+</div>
+
+<div class="row">
+    @if (Model.ProductTypes.Count > 0)
+    {
+        foreach (ProductType c in Model.ProductTypes)
+        {
+            <h4 class="content">@c.Type</h4>
+            if (Model.Products.Count > 0)
+            {
+                foreach (Product p in Model.Products)
+                {
+                    if (p.ProductCategory.Contains(c))
+                    {
+                        <div class="col-4 p-2">
+                            <img src="@p.ProductPhoto.FileName" alt="product image" class="photo rounded"/>
+                            <div class="container banner text-dark content rounded-bottom">
+                                <div class="row">
+                                    <p class="col fs-4">@p.ProductName</p>
+                                    <p class="col-3">@p.ProductPrice.ToString("C", new CultureInfo("en-us"))</p>
+                                </div>
+                                <div class="row">
+                                    <p class="col">@p.ProductIngredients</p>
+                                    <a class="col-3 btn btn-jampot align-self-start" asp-action="AddToCart" asp-controller="Cart">Order</a>
+                                </div>
+                            </div>
+                        </div>
+                    }
+                }    
+            }
+        }
+    }
 </div>

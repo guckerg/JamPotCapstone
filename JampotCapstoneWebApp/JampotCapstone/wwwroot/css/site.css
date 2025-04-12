@@ -52,6 +52,14 @@ body {
   background-color: var(--JampotYellow);
 }
 
+.banner {
+  background-color: var(--JampotYellow);
+}
+
+.btn-jampot {
+  background-color: var(--JampotGreen);
+}
+
 .order-filter {
   border-color: var(--JampotYellow);
   border-style: solid none;
@@ -91,12 +99,20 @@ body {
   color: var(--JampotGreen);
 }
 
+.content {
+  font-family: "Itim", serif;
+}
+
 .landing-special{
   width: 400px;
 }
 
 .landing-photo{
   width: 500px;
+}
+
+.photo{
+  width: 365px;
 }
 
 .bodyText {
