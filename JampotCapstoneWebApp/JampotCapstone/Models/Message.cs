@@ -2,7 +2,7 @@
 
 namespace JampotCapstone.Models
 {
-    public class Messages
+    public class Message
     {
         public int MessageId { get; set; }
         [StringLength(50), Required]
