@@ -116,6 +116,25 @@ public class SeedData
                 Type = "Dessert"
             };
             ctx.ProductTypes.Add(dessert);
+
+            ProductTag vegan = new ProductTag
+            {
+                TagID = 1,
+                Tag = "Vegan"
+            };
+            ctx.ProductTags.Add(vegan);
+            ProductTag gFree = new ProductTag
+            {
+                TagID = 2,
+                Tag = "Gluten Free"
+            };
+            ctx.ProductTags.Add(gFree);
+            ProductTag spicy = new ProductTag
+            {
+                TagID = 3,
+                Tag = "Spicy"
+            };
+            ctx.ProductTags.Add(spicy);
             
             Product p1 = new Product
             {
@@ -134,10 +153,7 @@ public class SeedData
                 },
                 Tags = new List<ProductTag>()
                 {
-                    new ProductTag
-                    {
-                        Tag = "Vegan"
-                    }
+                    vegan
                 }
             };
             ctx.Products.Add(p1);
@@ -159,10 +175,7 @@ public class SeedData
                 },
                 Tags = new List<ProductTag>()
                 {
-                    new ProductTag
-                    {
-                        Tag = "Spicy"
-                    }
+                    spicy
                 }
             };
             ctx.Products.Add(p2);
@@ -184,14 +197,7 @@ public class SeedData
                 },
                 Tags = new List<ProductTag>()
                 {
-                    new ProductTag
-                    {
-                        Tag = "Vegan"
-                    },
-                    new ProductTag
-                    {
-                        Tag = "Gluten-Free"
-                    }
+                    vegan, gFree
                 }
             };
             ctx.Products.Add(p3);
