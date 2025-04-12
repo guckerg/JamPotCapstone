@@ -6,7 +6,7 @@
     <title>@ViewData["Title"] - JampotCapstone</title>
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css"/>
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true"/>
-    <link rel="stylesheet" href="~/JampotCapstone.styles.css" asp-append-version="true"/>
+    @*<link rel="stylesheet" href="~/JampotCapstone.styles.css" asp-append-version="true"/>*@
 </head>
 <body class="bg-black text-white">
 <header>
@@ -29,7 +29,7 @@
                         <a class="btn btn-success text-dark fs-1" asp-area="" asp-controller="Menu" asp-action="Index">MENU</a>
                     </li>
                     <li class="nav-item me-2">
-                        <a class="btn btn-warning text-dark fs-4" asp-area="" asp-controller="About" asp-action="Index">ABOUT</a>
+                        <a class="btn btn-warning text-dark fs-4" asp-area="" asp-controller="AboutUs" asp-action="Index">ABOUT</a>
                     </li>
                     <li class="nav-item me-2">
                         <a class="btn btn-warning text-dark fs-4" asp-area="" asp-controller="ContactUs" asp-action="Index">CONTACT US</a>
@@ -52,7 +52,7 @@
     </main>
 </div>
 
-<footer class="border-top footer text-jampot">
+<footer class="border-top footer bg-dark text-jampot">
     <div class="container">
         <div class="row align-items-center text-center">
             <ul class="col list-unstyled">
