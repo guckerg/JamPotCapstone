@@ -83,6 +83,10 @@ body {
   border-color: var(--JampotGreen);
 }
 
+.order-section {
+  border-top: solid 1px var(--JampotYellow);
+}
+
 .navbar .btn-success {
   background-color: var(--JampotGreen);
   border-radius: 1.3rem;

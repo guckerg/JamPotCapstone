@@ -15,50 +15,48 @@ public class OrderController : Controller
         _context = ctx;
     }
     // GET
-    public IActionResult Index()
+    public async Task<IActionResult> Index()
     {
-        OrderViewModel model = new OrderViewModel();
-        model.Products = _context.Products.Include(p => p.ProductCategory)
-            .Include(p => p.Tags)
-            .Include(p => p.ProductPhoto)
-            .OrderBy(p => p.ProductCategory.First()).ToList();
-        model.ProductTypes = _context.ProductTypes.ToList();
+        List<ProductType> model = await _context.ProductTypes
+            .Include(c => c.Products)
+                .ThenInclude(p => p.Tags)
+            .Include(c => c.Products)
+                .ThenInclude(p => p.ProductPhoto).ToListAsync();
         return View(model);
     }
 
     public async Task<IActionResult> FilterByCategory(string type)
     {
-        OrderViewModel model = new OrderViewModel();
-        model.ProductTypes = await _context.ProductTypes.ToListAsync();
-        model.ProductTypes = model.ProductTypes.Where(c => c.Type.ToLower() == type.ToLower());
-        model.Products = await _context.Products.Include(p => p.ProductCategory)
-            .Include(p => p.Tags)
-            .Include(p => p.ProductPhoto)
-            .OrderBy(p => p.ProductCategory.First()).ToListAsync();
+        List<ProductType> model = await _context.ProductTypes
+            .Where(c => c.Type.ToLower() == type.ToLower())
+            .Include(c => c.Products)
+                .ThenInclude(p => p.ProductPhoto)
+            .Include(c => c.Products)
+                .ThenInclude(p => p.Tags)
+            .ToListAsync();
         return View("Index", model);
     }
 
     public async Task<IActionResult> FilterByTag(string type)
     {
-        OrderViewModel model = new OrderViewModel();
-        model.ProductTypes = await _context.ProductTypes.ToListAsync();
-        model.Products = await _context.Products.Include(p => p.ProductCategory)
-            .Include(p => p.Tags)
-            .Include(p => p.ProductPhoto)
-            .OrderBy(p => p.ProductCategory.First()).ToListAsync();
-        model.Products = model.Products.Where(p => p.Tags.Where(t => t.Tag.ToLower() == type.ToLower()).ToList().Any());
+        List<ProductType> model = await _context.ProductTypes
+            .Include(c => c.Products
+                .Where(p => p.Tags
+                    .Any(t => t.Tag.ToLower() == type.ToLower())))
+            .ThenInclude(p => p.ProductPhoto)
+            .ToListAsync();
         return View("Index", model);
     }
 
     public async Task<IActionResult> Search(string key)
     {
-        OrderViewModel model = new OrderViewModel();
-        model.ProductTypes = await _context.ProductTypes.ToListAsync();
-        model.Products = await _context.Products.Include(p => p.ProductCategory)
-            .Include(p => p.Tags)
-            .Include(p => p.ProductPhoto)
-            .OrderBy(p => p.ProductCategory.First()).ToListAsync();
-        model.Products = model.Products.Where(p => p.ProductName.ToLower().Contains(key.ToLower()));
+        List<ProductType> model = await _context.ProductTypes
+            .Include(c => c.Products
+                .Where(p => p.ProductName.ToLower().Contains(key)))
+            .ThenInclude(p => p.ProductPhoto)
+            .Include(c => c.Products)// have to reorient to the top level to get another item from the same level
+                .ThenInclude(p => p.Tags)
+            .ToListAsync();
         return View("Index", model);
     }
 }

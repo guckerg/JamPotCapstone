@@ -39,7 +39,7 @@ public class SeedData
             File landing1 = new File
             {
                 FileID = 1,
-                FileName = "/pics/JampotDrink.png",
+                FileName = "/pics/landing/JampotDrink.png",
                 ContentType = "image/png"
             };
             ctx.Files.Add(landing1);
@@ -47,7 +47,7 @@ public class SeedData
             File landing2 = new File
             {
                 FileID = 2,
-                FileName = "/pics/jackfruit-wrap.png",
+                FileName = "/pics/landing/jackfruit-wrap.png",
                 ContentType = "image/png"
             };
             ctx.Files.Add(landing2);
@@ -63,7 +63,7 @@ public class SeedData
             File landing4 = new File
             {
                 FileID = 4,
-                FileName = "/pics/map.png",
+                FileName = "/pics/landing/map.png",
                 ContentType = "image/png"
             };
             ctx.Files.Add(landing4);
@@ -71,7 +71,7 @@ public class SeedData
             File landing5 = new File
             {
                 FileID = 5,
-                FileName = "/pics/special.png",
+                FileName = "/pics/landing/special.png",
                 ContentType = "image/png"
             };
             ctx.Files.Add(landing5);
@@ -79,7 +79,7 @@ public class SeedData
             File landing6 = new File
             {
                 FileID = 6,
-                FileName = "/pics/people.png",
+                FileName = "/pics/landing/People.png",
                 ContentType = "image/png"
             };
             ctx.Files.Add(landing6);
@@ -87,7 +87,7 @@ public class SeedData
             File placeholder = new File
             {
                 FileID = 7,
-                FileName = "/pics/DesertBowl.png",
+                FileName = "/pics/landing/DesertBowl.png",
                 ContentType = "image/png"
             };
             ctx.Files.Add(placeholder);
