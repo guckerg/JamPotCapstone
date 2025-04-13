@@ -101,38 +101,38 @@ public class SeedData
             ProductType food = new ProductType
             {
                 TypeId = 1,
-                Type = "Food"
+                Type = "food"
             };
             ctx.ProductTypes.Add(food);
             ProductType drink = new ProductType
             {
                 TypeId = 2,
-                Type = "Drink"
+                Type = "drink"
             };
             ctx.ProductTypes.Add(drink);
             ProductType dessert = new ProductType
             {
                 TypeId = 3,
-                Type = "Dessert"
+                Type = "dessert"
             };
             ctx.ProductTypes.Add(dessert);
 
             ProductTag vegan = new ProductTag
             {
                 TagID = 1,
-                Tag = "Vegan"
+                Tag = "vegan"
             };
             ctx.ProductTags.Add(vegan);
             ProductTag gFree = new ProductTag
             {
                 TagID = 2,
-                Tag = "Gluten Free"
+                Tag = "gluten free"
             };
             ctx.ProductTags.Add(gFree);
             ProductTag spicy = new ProductTag
             {
                 TagID = 3,
-                Tag = "Spicy"
+                Tag = "spicy"
             };
             ctx.ProductTags.Add(spicy);
             

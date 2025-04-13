@@ -5,24 +5,29 @@
     Layout = "_Layout";
 }
 <div class="row order-filter">
+    <form class="col m-3" method="get" asp-action="Search" asp-controller="Order">
+        <label for="search" class="col-form-label text-jampot-yellow">Search</label>
+        <input class="col" id="search" name="key"/>
+        <button type="submit" class="fab fa-searchengin btn fs-5 text-jampot-yellow bg-jampot-green"></button>
+    </form>
     <div id="food" class="col">
-        <a class="btn col m-3" asp-action="Filter" asp-controller="Order" asp-route-type="food">Food</a>
-        <a class="btn col m-3" asp-action="Filter" asp-controller="Order" asp-route-type="drink">Drinks</a>
-        <a class="btn col m-3" asp-action="Filter" asp-controller="Order" asp-route-type="dessert">Desserts</a>
+        <a class="btn col m-3" asp-action="FilterByCategory" asp-controller="Order" asp-route-type="food">Food</a>
+        <a class="btn col m-3" asp-action="FilterByCategory" asp-controller="Order" asp-route-type="drink">Drinks</a>
+        <a class="btn col m-3" asp-action="FilterByCategory" asp-controller="Order" asp-route-type="dessert">Desserts</a>
     </div>
     <div id="allergen" class="col">
-        <a class="btn col m-3" asp-action="Filter" asp-controller="Order" asp-route-type="vegan">Vegan</a>
-        <a class="btn col m-3" asp-action="Filter" asp-controller="Order" asp-route-type="gluten-free">Gluten-Free</a>    
+        <a class="btn col m-3" asp-action="FilterByTag" asp-controller="Order" asp-route-type="vegan">Vegan</a>
+        <a class="btn col m-3" asp-action="FilterByTag" asp-controller="Order" asp-route-type="gluten free">Gluten-Free</a>
     </div>
 </div>
 
 <div class="row">
-    @if (Model.ProductTypes.Count > 0)
+    @if (Model.ProductTypes.Any())
     {
         foreach (ProductType c in Model.ProductTypes)
         {
-            <h4 class="content">@c.Type</h4>
-            if (Model.Products.Count > 0)
+            <h4 class="content text-jampot-yellow">@string.Concat(Char.ToUpper(c.Type[0]), c.Type.Substring(1, c.Type.Length - 1))</h4>
+            if (Model.Products.Any())
             {
                 foreach (Product p in Model.Products)
                 {

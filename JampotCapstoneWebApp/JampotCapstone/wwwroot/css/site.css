@@ -40,6 +40,14 @@ body {
   margin-bottom: 60px;
 }
 
+.bg-jampot-green {
+  background-color: var(--JampotGreen);
+}
+
+.bg-jampot-yellow {
+  background-color: var(--JampotYellow);
+}
+
 .logo {
   width: 100px;
 }
@@ -80,9 +88,13 @@ body {
   border-radius: 1.3rem;
 }
 
-.text-jampot,
-.text-jampot a {
+.text-jampot-green,
+.text-jampot-green a {
   color: var(--JampotGreen);
+}
+
+.text-jampot-yellow {
+  color: var(--JampotYellow);
 }
 
 .footer {
