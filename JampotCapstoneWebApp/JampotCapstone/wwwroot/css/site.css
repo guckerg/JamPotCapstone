@@ -252,3 +252,14 @@ body {
     opacity: 1;
   }
 }
+
+.yellowLine {
+    opacity: 1;
+    background-color: var(--JampotYellow);
+}
+
+.price-line {
+    display: flex;
+    justify-content: space-around;
+    gap: 10px;
+}
