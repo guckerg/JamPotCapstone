@@ -263,3 +263,45 @@ body {
     justify-content: space-around;
     gap: 10px;
 }
+
+.product-row {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    gap: 10px;
+    margin-bottom: 20px;
+}
+
+.product-img {
+    width: 200px;
+    height: auto;
+    border-radius: 10px;
+}
+
+.product-info {
+    flex-grow: 1;
+    font-size: 24px;
+}
+
+.quantity-control {
+    display: flex;
+    align-items: center;
+    border: 2px solid gold;
+    border-radius: 8px;
+    padding: 5px 15px;
+}
+
+.qty-btn {
+    background: none;
+    border: none;
+    font-size: 28px;
+    color: var(--JampotGreen);
+    padding: 0 10px;
+    cursor: pointer;
+}
+
+.qty-number {
+    font-size: 28px;
+    margin: 0 10px;
+    color: var(--JampotGreen);
+}

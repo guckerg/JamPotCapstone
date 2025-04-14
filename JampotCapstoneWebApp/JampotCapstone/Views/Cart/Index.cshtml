@@ -10,32 +10,18 @@
 <div class="container content text-jampot-yellow" style="font-size:30px">
     <hr class="yellowLine"/>
     @* Add product *@
-    @if (Model.Any())
-    {
-        foreach (ProductType c in Model)
-        {
-            if (c.Products.Any())
-            {
-                <h4 class="content text-jampot-yellow order-section">@string.Concat(Char.ToUpper(c.Type[0]), c.Type.Substring(1, c.Type.Length - 1))</h4>
-                foreach (Product p in c.Products)
-                {
-                    <div class="col-lg-4 p-2">
-                        <img src="@p.ProductPhoto.FileName" alt="product image" class="photo rounded" />
-                        <div class="container banner text-dark content rounded-bottom">
-                            <div class="row">
-                                <p class="col fs-4">@p.ProductName</p>
-                                <p class="col-lg-3">@p.ProductPrice.ToString("C", new CultureInfo("en-us"))</p>
-                            </div>
-                            <div class="row">
-                                <p class="col">@p.ProductIngredients</p>
-                                <a class="col-3 btn btn-jampot align-self-start" asp-action="AddToCart" asp-controller="Cart">Order</a>
-                            </div>
-                        </div>
-                    </div>
-                }
-            }
-        }
-    }
+    <div class="price-line product-row">
+        <img src="~/pics/ElectrolyteRefresh.png" class="product-img" />
+        <div class="product-info">
+            <p>Electrolyte Refresh</p>
+            <p>$15</p>
+        </div>
+        <div class="quantity-control">
+            <button class="qty-btn">+</button>
+            <span class="qty-number">1</span>
+            <button class="qty-btn">-</button>
+        </div>
+    </div>
     <hr class="yellowLine" />
     <div class="price-line">
         <p>Subtotal:</p>
