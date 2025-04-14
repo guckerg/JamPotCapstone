@@ -35,7 +35,7 @@
             <p class="bodyText">Send Us A Message!</p>
         </div>
         <!--Form for customer to contact Jam Pot-->
-        <form asp-controller="ContactUs" asp-action="SendMessage" method="post" class="container">
+        <form asp-controller="ContactUs" asp-action="Index" method="post" class="container"> <!--Routes to index until CRUD implementation-->
             @Html.AntiForgeryToken()
             <div class="row lg">
                 <label for="name" class="control-label col-lg-2 bodyText">Name</label>
