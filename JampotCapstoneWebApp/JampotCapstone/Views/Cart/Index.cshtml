@@ -1,0 +1,38 @@
+﻿@using System.Globalization
+
+@{
+    ViewData["Title"] = "View Cart";
+}
+
+<div class="text-center">
+    <h1 class="display-3 title">VIEW CART</h1>
+</div>
+<div class="container content text-jampot-yellow" style="font-size:30px">
+    <hr class="yellowLine"/>
+    @* Add product *@
+    <div class="price-line product-row">
+        <img src="~/pics/ElectrolyteRefresh.png" class="product-img" />
+        <div class="product-info">
+            <p>Electrolyte Refresh</p>
+            <p>$15</p>
+        </div>
+        <div class="quantity-control">
+            <button class="qty-btn">+</button>
+            <span class="qty-number">1</span>
+            <button class="qty-btn">-</button>
+        </div>
+    </div>
+    <hr class="yellowLine" />
+    <div class="price-line">
+        <p>Subtotal:</p>
+        <p>$15</p>
+    </div>
+    <div class="price-line">
+        <p>Tip (10%):</p>
+        <p>$1</p>
+    </div>
+    <hr class="yellowLine" />
+    <div class="row">
+        <button type="submit" class="btn btn-warning col-3 mx-auto m-3" style="font-size:30px">PLACE ORDER</button>
+    </div>
+</div>
