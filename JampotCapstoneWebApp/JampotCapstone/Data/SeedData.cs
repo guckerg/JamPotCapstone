@@ -39,7 +39,7 @@ public class SeedData
             File landing1 = new File
             {
                 FileID = 1,
-                FileName = "/pics/JampotDrink.png",
+                FileName = "/pics/landing/JampotDrink.png",
                 ContentType = "image/png"
             };
             ctx.Files.Add(landing1);
@@ -47,7 +47,7 @@ public class SeedData
             File landing2 = new File
             {
                 FileID = 2,
-                FileName = "/pics/jackfruit-wrap.png",
+                FileName = "/pics/landing/jackfruit-wrap.png",
                 ContentType = "image/png"
             };
             ctx.Files.Add(landing2);
@@ -63,7 +63,7 @@ public class SeedData
             File landing4 = new File
             {
                 FileID = 4,
-                FileName = "/pics/map.png",
+                FileName = "/pics/landing/map.png",
                 ContentType = "image/png"
             };
             ctx.Files.Add(landing4);
@@ -71,7 +71,7 @@ public class SeedData
             File landing5 = new File
             {
                 FileID = 5,
-                FileName = "/pics/special.png",
+                FileName = "/pics/landing/special.png",
                 ContentType = "image/png"
             };
             ctx.Files.Add(landing5);
@@ -79,7 +79,7 @@ public class SeedData
             File landing6 = new File
             {
                 FileID = 6,
-                FileName = "/pics/people.png",
+                FileName = "/pics/landing/People.png",
                 ContentType = "image/png"
             };
             ctx.Files.Add(landing6);
@@ -87,7 +87,7 @@ public class SeedData
             File placeholder = new File
             {
                 FileID = 7,
-                FileName = "/pics/DesertBowl.png",
+                FileName = "/pics/landing/DesertBowl.png",
                 ContentType = "image/png"
             };
             ctx.Files.Add(placeholder);
@@ -101,38 +101,38 @@ public class SeedData
             ProductType food = new ProductType
             {
                 TypeId = 1,
-                Type = "Food"
+                Type = "food"
             };
             ctx.ProductTypes.Add(food);
             ProductType drink = new ProductType
             {
                 TypeId = 2,
-                Type = "Drink"
+                Type = "drink"
             };
             ctx.ProductTypes.Add(drink);
             ProductType dessert = new ProductType
             {
                 TypeId = 3,
-                Type = "Dessert"
+                Type = "dessert"
             };
             ctx.ProductTypes.Add(dessert);
 
             ProductTag vegan = new ProductTag
             {
                 TagID = 1,
-                Tag = "Vegan"
+                Tag = "vegan"
             };
             ctx.ProductTags.Add(vegan);
             ProductTag gFree = new ProductTag
             {
                 TagID = 2,
-                Tag = "Gluten Free"
+                Tag = "gluten free"
             };
             ctx.ProductTags.Add(gFree);
             ProductTag spicy = new ProductTag
             {
                 TagID = 3,
-                Tag = "Spicy"
+                Tag = "spicy"
             };
             ctx.ProductTags.Add(spicy);
             

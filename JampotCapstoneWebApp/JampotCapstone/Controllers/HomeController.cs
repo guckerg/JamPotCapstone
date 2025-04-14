@@ -21,9 +21,13 @@ public class HomeController : Controller
     public async Task<IActionResult> Index()
     {
         HomeViewModel model = new HomeViewModel();
-        model.Map = await _context.Files.Where(m => m.FileName.Contains("map")).FirstOrDefaultAsync();
-        model.Special = await _context.Files.Where(m => m.FileName.Contains("special")).FirstOrDefaultAsync();
-        model.Photos = await _context.Files.Where(m => !m.FileName.Contains("map") && !m.FileName.Contains("special")).ToListAsync();
+        model.Map = await _context.Files.Where(
+            m => m.FileName.Contains("map") && m.FileName.Contains("landing")).FirstOrDefaultAsync();
+        model.Special = await _context.Files.Where(
+            m => m.FileName.Contains("special") && m.FileName.Contains("landing")).FirstOrDefaultAsync();
+        model.Photos = await _context.Files.Where(
+            m => !m.FileName.Contains("map") && !m.FileName.Contains("special") 
+                                             && m.FileName.Contains("landing")).ToListAsync();
         return View(model);
     }
 
