@@ -252,3 +252,12 @@ body {
     opacity: 1;
   }
 }
+
+.responsiveSquare {
+    width: 100%;
+    max-width: 300px;
+    height: 300px;
+    object-fit: cover;
+    border-radius: 20px;
+    padding: 10px;
+}
