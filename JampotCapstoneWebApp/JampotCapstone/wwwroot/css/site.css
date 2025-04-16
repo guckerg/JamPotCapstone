@@ -100,7 +100,8 @@ body {
 
 .text-jampot-green,
 .text-jampot-green a {
-  color: var(--JampotGreen);
+    color: var(--JampotGreen);
+    font-family: "Garet", sans-serif;
 }
 
 .text-jampot-yellow {
