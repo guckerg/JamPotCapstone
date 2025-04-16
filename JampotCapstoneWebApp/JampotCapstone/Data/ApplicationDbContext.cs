@@ -16,4 +16,5 @@ public class ApplicationDbContext : IdentityDbContext<AppUser>
     public DbSet<ProductType> ProductTypes { get; set; }
     public DbSet<ProductTag> ProductTags { get; set; }
     public DbSet<Application> Applications { get; set; }
+    public DbSet<JobTitle> JobTitles { get; set; }
 }

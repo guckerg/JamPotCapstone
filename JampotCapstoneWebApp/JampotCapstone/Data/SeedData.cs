@@ -310,5 +310,28 @@ public class SeedData
             #endregion
             ctx.SaveChanges();
         }
+
+        if(!ctx.JobTitles.Any())
+        {
+            #region jobs
+
+            JobTitle lineCook = new JobTitle
+            {
+                JobTitleID = 1,
+                JobTitleName = "Line Cook",
+            };
+            ctx.JobTitles.Add(lineCook);
+
+            JobTitle dishwasher = new JobTitle
+            {
+                JobTitleID = 2,
+                JobTitleName = "Dishwasher",
+            };
+            ctx.JobTitles.Add(dishwasher);
+
+            #endregion
+            ctx.SaveChanges();
+            
+        }
     }
 }

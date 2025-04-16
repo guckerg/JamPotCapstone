@@ -44,11 +44,15 @@
                 </div>
             </div>
             <div class="row lg">
-                <label for="name" class="control-label col-lg-2 bodyText">Position</label>
+                <label for="position" class="control-label col-lg-2 bodyText">Position</label>
+                <!--
                 <div class="col-lg-10">
                     <span asp-validation-for="Position" class="text-danger"></span>
-                    <input id="position" name="Position" class="form-control col-lg-10" /><br />
+                    <select id="position" name="Position" asp-for="Position" asp-items="ViewData['JobTitles']" class="form-control col-lg-10">
+                        <option value="">-- Select a Position --</option>
+                    </select>
                 </div>
+                -->
             </div>
             <div class="row lg mb-3">
                 <label for="resume" class="control-label col-lg-2 bodyText">Upload Resume</label>
