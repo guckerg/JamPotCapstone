@@ -5,16 +5,16 @@
     Layout = "_Layout";
 }
 <div class="row order-filter">
-    <form class="col m-3" method="get" asp-action="Search" asp-controller="Order">
+    <form class="col m-2 p-1" method="get" asp-action="Search" asp-controller="Order">
         <label for="search" class="col-form-label text-jampot-yellow">Search</label>
         <input class="col" id="search" name="key"/>
         <button type="submit" class="fab fa-searchengin btn fs-5 text-jampot-yellow bg-jampot-green"></button>
     </form>
     <div id="food" class="col align-items-center mt-2">
-        <a class="btn col m-2" asp-action="Index" asp-controller="Order">All</a>
-        <a class="btn col m-2" asp-action="FilterByCategory" asp-controller="Order" asp-route-type="food">Food</a>
-        <a class="btn col m-2" asp-action="FilterByCategory" asp-controller="Order" asp-route-type="drink">Drinks</a>
-        <a class="btn col m-2" asp-action="FilterByCategory" asp-controller="Order" asp-route-type="dessert">Desserts</a>
+        <a class="btn col m-1" asp-action="Index" asp-controller="Order">All</a>
+        <a class="btn col m-1" asp-action="FilterByCategory" asp-controller="Order" asp-route-type="food">Food</a>
+        <a class="btn col m-1" asp-action="FilterByCategory" asp-controller="Order" asp-route-type="drink">Drinks</a>
+        <a class="btn col m-1" asp-action="FilterByCategory" asp-controller="Order" asp-route-type="dessert">Desserts</a>
     </div>
     <div id="allergen" class="col">
         <a class="btn col m-3" asp-action="FilterByTag" asp-controller="Order" asp-route-type="vegan">Vegan</a>
