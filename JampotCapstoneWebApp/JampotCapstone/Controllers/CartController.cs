@@ -1,5 +1,6 @@
 ﻿using JampotCapstone.Data;
 using JampotCapstone.Models;
+using JampotCapstone.Models.ViewModels;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
@@ -8,36 +9,50 @@ namespace JampotCapstone.Controllers
     public class CartController : Controller
     {
         private readonly ApplicationDbContext _context;
-        private readonly List<OrderItem> _cartItems;
+        private const string CartSessionKey = "CartItems";
 
-        public CartController(ApplicationDbContext context, List<OrderItem> cartItems) {
+        public CartController(ApplicationDbContext context) {
             _context = context;
-            _cartItems = cartItems;
         }
         public IActionResult Index()
         {
-            return View();
+            var cartItems = HttpContext.Session.GetObjectFromJson<List<OrderItem>>(CartSessionKey) ?? new List<OrderItem>();
+
+            var viewModel = cartItems.Select(item => new CartItemViewModel
+            {
+               
+            }).ToList();
+
+            return View(viewModel);
         }
 
-        public IActionResult AddToCart(int id)
+        public IActionResult AddToCart(int productId)
         {
-            var itemToAdd = _context.OrderItems.Find(id);
+            var itemToAdd = _context.Products.Find(productId);
+            if (itemToAdd == null)
+            {
+                return NotFound();
+            }
 
-            var existingCartItem = _cartItems.FirstOrDefault(item => item.Product.ProductId == id);
+            var cartItems = HttpContext.Session.GetObjectFromJson<List<OrderItem>>(CartSessionKey) ?? new List<OrderItem>();
 
+            var existingCartItem = cartItems.FirstOrDefault(item => item.ProductId == productId);
             if (existingCartItem != null)
             {
                 existingCartItem.Quantity++;
             }
             else
             {
-                _cartItems.Add(new OrderItem
+                cartItems.Add(new OrderItem
                 {
+                    ProductId = itemToAdd.ProductId,
                     Product = itemToAdd,
                     Quantity = 1
                 });
             }
-            return View();
+            HttpContext.Session.SetObjectAsJson(CartSessionKey, cartItems);
+
+            return RedirectToAction("Index");
         }
     }
 }
