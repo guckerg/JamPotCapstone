@@ -9,14 +9,8 @@
 }
 
 @font-face {
-    font-family: "Garet";
-    src: url("../fonts/garet/Garet-Book.ttf");
-}
-
-@font-face {
-    font-family: "Garet";
-    src: url("../fonts/garet/Garet-Heavy.ttf");
-    font-weight: bold;
+  font-family: "Itim";
+  src: url("../fonts/Itim-Regular.ttf");
 }
 
 html {
@@ -82,7 +76,7 @@ body {
 
 .order-filter a {
   background-color: var(--JampotYellow);
-  font-family: "Garet", sans-serif;
+  font-family: "Itim", serif;
 }
 
 .order-filter a:visited {
@@ -100,8 +94,7 @@ body {
 
 .text-jampot-green,
 .text-jampot-green a {
-    color: var(--JampotGreen);
-    font-family: "Garet", sans-serif;
+  color: var(--JampotGreen);
 }
 
 .text-jampot-yellow {
@@ -123,7 +116,7 @@ body {
 }
 
 .content {
-  font-family: "Garet", sans-serif;
+  font-family: "Itim", serif;
 }
 
 .landing-special{
@@ -139,7 +132,7 @@ body {
 }
 
 .bodyText {
-  font-family: "Garet", sans-serif;
+  font-family: "Itim", serif;
   font-size: 20px;
   color: var(--JampotYellow);
 }
@@ -210,7 +203,7 @@ body {
 /* Caption text */
 .capText {
   color: white;
-  font-family: "Garet", sans-serif;
+  font-family: "Itim";
   font-size: 16px;
   padding: 10px;
   position: absolute;
@@ -224,7 +217,7 @@ body {
 .numberText {
   color: #f2f2f2;
   font-size: 14px;
-  font-family: "Garet", sans-serif;
+  font-family: "Itim";
   padding: 8px 12px;
   position: absolute;
   top: 0;
