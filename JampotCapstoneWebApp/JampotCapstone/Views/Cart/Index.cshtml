@@ -1,5 +1,4 @@
-﻿@using System.Globalization
-@model List<Product>
+﻿@model OrderItemViewModel
 @{
     ViewData["Title"] = "View Cart";
 }
@@ -10,38 +9,38 @@
 <div class="container content text-jampot-yellow" style="font-size:30px">
     <hr class="yellowLine"/>
     @* Add product *@
-    @{
-        @if (Model.Count != 0)
-        {
-            foreach (Product p in Model)
-                {
-                    <div class="price-line product-row">
-                    <img src="@p.ProductPhoto.FileName" alt="product image" class="photo rounded" />
-                    <div class="product-info">
-                            <p>@p.ProductName</p>
-                            <p>@p.ProductPrice</p>
-                        </div>
-                        <div class="quantity-control">
-                            <button class="qty-btn">+</button>
-                            <span class="qty-number">1</span>
-                            <button class="qty-btn">-</button>
-                        </div>
-                    </div>
-                    <hr class="yellowLine" />
-                    <div class="price-line">
-                        <p>Subtotal:</p>
-                        <p>$15</p>
-                    </div>
-                    <hr class="yellowLine" />
-                }
-            }
-        else
-        {
-            <p>
-                Your cart is empty.
-            </p>
-        }
-    }
+    @* @{ *@
+    @*     @if (Model.Count != 0) *@
+    @*     { *@
+    @*         foreach (OrderItem p in Model) *@
+    @*             { *@
+    @*                 <div class="price-line"> *@
+    @*                 <img src="@p.Product.ProductPhoto.FileName" alt="product image" class="photo rounded" /> *@
+    @*                 <div class="product-info"> *@
+    @*                         <p>@p.Product.ProductName</p> *@
+    @*                         <p>@p.Product.ProductPrice</p> *@
+    @*                     </div> *@
+    @*                     <div class="quantity-control"> *@
+    @*                         <button class="qty-btn">+</button> *@
+    @*                         <span class="qty-number">1</span> *@
+    @*                         <button class="qty-btn">-</button> *@
+    @*                     </div> *@
+    @*                 </div> *@
+    @*                 <hr class="yellowLine" /> *@
+    @*                 <div class="price-line"> *@
+    @*                     <p>Subtotal:</p> *@
+    @*                     <p>$15</p> *@
+    @*                 </div> *@
+    @*                 <hr class="yellowLine" /> *@
+    @*             } *@
+    @*         } *@
+    @*     else *@
+    @*     { *@
+    @*         <p> *@
+    @*             Your cart is empty. *@
+    @*         </p> *@
+    @*     } *@
+    @* } *@
     <div class="price-line product-row">
         <img src="~/pics/ElectrolyteRefresh.png" class="product-img" />
         <div class="product-info">

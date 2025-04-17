@@ -42,7 +42,7 @@
                             </div>
                             <div class="row">
                                 <p class="col">@p.ProductIngredients</p>
-                                <a class="col-3 btn btn-jampot align-self-start" asp-action="AddToCart" asp-controller="Cart">Order</a>
+                                <a class="col-3 btn btn-jampot align-self-start" asp-action="AddToCart" asp-controller="Cart" asp-route-id="@p.ProductId">Order</a>
                             </div>
                         </div>
                     </div>
