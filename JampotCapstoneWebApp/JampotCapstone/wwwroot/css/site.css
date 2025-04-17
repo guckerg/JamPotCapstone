@@ -89,6 +89,10 @@ body {
   border-color: var(--JampotGreen);
 }
 
+.order-filter input{
+    width: 50%;
+}
+
 .order-section {
   border-top: solid 1px var(--JampotYellow);
 }
@@ -135,13 +139,21 @@ body {
 }
 
 .photo{
-  width: 365px;
+  width: 100%;
 }
 
 .bodyText {
   font-family: "Garet", sans-serif;
   font-size: 20px;
   color: var(--JampotYellow);
+}
+
+.first-element{
+    margin-left: auto;
+}
+
+.last-element{
+    margin-right: auto;
 }
 
 #instagram {
