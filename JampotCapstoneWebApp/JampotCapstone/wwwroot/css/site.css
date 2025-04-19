@@ -148,14 +148,6 @@ body {
   color: var(--JampotYellow);
 }
 
-.first-element{
-    margin-left: auto;
-}
-
-.last-element{
-    margin-right: auto;
-}
-
 #instagram {
   width: 65px;
 }

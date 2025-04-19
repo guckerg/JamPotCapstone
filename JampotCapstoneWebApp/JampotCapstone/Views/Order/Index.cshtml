@@ -5,21 +5,21 @@
     Layout = "_Layout";
 }
 <div class="row order-filter">
-    <form class="col-lg-3 col-md-6 mt-2 p-0" method="get" asp-action="Search" asp-controller="Order">
+    <form class="col-lg-3 col-md-6 mt-2 p-0 offset-2 offset-md-0" method="get" asp-action="Search" asp-controller="Order">
         <label for="search" class="col-form-label-lg text-jampot-yellow first-element">Search</label>
         <input id="search" name="key"/>
         <button type="submit" class="fab fa-searchengin btn fs-5 text-jampot-yellow bg-jampot-green last-element"></button>
     </form>
-    <div id="food" class="col-lg-5 col-md-6 mt-2">
-        <a class="btn col m-1 first-element" asp-action="Index" asp-controller="Order">All</a>
+    <div id="food" class="col-lg-5 col-md-6 mt-2 offset-2 offset-md-0">
+        <a class="btn col m-1" asp-action="Index" asp-controller="Order">All</a>
         <a class="btn col m-1" asp-action="FilterByCategory" asp-controller="Order" asp-route-type="food">Food</a>
         <a class="btn col m-1" asp-action="FilterByCategory" asp-controller="Order" asp-route-type="drink">Drinks</a>
-        <a class="btn col m-1 last-element" asp-action="FilterByCategory" asp-controller="Order" asp-route-type="dessert">Desserts</a>
+        <a class="btn col m-1" asp-action="FilterByCategory" asp-controller="Order" asp-route-type="dessert">Desserts</a>
     </div>
-    <div id="allergen" class="col-lg-4 offset-md-7 offset-lg-0 mt-2">
-        <a class="btn col m-1 first-element" asp-action="FilterByTag" asp-controller="Order" asp-route-type="vegan">Vegan</a>
+    <div id="allergen" class="col-lg-4 offset-2 offset-md-7 offset-lg-0 mt-2">
+        <a class="btn col m-1" asp-action="FilterByTag" asp-controller="Order" asp-route-type="vegan">Vegan</a>
         <a class="btn col m-1" asp-action="FilterByTag" asp-controller="Order" asp-route-type="gluten free">Gluten-Free</a>
-        <a class="col ms-1 last-element" asp-action="Index" asp-controller="Cart"><span class="fas fa-cart-arrow-down fs-3 bg-black text-jampot-green align-self-md-end"></span></a>
+        <a class="col ms-1" asp-action="Index" asp-controller="Cart"><span class="fas fa-cart-arrow-down fs-3 bg-black text-jampot-green align-self-md-end"></span></a>
     </div>
 </div>
 
@@ -33,7 +33,7 @@
                 <h4 class="content text-jampot-yellow order-section">@string.Concat(Char.ToUpper(c.Type[0]), c.Type.Substring(1, c.Type.Length - 1))</h4>
                 foreach (Product p in c.Products)
                 {
-                    <div class="col-md-4 p-2">
+                    <div class="col-lg-4 col-md-6 p-2">
                         <img src="@p.ProductPhoto.FileName" alt="product image" class="photo rounded"/>
                         <div class="container banner text-dark content rounded-bottom">
                             <div class="row">
