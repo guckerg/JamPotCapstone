@@ -46,6 +46,14 @@ body {
   margin-bottom: 60px;
 }
 
+.navbar-nav-inline{
+    display: flex;
+    flex-direction: row;
+    padding-left: 0;
+    margin-bottom: 0;
+    list-style: none;
+}
+
 .bg-jampot-green {
   background-color: var(--JampotGreen);
 }
