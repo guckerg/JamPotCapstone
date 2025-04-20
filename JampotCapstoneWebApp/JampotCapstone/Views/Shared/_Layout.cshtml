@@ -64,15 +64,6 @@
             <ul class="col list-unstyled">
                 <li>
                     <a asp-area="" asp-controller="Careers" asp-action="Index" id="careers">Careers</a>
-                    @{
-                        string display = "none";
-                        if (User.IsInRole("Admin"))
-                        {
-                            display = User.IsInRole("Admin") ? "block" : "none";
-                        }
-                        <button class="d-@display" id="toggle">Hide</button>
-                    }
-                    
                 </li>
                 <li><a asp-area="" asp-controller="Menu" asp-action="Specials">Specials</a></li>
                 <li><a asp-area="" asp-controller="Order" asp-action="Index">Ordering</a></li>
