@@ -18,10 +18,16 @@ namespace JampotCapstone.Controllers
         {
             var cartItems = HttpContext.Session.GetObjectFromJson<List<OrderItem>>(CartSessionKey) ?? new List<OrderItem>();
 
-            var viewModel = cartItems.Select(item => new CartItemViewModel
+            var viewModel = new CartViewModel
             {
-               
-            }).ToList();
+                Items = cartItems.Select(item => new CartItemViewModel
+                {
+                    ProductId = item.ProductId,
+                    ProductName = item.Product?.ProductName ?? "",
+                    ProductPrice = item.Product.ProductPrice,
+                    Quantity = item.Quantity
+                }).ToList()
+            };
 
             return View(viewModel);
         }
