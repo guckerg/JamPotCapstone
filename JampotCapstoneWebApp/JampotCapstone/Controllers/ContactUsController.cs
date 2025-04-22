@@ -20,7 +20,12 @@ namespace JampotCapstone.Controllers
 
         public async Task<IActionResult> SendMessage(Message model)
         {
-            await _emailSender.SendEmailAsync(model);
+            if(ModelState.IsValid)
+            {
+                await _emailSender.SendEmailAsync(model);
+
+                TempData["SuccessMessage"] = "Your message was successfully sent! Thank you!";
+            }
 
             return View("Index");
         }
