@@ -14,7 +14,7 @@ namespace JampotCapstone.Controllers
         public CartController(ApplicationDbContext context) {
             _context = context;
         }
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
             var cartItems = HttpContext.Session.GetObjectFromJson<List<OrderItem>>(CartSessionKey) ?? new List<OrderItem>();
 
@@ -25,6 +25,7 @@ namespace JampotCapstone.Controllers
                     ProductId = item.ProductId,
                     ProductName = item.Product?.ProductName ?? "",
                     ProductPrice = item.Product.ProductPrice,
+                    ProductPhoto = item.Product.ProductPhoto,
                     Quantity = item.Quantity
                 }).ToList()
             };
@@ -32,9 +33,10 @@ namespace JampotCapstone.Controllers
             return View(viewModel);
         }
 
-        public IActionResult AddToCart(int productId)
+        public IActionResult AddToCart(int id)
         {
-            var itemToAdd = _context.Products.Find(productId);
+            var itemToAdd = _context.Products.Find(id);
+
             if (itemToAdd == null)
             {
                 return NotFound();
@@ -42,7 +44,7 @@ namespace JampotCapstone.Controllers
 
             var cartItems = HttpContext.Session.GetObjectFromJson<List<OrderItem>>(CartSessionKey) ?? new List<OrderItem>();
 
-            var existingCartItem = cartItems.FirstOrDefault(item => item.ProductId == productId);
+            var existingCartItem = cartItems.FirstOrDefault(item => item.ProductId == id);
             if (existingCartItem != null)
             {
                 existingCartItem.Quantity++;

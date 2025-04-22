@@ -34,7 +34,7 @@
                 foreach (Product p in c.Products)
                 {
                     <div class="col-lg-4 p-2">
-                        <img src="@p.ProductPhoto.FileName" alt="product image" class="photo rounded"/>
+                        <img src="@p.ProductPhoto.FileName" alt="@p.ProductName" class="photo rounded"/>
                         <div class="container banner text-dark content rounded-bottom">
                             <div class="row">
                                 <p class="col fs-4">@p.ProductName</p>

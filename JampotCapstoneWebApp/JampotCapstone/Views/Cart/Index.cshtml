@@ -1,4 +1,5 @@
-﻿@model CartViewModel
+﻿@using System.Globalization
+@model CartViewModel
 @{
     ViewData["Title"] = "View Cart";
 }
@@ -8,8 +9,7 @@
 </div>
 <div class="container content text-jampot-yellow" style="font-size:30px">
     <hr class="yellowLine"/>
-    @* Add product *@
-    @{
+    
         @if (Model.Items.Count == 0)
         {
             <p>Your cart is empty.</p>
@@ -19,80 +19,30 @@
             @foreach (var item in Model.Items) 
             {
                 <div class="price-line">
-                    <img src="@item.ProductPhoto" alt="product image" class="photo rounded" />
+                    <img src="@item.ProductPhoto.FileName" alt="@item.ProductName" class="photo rounded" />
                     <div class="product-info">
                         <p>@item.ProductName</p>
-                        <p>@item.ProductPrice</p>
+                        <p>@item.ProductPrice.ToString("C", new CultureInfo("en-us"))</p>
                     </div>
                     <div class="quantity-control">
                         <button class="qty-btn">+</button>
-                        <span class="qty-number">1</span>
+                        <span class="qty-number">@item.Quantity.ToString()</span>
                         <button class="qty-btn">-</button>
                     </div>
                 </div>
-                <hr class="yellowLine" />
-                <div class="price-line">
-                    <p>Subtotal:</p>
-                    <p>$15</p>
-                </div>
-                <hr class="yellowLine" />
             }
+        <hr class="yellowLine" />
+        <div class="price-line">
+            <p>Subtotal:</p>
+            <p>@Model.TotalPrice.ToString("C", new CultureInfo("en-us"))</p>
+            <p>Total Items:</p>
+            <p>@Model.TotalQuantity</p>
+        </div>
         }
-
-        // @if (Model.Count != 0)
-        // {
-        //     foreach (OrderItem p in Model) not right. change to refelct the new model being used (carviewmodel)
-        //         {
-        //             <div class="price-line">
-        //             <img src="@p.Product.ProductPhoto.FileName" alt="product image" class="photo rounded" />
-        //             <div class="product-info">
-        //                     <p>@p.Product.ProductName</p>
-        //                     <p>@p.Product.ProductPrice</p>
-        //                 </div>
-        //                 <div class="quantity-control">
-        //                     <button class="qty-btn">+</button>
-        //                     <span class="qty-number">1</span>
-        //                     <button class="qty-btn">-</button>
-        //                 </div>
-        //             </div>
-        //             <hr class="yellowLine" />
-        //             <div class="price-line">
-        //                 <p>Subtotal:</p>
-        //                 <p>$15</p>
-        //             </div>
-        //             <hr class="yellowLine" />
-        //         }
-        //     }
-        // else
-        // {
-        //     <p>
-        //         Your cart is empty.
-        //     </p>
-        // }
-    }
-    <div class="price-line product-row">
-        <img src="~/pics/ElectrolyteRefresh.png" class="product-img" />
-        <div class="product-info">
-            <p>Electrolyte Refresh</p>
-            <p>$15</p>
-        </div>
-        <div class="quantity-control">
-            <button class="qty-btn">+</button>
-            <span class="qty-number">1</span>
-            <button class="qty-btn">-</button>
-        </div>
-    </div>
-    <hr class="yellowLine" />
-    <div class="price-line">
-        <p>Subtotal:</p>
-        <p>$15</p>
-    </div>
-    <div class="price-line">
-        <p>Tip (10%):</p>
-        <p>$1</p>
-    </div>
     <hr class="yellowLine" />
     <div class="row">
-        <button type="submit" class="btn btn-warning col-3 mx-auto m-3" style="font-size:30px">PLACE ORDER</button>
+        <button type="submit" class="btn btn-warning col-3 mx-auto m-3" style="font-size:30px">PLACE ORDER</button> 
+        <!--TODO:
+            Order and OrderItem will be saved to the database once the checkout process is complete-->
     </div>
 </div>
