@@ -5,8 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
     <title>@ViewData["Title"] - JampotCapstone</title>
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css"/>
-    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" media="only screen and (min-width: 701px"/>
-    <link rel="stylesheet" href="~/css/portrait.css" asp-append-version="true" media="only screen and (max-width: 700px)"/>
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true"/>
     @*<link rel="stylesheet" href="~/JampotCapstone.styles.css" asp-append-version="true"/>*@
 </head>
 <body class="bg-black text-white">
@@ -19,29 +18,31 @@
                 <span class="navbar-toggler-icon"></span>
             </button>
             <div class="navbar-collapse collapse d-lg-inline-flex justify-content-between">
-                <ul class="navbar-nav flex-grow-1 align-items-center">
-                    <li class="nav-item me-2">
-                        <a class="btn btn-warning text-dark fs-4" asp-area="" asp-controller="Order" asp-action="Index">ORDER NOW</a>
-                    </li>
-                    <li class="nav-item me-2">
-                        <a class="btn btn-warning text-dark fs-4" asp-area="" asp-controller="Catering" asp-action="Index">CATERING</a>
-                    </li>
-                    <li class="nav-item me-2">
-                        <a class="btn btn-success text-dark fs-1" asp-area="" asp-controller="Menu" asp-action="Index">MENU</a>
-                    </li>
-                    <li class="nav-item me-2">
-                        <a class="btn btn-warning text-dark fs-4" asp-area="" asp-controller="AboutUs" asp-action="Index">ABOUT</a>
-                    </li>
-                    <li class="nav-item me-2">
-                        <a class="btn btn-warning text-dark fs-4" asp-area="" asp-controller="ContactUs" asp-action="Index">CONTACT US</a>
-                    </li>
-                    @if (User.IsInRole("Admin"))
-                    {
-                        <li class="nav-item">
-                            <a class="btn btn-warning text-dark fs-4" asp-area="" asp-controller="Admin" asp-action="Index">ADMIN</a>
+                <div class="container align-items-center">
+                    <ul class="navbar-nav flex-grow-1 align-items-center">
+                        <li class="nav-item m-2">
+                            <a class="btn btn-warning text-dark fs-4" asp-area="" asp-controller="Order" asp-action="Index">ORDER</a>
                         </li>
-                    }
-                </ul>
+                        <li class="nav-item m-2">
+                            <a class="btn btn-warning text-dark fs-4" asp-area="" asp-controller="Catering" asp-action="Index">CATERING</a>
+                        </li>
+                        <li class="nav-item m-2">
+                            <a class="btn btn-success text-dark fs-1" asp-area="" asp-controller="Menu" asp-action="Index">MENU</a>
+                        </li>
+                        <li class="nav-item m-2">
+                            <a class="btn btn-warning text-dark fs-4" asp-area="" asp-controller="AboutUs" asp-action="Index">ABOUT</a>
+                        </li>
+                        <li class="nav-item m-2">
+                            <a class="btn btn-warning text-dark fs-4" asp-area="" asp-controller="ContactUs" asp-action="Index">CONTACT</a>
+                        </li>
+                        @if (User.IsInRole("Admin"))
+                        {
+                            <li class="nav-item">
+                                <a class="btn btn-warning text-dark fs-4" asp-area="" asp-controller="Admin" asp-action="Index">ADMIN</a>
+                            </li>
+                        }
+                    </ul>
+                </div>
                 <partial name="_LoginPartial"/>
             </div>
         </div>
@@ -67,10 +68,14 @@
                 <li><a asp-area="" asp-controller="Order" asp-action="Index">Ordering</a></li>
             </ul>
             <div class="col align-self-center text-center">
-                <a href="https://www.instagram.com/jampothawaii?igsh=amZxYXk5OG0yeTdi" class="fab fa-instagram fs-1 text-danger me-5"></a>
-                <a href="#" class="fab fa-facebook fs-1"></a>
-                @*<img src="pics/instagram-icon.png" alt="instagram logo" id="instagram"/>
-                <img src="pics/facebook-icon.png" alt="facebook logo" id="facebook"/>*@
+                @*<i class="fa-brands fa-instagram"></i>
+                <i class="fa-brands fa-facebook"></i>*@
+                <a href="https://www.instagram.com/jampothawaii?igsh=amZxYXk5OG0yeTdi">
+                    <img src="/pics/instagram-icon.png" alt="instagram logo" id="instagram"/>
+                </a>
+                <a href="#">
+                    <img src="/pics/facebook-icon.png" alt="facebook logo" id="facebook"/>
+                </a>
             </div>
         </div>
         &copy; 2025 - JampotCapstone - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>

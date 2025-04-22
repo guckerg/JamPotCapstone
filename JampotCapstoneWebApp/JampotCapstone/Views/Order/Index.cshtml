@@ -5,21 +5,21 @@
     Layout = "_Layout";
 }
 <div class="row order-filter">
-    <form class="col m-2 p-1" method="get" asp-action="Search" asp-controller="Order">
-        <label for="search" class="col-form-label text-jampot-yellow">Search</label>
-        <input class="col" id="search" name="key"/>
-        <button type="submit" class="fab fa-searchengin btn fs-5 text-jampot-yellow bg-jampot-green"></button>
+    <form class="col-lg-3 col-md-6 mt-2 p-0 offset-2 offset-md-0" method="get" asp-action="Search" asp-controller="Order">
+        <label for="search" class="col-form-label-lg text-jampot-yellow first-element">Search</label>
+        <input id="search" name="key"/>
+        <button type="submit" class="fab fa-searchengin btn fs-5 text-jampot-yellow bg-jampot-green last-element"></button>
     </form>
-    <div id="food" class="col align-items-center mt-2">
+    <div id="food" class="col-lg-5 col-md-6 mt-2 offset-2 offset-md-0">
         <a class="btn col m-1" asp-action="Index" asp-controller="Order">All</a>
         <a class="btn col m-1" asp-action="FilterByCategory" asp-controller="Order" asp-route-type="food">Food</a>
         <a class="btn col m-1" asp-action="FilterByCategory" asp-controller="Order" asp-route-type="drink">Drinks</a>
         <a class="btn col m-1" asp-action="FilterByCategory" asp-controller="Order" asp-route-type="dessert">Desserts</a>
     </div>
-    <div id="allergen" class="col">
-        <a class="btn col m-3" asp-action="FilterByTag" asp-controller="Order" asp-route-type="vegan">Vegan</a>
-        <a class="btn col m-3" asp-action="FilterByTag" asp-controller="Order" asp-route-type="gluten free">Gluten-Free</a>
-        <a class="col ms-5" asp-action="Index" asp-controller="Cart"><span class="fas fa-cart-arrow-down fs-3 bg-black text-jampot-green"></span></a>
+    <div id="allergen" class="col-lg-4 offset-2 offset-md-7 offset-lg-0 mt-2">
+        <a class="btn col m-1" asp-action="FilterByTag" asp-controller="Order" asp-route-type="vegan">Vegan</a>
+        <a class="btn col m-1" asp-action="FilterByTag" asp-controller="Order" asp-route-type="gluten free">Gluten-Free</a>
+        <a class="col ms-1" asp-action="Index" asp-controller="Cart"><span class="fas fa-cart-arrow-down fs-3 bg-black text-jampot-green align-self-md-end"></span></a>
     </div>
 </div>
 
@@ -33,16 +33,16 @@
                 <h4 class="content text-jampot-yellow order-section">@string.Concat(Char.ToUpper(c.Type[0]), c.Type.Substring(1, c.Type.Length - 1))</h4>
                 foreach (Product p in c.Products)
                 {
-                    <div class="col-lg-4 p-2">
+                    <div class="col-lg-4 col-md-6 p-2">
                         <img src="@p.ProductPhoto.FileName" alt="product image" class="photo rounded"/>
                         <div class="container banner text-dark content rounded-bottom">
                             <div class="row">
-                                <p class="col fs-4">@p.ProductName</p>
-                                <p class="col-lg-3">@p.ProductPrice.ToString("C", new CultureInfo("en-us"))</p>
+                                <p class="col-md fs-4">@p.ProductName</p>
+                                <p class="col-md-3">@p.ProductPrice.ToString("C", new CultureInfo("en-us"))</p>
                             </div>
                             <div class="row">
-                                <p class="col">@p.ProductIngredients</p>
-                                <a class="col-3 btn btn-jampot align-self-start" asp-action="AddToCart" asp-controller="Cart">Order</a>
+                                <p class="col-md">@p.ProductIngredients</p>
+                                <a class="col-md-3 btn btn-jampot align-self-start" asp-action="AddToCart" asp-controller="Cart">Order</a>
                             </div>
                         </div>
                     </div>
