@@ -309,10 +309,7 @@ public class SeedData
             ctx.Products.Add(p10);
             #endregion
             ctx.SaveChanges();
-        }
 
-        if(!ctx.JobTitles.Any())
-        {
             #region jobs
 
             JobTitle lineCook = new JobTitle
@@ -331,7 +328,6 @@ public class SeedData
 
             #endregion
             ctx.SaveChanges();
-            
         }
     }
 }
