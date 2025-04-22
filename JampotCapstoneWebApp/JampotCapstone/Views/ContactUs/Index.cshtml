@@ -34,42 +34,41 @@
         <div class="row">
             <p class="bodyText">Send Us A Message!</p>
         </div>
-        <!--Form for customer to contact Jam Pot-->
-        <form asp-controller="ContactUs" asp-action="Index" method="post" class="container"> <!--Routes to index until CRUD implementation-->
-            @Html.AntiForgeryToken()
+        <!--Form for customer to contact Jam Pot via Email-->
+        <form asp-controller="ContactUs" asp-action="SendMessage" method="post" class="container">
             <div class="row lg">
                 <label for="name" class="control-label col-lg-2 bodyText">Name</label>
                 <div class="col-lg-10">
                     <span asp-validation-for="Name" class="text-danger"></span>
-                    <input id="name" name="Name" class="form-control col-lg-10" /><br />
+                    <input id="name" name="customerName" class="form-control col-lg-10" /><br />
                 </div>
             </div>
             <div class="row lg">
                 <label for="phoneNumber" class="control-label col-lg-2 bodyText">Phone Number</label>
                 <div class="col-lg-10">
                     <span asp-validation-for="PhoneNumber" class="text-danger"></span>
-                    <input id="phoneNumber" name="PhoneNumber" class="form-control col-lg-10" /><br />
+                    <input id="phoneNumber" name="customerPhoneNumber" class="form-control col-lg-10" /><br />
                 </div>
             </div>
             <div class="row lg">
                 <label for="name" class="control-label col-lg-2 bodyText">Email</label>
                 <div class="col-lg-10">
                     <span asp-validation-for="Email" class="text-danger"></span>
-                    <input id="title" name="PostTitle" class="form-control col-lg-10" /><br />
+                    <input id="email" name="customerEmail" class="form-control col-lg-10" /><br />
                 </div>
             </div>
             <div class="row lg">
                 <label for="name" class="control-label col-lg-2 bodyText">Subject</label>
                 <div class="col-lg-10">
                     <span asp-validation-for="Subject" class="text-danger"></span>
-                    <input id="subject" name="Subject" class="form-control col-lg-10" /><br />
+                    <input id="subject" name="customerSubject" class="form-control col-lg-10" /><br />
                 </div>
             </div>
             <div class="row lg">
                 <label for="name" class="control-label col-lg-2 bodyText">Message</label>
                 <div class="col-lg-10">
                     <span asp-validation-for="MessageText" class="text-danger"></span>
-                    <textarea id="messageText" name="MessageText" class="form-control col-lg-10" 
+                    <textarea id="message" name="customerMessage" class="form-control col-lg-10" 
                     placeholder="Tell Us What you think!"></textarea>
                 </div>
             </div>
