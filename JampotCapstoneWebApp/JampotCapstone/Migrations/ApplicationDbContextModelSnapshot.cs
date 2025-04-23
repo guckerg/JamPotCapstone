@@ -134,7 +134,7 @@ namespace JampotCapstone.Migrations
 
                     b.HasIndex("ResumeFileID");
 
-                    b.ToTable("Applications");
+                    b.ToTable("Applications", (string)null);
                 });
 
             modelBuilder.Entity("JampotCapstone.Models.File", b =>
@@ -155,7 +155,7 @@ namespace JampotCapstone.Migrations
 
                     b.HasKey("FileID");
 
-                    b.ToTable("Files");
+                    b.ToTable("Files", (string)null);
                 });
 
             modelBuilder.Entity("JampotCapstone.Models.JobTitle", b =>
@@ -172,7 +172,7 @@ namespace JampotCapstone.Migrations
 
                     b.HasKey("JobTitleID");
 
-                    b.ToTable("JobTitles");
+                    b.ToTable("JobTitles", (string)null);
                 });
 
             modelBuilder.Entity("JampotCapstone.Models.Product", b =>
@@ -203,7 +203,7 @@ namespace JampotCapstone.Migrations
 
                     b.HasIndex("ProductPhotoFileID");
 
-                    b.ToTable("Products");
+                    b.ToTable("Products", (string)null);
                 });
 
             modelBuilder.Entity("JampotCapstone.Models.ProductTag", b =>
@@ -220,7 +220,7 @@ namespace JampotCapstone.Migrations
 
                     b.HasKey("TagID");
 
-                    b.ToTable("ProductTags");
+                    b.ToTable("ProductTags", (string)null);
                 });
 
             modelBuilder.Entity("JampotCapstone.Models.ProductType", b =>
@@ -237,7 +237,7 @@ namespace JampotCapstone.Migrations
 
                     b.HasKey("TypeId");
 
-                    b.ToTable("ProductTypes");
+                    b.ToTable("ProductTypes", (string)null);
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
@@ -388,7 +388,7 @@ namespace JampotCapstone.Migrations
 
                     b.HasIndex("TagsTagID");
 
-                    b.ToTable("ProductProductTag");
+                    b.ToTable("ProductProductTag", (string)null);
                 });
 
             modelBuilder.Entity("ProductProductType", b =>
@@ -403,7 +403,7 @@ namespace JampotCapstone.Migrations
 
                     b.HasIndex("ProductsProductId");
 
-                    b.ToTable("ProductProductType");
+                    b.ToTable("ProductProductType", (string)null);
                 });
 
             modelBuilder.Entity("JampotCapstone.Models.Application", b =>

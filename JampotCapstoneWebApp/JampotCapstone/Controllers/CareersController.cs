@@ -17,14 +17,20 @@ namespace JampotCapstone.Controllers
         public CareersController(IApplicationRepository r, ApplicationDbContext c)
         {
             repo = r;
-            this.context = c;
+            context = c;
         }
 
         public IActionResult Index()
         {
-            //ViewData["JobTitleID"] = new SelectList();
+            var positions = new SelectList(context.JobTitles, "JobTitleID", "JobTitleName");
+            var model = new CareersViewModel
+            {
+                //Title = "Careers",
+                Positions = positions,
+                Application = new Application()
+            };
 
-            return View();
+            return View(model);
         }
 
         [HttpPost]

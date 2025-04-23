@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace JampotCapstone.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20250416211855_CreateJobTitles")]
+    [Migration("20250423220333_CreateJobTitles")]
     partial class CreateJobTitles
     {
         /// <inheritdoc />

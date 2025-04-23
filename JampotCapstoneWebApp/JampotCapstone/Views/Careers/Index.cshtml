@@ -1,6 +1,6 @@
-﻿@model Application
+﻿@model CareersViewModel
 @{
-    ViewData["Title"] = "Contact Us";
+    ViewData["Title"] = "Careers";
 }
 
 <div class="text-center">
@@ -25,46 +25,44 @@
             <div class="row lg">
                 <label for="name" class="control-label col-lg-2 bodyText">Name</label>
                 <div class="col-lg-10">
-                    <span asp-validation-for="Name" class="text-danger"></span>
+                    <span asp-validation-for="Application.Name" class="text-danger"></span>
                     <input id="name" name="Name" class="form-control col-lg-10" /><br />
                 </div>
             </div>
             <div class="row lg">
                 <label for="phoneNumber" class="control-label col-lg-2 bodyText">Phone Number</label>
                 <div class="col-lg-10">
-                    <span asp-validation-for="PhoneNumber" class="text-danger"></span>
+                    <span asp-validation-for="Application.PhoneNumber" class="text-danger"></span>
                     <input id="phoneNumber" name="PhoneNumber" class="form-control col-lg-10" /><br />
                 </div>
             </div>
             <div class="row lg">
                 <label for="name" class="control-label col-lg-2 bodyText">Email</label>
                 <div class="col-lg-10">
-                    <span asp-validation-for="Email" class="text-danger"></span>
+                    <span asp-validation-for="Application.Email" class="text-danger"></span>
                     <input type="email" id="title" name="PostTitle" class="form-control col-lg-10" /><br />
                 </div>
             </div>
-            <div class="row lg">
+            <div class="row lg mb-3">
                 <label for="position" class="control-label col-lg-2 bodyText">Position</label>
-                <!--
                 <div class="col-lg-10">
-                    <span asp-validation-for="Position" class="text-danger"></span>
-                    <select id="position" name="Position" asp-for="Position" asp-items="ViewData['JobTitles']" class="form-control col-lg-10">
+                    <span asp-validation-for="Application.JobTitleID" class="text-danger"></span>
+                    <select id="position" name="Position" asp-for="Application.JobTitleID" asp-items="ViewBag.PositionID" class="form-control col-lg-10">
                         <option value="">-- Select a Position --</option>
                     </select>
                 </div>
-                -->
             </div>
             <div class="row lg mb-3">
                 <label for="resume" class="control-label col-lg-2 bodyText">Upload Resume</label>
                 <div class="col-lg-4">
                     <input id="resume" name="Resume" type="file" class="form-control col-lg-10" />
-                    <span asp-validation-for="Resume" class="text-danger"></span>
+                    <span asp-validation-for="Application.Resume" class="text-danger"></span>
                 </div>
             </div>
             <div class="row lg mb-3">
                 <label for="name" class="control-label col-lg-2 bodyText">Insight 1</label>
                 <div class="col-lg-10">
-                    <span asp-validation-for="Question1" class="text-danger"></span>
+                    <span asp-validation-for="Application.Question1" class="text-danger"></span>
                     <textarea id="question1" name="Question1" class="form-control col-lg-10" 
                     placeholder="Tell us your story..."></textarea>
                 </div>
@@ -72,7 +70,7 @@
             <div class="row lg mb-3">
                 <label for="name" class="control-label col-lg-2 bodyText">Insight 2</label>
                 <div class="col-lg-10">
-                    <span asp-validation-for="Question2" class="text-danger"></span>
+                    <span asp-validation-for="Application.Question2" class="text-danger"></span>
                     <textarea id="question2" name="Question2" class="form-control col-lg-10"
                      placeholder="Tell us your goals..."></textarea>
                 </div>

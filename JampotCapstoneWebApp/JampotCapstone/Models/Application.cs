@@ -20,13 +20,10 @@ namespace JampotCapstone.Models
         public File Resume { get; set; }
 
         [Required]
-        public string Position { get; set; }
+        public int JobTitleID { get; set; }
 
         public string Question1 { get; set; } = string.Empty;
 
         public string Question2 { get; set; } = string.Empty;
-
-        //May use if client decided to have accounts for users.
-        //public AppUser Applicant { get; set; }
     }
 }
