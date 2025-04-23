@@ -34,7 +34,7 @@
                 foreach (Product p in c.Products)
                 {
                     <div class="col-lg-4 col-md-6 p-2">
-                        <img src="@p.ProductPhoto.FileName" alt="product image" class="photo rounded"/>
+                        <img src="@p.ProductPhoto.FileName" alt="@p.ProductName" class="photo rounded"/>
                         <div class="container banner text-dark content rounded-bottom">
                             <div class="row">
                                 <p class="col-md fs-4">@p.ProductName</p>
@@ -42,7 +42,7 @@
                             </div>
                             <div class="row">
                                 <p class="col-md">@p.ProductIngredients</p>
-                                <a class="col-md-3 btn btn-jampot align-self-start" asp-action="AddToCart" asp-controller="Cart">Order</a>
+                                <a class="col-md-3 btn btn-jampot align-self-start" asp-action="AddToCart" asp-controller="Cart" asp-route-id="@p.ProductId">Order</a>
                             </div>
                         </div>
                     </div>

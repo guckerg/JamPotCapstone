@@ -14,7 +14,7 @@ namespace JampotCapstone.Controllers
         public CartController(ApplicationDbContext context) {
             _context = context;
         }
-        public async Task<IActionResult> Index()
+        public IActionResult Index()
         {
             var cartItems = HttpContext.Session.GetObjectFromJson<List<OrderItem>>(CartSessionKey) ?? new List<OrderItem>();
 
