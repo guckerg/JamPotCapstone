@@ -35,7 +35,9 @@ namespace JampotCapstone.Controllers
 
         public IActionResult AddToCart(int id)
         {
-            var itemToAdd = _context.Products.Find(id);
+            var itemToAdd = _context.Products
+                .Include(p => p.ProductPhoto)
+                .SingleOrDefault(p => p.ProductId == id);
 
             if (itemToAdd == null)
             {
