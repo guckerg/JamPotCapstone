@@ -20,7 +20,7 @@
             <p class="bodyText fs-1">Apply With Jam Pot Here!</p>
         </div>
         <!--Form for customer to contact Jam Pot-->
-        <form asp-controller="Careers" asp-action="Index" method="post" class="container"> <!--Action "Index" as placeholder until CRUD implemented-->
+        <form asp-controller="Careers" asp-action="SendMessage" method="post" class="container"> <!--Action "Index" as placeholder until CRUD implemented-->
             @Html.AntiForgeryToken()
             <div class="row lg">
                 <label for="name" class="control-label col-lg-2 bodyText">Name</label>

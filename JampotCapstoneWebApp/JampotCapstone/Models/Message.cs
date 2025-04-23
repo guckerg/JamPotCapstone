@@ -10,7 +10,8 @@ namespace JampotCapstone.Models
         public string Name { get; set; } = "";
 
         [Required]
-        public int PhoneNumber { get; set; }
+        [RegularExpression(@"^\(?\d{3}\)?[-.\s]?\d{3}[-.\s]?\d{4}$")]
+        public string PhoneNumber { get; set; } = "";
 
         [RegularExpression(@"^[A-Za-z0-9\.]+@[A-Za-z0-9\.]+$")]
         [StringLength(50)]
@@ -22,8 +23,5 @@ namespace JampotCapstone.Models
 
         [Required]
         public string MessageText { get; set; } = "";
-
-        //uncomment when AppUser is added
-        //public AppUser? Customer { get; set; }
     }
 }

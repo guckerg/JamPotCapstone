@@ -29,7 +29,7 @@
     <div class="row">
         @if (Model.Photos.Count > 0)
         {
-            foreach (File photo in Model.Photos)
+            foreach (JampotCapstone.Models.File photo in Model.Photos)
             {
                 <div class="col-sm-12 col-md-6">
                     <img class="p-3 w-100" src="@photo.FileName" alt="Description"/>
