@@ -2,6 +2,6 @@ namespace JampotCapstone.Models.ViewModels;
 
 public class SpecialViewModel
 {
-    public ProductTag specials { get; set; }
-    public List<File> promotions { get; set; }
+    public ProductTag Specials { get; set; }
+    public List<File> Promotions { get; set; }
 }

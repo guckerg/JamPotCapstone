@@ -71,7 +71,7 @@ public class SeedData
             File landing5 = new File
             {
                 FileID = 5,
-                FileName = "/pics/landing/special.png",
+                FileName = "/pics/landing/jackfruit-wrap-special.png",
                 ContentType = "image/png"
             };
             ctx.Files.Add(landing5);

@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using JampotCapstone.Data;
 using JampotCapstone.Models;
+using JampotCapstone.Models.ViewModels;
 using Microsoft.EntityFrameworkCore;
 
 namespace JampotCapstone.Controllers
@@ -20,13 +21,17 @@ namespace JampotCapstone.Controllers
 
         public async Task<IActionResult> Specials()
         {
-            ProductTag specials = await _context.ProductTags
-                .Where(t => t.Tag.ToLower() == "special")
+            SpecialViewModel model = new SpecialViewModel
+            {
+                Specials = await _context.ProductTags
+                    .Where(t => t.Tag.ToLower() == "special")
                     .Include(t => t.Products)
-                        .ThenInclude(p => p.ProductPhoto)
+                    .ThenInclude(p => p.ProductPhoto)
                     .Include(t => t.Products)
-                        .ThenInclude(p => p.ProductCategory).SingleOrDefaultAsync();
-            return View(specials);
+                    .ThenInclude(p => p.ProductCategory).SingleOrDefaultAsync(),
+                Promotions = await _context.Files.Where(f => f.FileName.Contains("special")).ToListAsync()
+            };
+            return View(model);
         }
     }
 }

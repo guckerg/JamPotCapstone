@@ -1,6 +1,6 @@
 @using System.Globalization
 @using Microsoft.AspNetCore.Mvc.TagHelpers
-@model ProductTag
+@model SpecialViewModel
 
 @{
     ViewBag.Title = "Specials";
@@ -8,12 +8,27 @@
 
 <h2>Specials</h2>
 <div class="row">
-    @if (Model != null && Model.Products.Count > 0)
+    @if (Model != null && Model.Specials.Products.Count > 0)
     {
-        foreach (Product p in Model.Products)
+        foreach (Product p in Model.Specials.Products)
         {
+            File photo = null;
+            foreach (var f in Model.Promotions)
+            {
+                int startIndex = p.ProductPhoto.FileName.LastIndexOf('/');
+                int length = p.ProductPhoto.FileName.IndexOf('.') - startIndex;
+                if (f.FileName.ToLower().Contains(p.ProductPhoto.FileName.Substring(startIndex, length).ToLower()))
+                {
+                    photo = f;
+                }
+            }
+
+            if (photo == null)
+            {
+                photo = p.ProductPhoto;
+            }
             <div class="col-lg-4 col-md-6 p-2">
-                <img src="@p.ProductPhoto.FileName" alt="@p.ProductName" class="photo rounded"/>
+                <img src="@photo.FileName" alt="@p.ProductName" class="photo rounded"/>
                 <div class="container banner text-dark content rounded-bottom">
                     <div class="row">
                         <p class="col-md fs-4">@p.ProductName</p>
