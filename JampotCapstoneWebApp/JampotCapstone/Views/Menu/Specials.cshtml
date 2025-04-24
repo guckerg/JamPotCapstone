@@ -6,7 +6,8 @@
     ViewBag.Title = "Specials";
 }
 
-<h2 class="border-bottom">Specials</h2>
+<h2 class="text-jampot-green fw-bold">Specials</h2>
+<hr class="yellowLine"/>
 <div class="row">
     @if (Model != null && Model.Specials.Products.Count > 0)
     {
@@ -27,19 +28,7 @@
             {
                 photo = p.ProductPhoto;
             }
-            <div class="col-lg-4 col-md-6 p-2">
-                <img src="@photo.FileName" alt="@p.ProductName" class="photo rounded"/>
-                <div class="container bg-jampot-green text-light content rounded-bottom">
-                    <div class="row">
-                        <div class="fs-4">@p.ProductName</div>
-                        <div class="fw-bold">@p.ProductPrice.ToString("C", new CultureInfo("en-us"))</div>
-                    </div>
-                    <div class="row">
-                        <p class=""><span class="fw-bold">Ingredient List:&nbsp;</span>@p.ProductIngredients</p>
-                        <a class="btn bg-jampot-yellow fw-bold align-self-start" asp-action="AddToCart" asp-controller="Cart">Order Now!</a>
-                    </div>
-                </div>
-            </div>
+
             <div class="col-lg-4 col-md-6 p-2">
                 <img src="@photo.FileName" alt="@p.ProductName" class="photo rounded"/>
                 <div class="container bg-jampot-yellow text-dark content rounded-bottom">
@@ -49,7 +38,7 @@
                     </div>
                     <div class="row">
                         <p class=""><span class="fw-bold">Ingredient List:&nbsp;</span>@p.ProductIngredients</p>
-                        <a class="btn bg-jampot-green text-light fw-bold align-self-start" asp-action="AddToCart" asp-controller="Cart">Order Now!</a>
+                        <a class="btn bg-jampot-green text-light fw-bold align-self-start" asp-action="Index" asp-controller="Order">Order Now!</a>
                     </div>
                 </div>
             </div>
