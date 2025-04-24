@@ -20,7 +20,7 @@
             <p class="bodyText fs-1">Apply With Jam Pot Here!</p>
         </div>
         <!--Form for customer to contact Jam Pot-->
-        <form asp-controller="Careers" asp-action="CreateApplicationAsync" method="post" class="container"> <!--Action "Index" as placeholder until CRUD implemented-->
+        <form asp-controller="Careers" asp-action="SendMessage" method="post" class="container">
             @Html.AntiForgeryToken()
             <div class="row lg">
                 <label for="name" class="control-label col-lg-2 bodyText">Name</label>
@@ -76,7 +76,7 @@
                 </div>
             </div>
             <div class="row">
-                <button type="submit" class="btn btn-warning col-3 mx-auto m-3 title">SUBMIT APPLICATION</button>
+                <button type="submit" class="btn btn-warning col-6 col-md-3 mx-auto m-3 title">SUBMIT APPLICATION</button>
             </div>
         </form>
     </div>

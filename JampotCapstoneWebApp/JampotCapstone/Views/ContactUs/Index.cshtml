@@ -5,6 +5,12 @@
 
 <div class="text-center">
     <h1 class="display-4 title">CONTACT US</h1>
+    @if (TempData["SuccessMessage"] != null)
+    {
+        <div class="alert alert-success">
+            @TempData["SuccessMessage"]
+        </div>
+    }
     <div class="container">
         <div class="row">
             <!--Address/Mailing Details-->
@@ -36,9 +42,8 @@
         <div class="row">
             <p class="bodyText">Send Us A Message!</p>
         </div>
-        <!--Form for customer to contact Jam Pot-->
-        <form asp-controller="ContactUs" asp-action="Index" method="post" class="container"> <!--Routes to index until CRUD implementation-->
-            @Html.AntiForgeryToken()
+        <!--Form for customer to contact Jam Pot via Email-->
+        <form asp-controller="ContactUs" asp-action="SendMessage" method="post" class="container">
             <div class="row lg">
                 <label for="name" class="control-label col-lg-2 bodyText">Name</label>
                 <div class="col-lg-10">
@@ -57,7 +62,7 @@
                 <label for="name" class="control-label col-lg-2 bodyText">Email</label>
                 <div class="col-lg-10">
                     <span asp-validation-for="Email" class="text-danger"></span>
-                    <input id="title" name="PostTitle" class="form-control col-lg-10" /><br />
+                    <input id="email" name="Email" class="form-control col-lg-10" /><br />
                 </div>
             </div>
             <div class="row lg">
@@ -71,12 +76,12 @@
                 <label for="name" class="control-label col-lg-2 bodyText">Message</label>
                 <div class="col-lg-10">
                     <span asp-validation-for="MessageText" class="text-danger"></span>
-                    <textarea id="messageText" name="MessageText" class="form-control col-lg-10" 
+                    <textarea id="message" name="MessageText" class="form-control col-lg-10" 
                     placeholder="Tell Us What you think!"></textarea>
                 </div>
             </div>
             <div class="row">
-                <button type="submit" class="btn btn-warning col-3 mx-auto m-3 title">SEND MESSAGE</button>
+                <button type="submit" class="btn btn-warning col-6 col-md-3 mx-auto mt-3 mb-4 title">SEND MESSAGE</button>
             </div>
         </form>
     </div>
