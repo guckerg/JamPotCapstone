@@ -33,11 +33,12 @@ namespace JampotCapstone.Controllers
             return View(viewModel);
         }
 
-        public IActionResult AddToCart(int id)
+        [HttpPost]
+        public IActionResult AddToCart([FromBody] AddToCartRequest request)
         {
             var itemToAdd = _context.Products
                 .Include(p => p.ProductPhoto)
-                .SingleOrDefault(p => p.ProductId == id);
+                .SingleOrDefault(p => p.ProductId == request.ProductId);
 
             if (itemToAdd == null)
             {
@@ -46,7 +47,7 @@ namespace JampotCapstone.Controllers
 
             var cartItems = HttpContext.Session.GetObjectFromJson<List<OrderItem>>(CartSessionKey) ?? new List<OrderItem>();
 
-            var existingCartItem = cartItems.FirstOrDefault(item => item.ProductId == id);
+            var existingCartItem = cartItems.FirstOrDefault(item => item.ProductId == request.ProductId);
             if (existingCartItem != null)
             {
                 existingCartItem.Quantity++;
@@ -60,9 +61,17 @@ namespace JampotCapstone.Controllers
                     Quantity = 1
                 });
             }
-            HttpContext.Session.SetObjectAsJson(CartSessionKey, cartItems);
 
-            return RedirectToAction("Index");
+            HttpContext.Session.SetObjectAsJson(CartSessionKey, cartItems);
+            var totalCartQuantity = cartItems.Sum(i => i.Quantity);
+
+            return Json(new { success = true, totalCartQuantity });
+        }
+
+        //class to let the method pass a Json object as an id
+        public class AddToCartRequest
+        {
+            public int ProductId { get; set; }
         }
     }
 }
