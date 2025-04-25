@@ -66,6 +66,10 @@ namespace JampotCapstone.Controllers
             HttpContext.Session.SetObjectAsJson(CartSessionKey, cartItems);
             var totalCartQuantity = cartItems.Sum(i => i.Quantity);
 
+            // Store a message in TempData for the next request
+            TempData["AddToCartMessage"] = "Item added to your cart!";
+            TempData["NotificationType"] = "success";
+
             return Json(new { success = true, totalCartQuantity });
         }
 

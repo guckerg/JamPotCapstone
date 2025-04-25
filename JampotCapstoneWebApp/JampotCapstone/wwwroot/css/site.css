@@ -341,8 +341,50 @@ body {
     color: var(--JampotGreen);
 }
 
-@media (max-width: 1024px) {
+/*Notification when something is added to the cart*/
+#cart-notification {
+    display: none; /* Hide by default */
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    z-index: 9999;
+    padding: 30px;
+    border-radius: 15px;
+    border-color: black;
+    border-width: 3px;
+    font-size: 24px;
+    opacity: 1;
+    transition: opacity 0.5s ease;
+}
+
+.alert-success {
+    background-color: var(--JampotGreen);
+    color: white;
+    font-family: "Garet", sans-serif;
+}
+
+/*Styles for when screen reaches a certsin size (mobile/tablets)*/
+@media (max-width: 769px) {
     .product-row {
         gap: 20px;
+    }
+
+    #cart-notification {
+        display: none; /* Hide by default */
+        position: fixed;
+        top: 20%;
+        left: 3%;
+        right: 5%;
+        height: 8%;
+        width: 80%;
+        text-align: center;
+        z-index: 9999;
+        padding: 30px;
+        border-radius: 15px;
+        border-color: black;
+        border-width: 2px;
+        font-size: 18px;
+        opacity: 1;
+        transition: opacity 0.5s ease;
     }
 }

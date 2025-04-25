@@ -27,7 +27,6 @@
         </a>
     </div>
 </div>
-
 <div class="row">
     @if (Model.Any())
     {
@@ -56,8 +55,19 @@
         }
     }
 </div>
+<div id="notification" class="notification">
+    @if (TempData["AddToCartMessage"] != null)
+    {
+        <div class="alert alert-@TempData["NotificationType"]" id="cart-notification">
+            @TempData["AddToCartMessage"]
+        </div>
+    }
+</div>
+
 <!--Script for increasing cart badge number, as well as not reloading the page when the users adds an item to the cart-->
 <script>
+    let fadeOutTimeout; // Global variable to hold the fade-out timeout reference
+
     function updateCartCount() {
         fetch('/Cart/GetCartQuantity')
             .then(response => response.json())
@@ -77,7 +87,7 @@
         orderButtons.forEach(button =>{
             button.addEventListener('click', function(){
                 const productId = this.getAttribute('data-product-id');
-
+               
                 fetch('/Cart/AddToCart', {
                     method: 'POST',
                     headers: {
@@ -89,7 +99,27 @@
                 .then(response => response.json())
                 .then(data => {
                     if (data.success){
-                        alert('Added to cart!')
+                         // Check if there's a notification
+                         const notification = document.getElementById('cart-notification');
+
+                          if (notification) {
+                            // Clear the previous fade-out timeout
+                            if (fadeOutTimeout) {
+                                clearTimeout(fadeOutTimeout);
+                            }
+
+                            // Show the notification
+                            notification.style.display = 'block';
+                            notification.style.opacity = '1';
+
+                            // Fade out after 3 seconds
+                            fadeOutTimeout = setTimeout(function() {
+                                notification.style.opacity = '0'; // Fade out
+                                setTimeout(function() {
+                                    notification.style.display = 'none';
+                                },500);
+                            }, 2000); // 2 seconds
+                        }
                         const cartCount = document.getElementById('cart-count');
                         if(cartCount){
                             cartCount.textContent = data.totalCartQuantity;
