@@ -36,6 +36,7 @@ namespace JampotCapstone.Controllers
         [HttpPost]
         public IActionResult AddToCart([FromBody] AddToCartRequest request)
         {
+
             var itemToAdd = _context.Products
                 .Include(p => p.ProductPhoto)
                 .SingleOrDefault(p => p.ProductId == request.ProductId);
@@ -73,5 +74,16 @@ namespace JampotCapstone.Controllers
         {
             public int ProductId { get; set; }
         }
+
+        [HttpGet]
+        // Used to display the correct amount of items on the cart badge
+        public IActionResult GetCartQuantity()
+        {
+            var cartItems = HttpContext.Session.GetObjectFromJson<List<OrderItem>>("CartItems") ?? new List<OrderItem>();
+            var totalCartQuantity = cartItems.Sum(i => i.Quantity);
+
+            return Json(new { totalCartQuantity });
+        }
+
     }
 }

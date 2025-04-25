@@ -21,7 +21,7 @@
         <a class="btn col m-1" asp-action="FilterByTag" asp-controller="Order" asp-route-type="gluten free">Gluten-Free</a>
         <a class="col ms-1" asp-action="Index" asp-controller="Cart">
             <span class="fas fa-cart-arrow-down fs-3 bg-black text-jampot-green"></span>
-            <span id="cart-count" class="position-absolute translate-middle badge rounded-pill bg-danger">
+            <span id="cart-count" style="font-size:10px;"class="position-absolute translate-middle badge rounded-pill bg-danger">
                 0
             </span>
         </a>
@@ -58,7 +58,20 @@
 </div>
 <!--Script for increasing cart badge number, as well as not reloading the page when the users adds an item to the cart-->
 <script>
+    function updateCartCount() {
+        fetch('/Cart/GetCartQuantity')
+            .then(response => response.json())
+            .then(data => {
+                const cartCount = document.getElementById('cart-count');
+                if (cartCount) {
+                    cartCount.textContent = data.totalCartQuantity;
+                }
+            });
+
+    }
     document.addEventListener('DOMContentLoaded', function(){
+        updateCartCount(); // always refresh cart count on load
+
         const orderButtons = document.querySelectorAll('.order-btn')
 
         orderButtons.forEach(button =>{
@@ -88,5 +101,10 @@
                 });
             });
         });
+    });
+    // For back/forward navigation (bfcache)
+    window.addEventListener('pageshow', function () {
+        // set a timeout so the new cartCount is loaded before the bfcache version
+        setTimeout(updateCartCount, 100);
     });
 </script>
