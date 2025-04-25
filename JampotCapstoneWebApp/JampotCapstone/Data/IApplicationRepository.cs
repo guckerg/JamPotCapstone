@@ -11,7 +11,7 @@ namespace JampotCapstone.Data
 
         public Task<Application> GetApplicationByIdAsync(int id);
 
-        public Task CreateApplicationAsync(Application model);
+        public Task AddApplicationAsync(Application model);
 
         //Might not be a reason to ever intentionally modify a user's application
         //public Task UpdateApplicationAsync(Application model);

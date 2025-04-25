@@ -30,21 +30,23 @@ namespace JampotCapstone.Controllers
                 Application = new Application()
             };
 
-            return View(model);
+            return View("Index", model);
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> CreateApplicationAsync(Application model)
+        public async Task<IActionResult> CreateApplication(CareersViewModel viewModel)
         {
-
             if (!ModelState.IsValid)
             {
-                return View("Index");
+                viewModel.Positions = new SelectList(context.JobTitles, "JobTitleID", "JobTitleName");
+                return View("Index", viewModel);
             }
 
-            await repo.CreateApplicationAsync(model);
-            return RedirectToAction("Index");
+            var application = viewModel.Application;
+            await repo.AddApplicationAsync(application);
+            TempData["SuccessMessage"] = "Your application has been submitted successfully!";
+            return RedirectToAction("Index", viewModel);
         }
 
         [Authorize(Roles = "Admin")]

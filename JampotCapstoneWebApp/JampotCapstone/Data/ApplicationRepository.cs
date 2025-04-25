@@ -32,7 +32,7 @@ namespace JampotCapstone.Data
             return application;
         }
 
-        public async Task CreateApplicationAsync(Application model)
+        public async Task AddApplicationAsync(Application model)
         {
             _context.Applications.Add(model);
             await _context.SaveChangesAsync();

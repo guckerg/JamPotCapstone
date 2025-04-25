@@ -14,13 +14,19 @@
                     [Line Cook], [Dishwasher] <br />
                     You are welcome to apply for non-listed positions, but we may not reach out until those roles are needed.
                 </p>
+                @if (TempData["SuccessMessage"] != null)
+                {
+                    <div class="alert alert-success">
+                        @TempData["SuccessMessage"]
+                    </div>
+                }
             </div>
         </div>
         <div class="row">
             <p class="bodyText fs-1">Apply With Jam Pot Here!</p>
         </div>
         <!--Form for customer to contact Jam Pot-->
-        <form asp-controller="Careers" asp-action="SendMessage" method="post" class="container">
+        <form asp-controller="Careers" asp-action="CreateApplication" method="post" class="container">
             @Html.AntiForgeryToken()
             <div class="row lg">
                 <label for="name" class="control-label col-lg-2 bodyText">Name</label>
@@ -76,7 +82,7 @@
                 </div>
             </div>
             <div class="row">
-                <button type="submit" class="btn btn-warning col-6 col-md-3 mx-auto m-3 title">SUBMIT APPLICATION</button>
+                <button type="submit" class="btn btn-warning col-6 col-md-3 mx-auto mt-3 mb-5 title">SUBMIT APPLICATION</button>
             </div>
         </form>
     </div>
