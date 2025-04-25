@@ -27,6 +27,9 @@ builder.Services.AddSession(options =>
     options.Cookie.IsEssential = true; // Required for GDPR compliance
 });
 
+//required for ContactUs emailing features
+builder.Services.AddTransient<IEmailSender, EmailSender>();
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
