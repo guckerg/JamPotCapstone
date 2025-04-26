@@ -62,6 +62,10 @@ body {
   background-color: var(--JampotYellow);
 }
 
+.border-jampot-yellow {
+    border-color: var(--JampotYellow);
+}
+
 .logo {
   width: 100px;
 }
