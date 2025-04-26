@@ -89,5 +89,32 @@ namespace JampotCapstone.Controllers
             return Json(new { totalCartQuantity });
         }
 
+        [HttpPost]
+        public IActionResult RemoveFromCart([FromBody] AddToCartRequest request)
+        {
+            var cartItems = HttpContext.Session.GetObjectFromJson<List<OrderItem>>(CartSessionKey) ?? new List<OrderItem>();
+
+            var item = cartItems.FirstOrDefault(i => i.ProductId == request.ProductId);
+            if (item != null)
+            {
+                item.Quantity--;
+
+                if (item.Quantity <= 0)
+                {
+                    cartItems.Remove(item);
+                }
+
+                HttpContext.Session.SetObjectAsJson(CartSessionKey, cartItems);
+            }
+
+            var totalCartQuantity = cartItems.Sum(i => i.Quantity);
+
+            return Json(new { success = true, totalCartQuantity });
+        }
+
+        public class RemoveFromCartRequest
+        {
+            public int ProductId { get; set; }
+        }
     }
 }
