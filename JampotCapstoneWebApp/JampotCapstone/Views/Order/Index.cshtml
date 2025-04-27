@@ -19,10 +19,14 @@
     <div id="allergen" class="col-lg-4 offset-2 offset-md-7 offset-lg-0 mt-2">
         <a class="btn col m-1" asp-action="FilterByTag" asp-controller="Order" asp-route-type="vegan">Vegan</a>
         <a class="btn col m-1" asp-action="FilterByTag" asp-controller="Order" asp-route-type="gluten free">Gluten-Free</a>
-        <a class="col ms-1" asp-action="Index" asp-controller="Cart"><span class="fas fa-cart-arrow-down fs-3 bg-black text-jampot-green align-self-md-end"></span></a>
+        <a class="col ms-1" asp-action="Index" asp-controller="Cart">
+            <span class="fas fa-cart-arrow-down fs-3 bg-black text-jampot-green"></span>
+            <span id="cart-count" style="font-size:10px;"class="position-absolute translate-middle badge rounded-pill bg-danger">
+                0
+            </span>
+        </a>
     </div>
 </div>
-
 <div class="row">
     @if (Model.Any())
     {
@@ -34,7 +38,7 @@
                 foreach (Product p in c.Products)
                 {
                     <div class="col-lg-4 col-md-6 p-2">
-                        <img src="@p.ProductPhoto.FileName" alt="product image" class="photo rounded"/>
+                        <img src="@p.ProductPhoto.FileName" alt="@p.ProductName" class="photo rounded"/>
                         <div class="container banner text-dark content rounded-bottom">
                             <div class="row">
                                 <p class="col-md fs-4">@p.ProductName</p>
@@ -42,7 +46,7 @@
                             </div>
                             <div class="row">
                                 <p class="col-md">@p.ProductIngredients</p>
-                                <a class="col-md-3 btn btn-jampot align-self-start" asp-action="AddToCart" asp-controller="Cart">Order</a>
+                                <button class="col-md-3 btn btn-jampot align-self-start order-btn" data-product-id="@p.ProductId">Order</button>
                             </div>
                         </div>
                     </div>
@@ -51,3 +55,86 @@
         }
     }
 </div>
+<div id="notification" class="notification">
+    @if (TempData["AddToCartMessage"] != null)
+    {
+        <div class="alert alert-@TempData["NotificationType"]" id="cart-notification">
+            @TempData["AddToCartMessage"]
+        </div>
+    }
+</div>
+
+<!--Script for increasing cart badge number, as well as not reloading the page when the users adds an item to the cart-->
+<script>
+    let fadeOutTimeout; // Global variable to hold the fade-out timeout reference
+
+    function updateCartCount() {
+        fetch('/Cart/GetCartQuantity')
+            .then(response => response.json())
+            .then(data => {
+                const cartCount = document.getElementById('cart-count');
+                if (cartCount) {
+                    cartCount.textContent = data.totalCartQuantity;
+                }
+            });
+
+    }
+    document.addEventListener('DOMContentLoaded', function(){
+        updateCartCount(); // always refresh cart count on load
+
+        const orderButtons = document.querySelectorAll('.order-btn')
+
+        orderButtons.forEach(button =>{
+            button.addEventListener('click', function(){
+                const productId = this.getAttribute('data-product-id');
+               
+                fetch('/Cart/AddToCart', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'RequestVerificationToken': document.querySelector('input[name="__RequestVerificationToken"]')?.value
+                    },
+                    body: JSON.stringify({ productId: parseInt(productId) })
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success){
+                         // Check if there's a notification
+                         const notification = document.getElementById('cart-notification');
+
+                          if (notification) {
+                            // Clear the previous fade-out timeout
+                            if (fadeOutTimeout) {
+                                clearTimeout(fadeOutTimeout);
+                            }
+
+                            // Show the notification
+                            notification.style.display = 'block';
+                            notification.style.opacity = '1';
+
+                            // Fade out after 3 seconds
+                            fadeOutTimeout = setTimeout(function() {
+                                notification.style.opacity = '0'; // Fade out
+                                setTimeout(function() {
+                                    notification.style.display = 'none';
+                                },300);
+                            }, 2000); // 2 seconds
+                        }
+                        const cartCount = document.getElementById('cart-count');
+                        if(cartCount){
+                            cartCount.textContent = data.totalCartQuantity;
+                        }
+                    }
+                    else{
+                        alert('Something went wrong :(')
+                    }
+                });
+            });
+        });
+    });
+    // For back/forward navigation (bfcache)
+    window.addEventListener('pageshow', function () {
+        // set a timeout so the new cartCount is loaded before the bfcache version
+        setTimeout(updateCartCount, 100);
+    });
+</script>

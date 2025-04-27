@@ -71,7 +71,7 @@ public class SeedData
             File landing5 = new File
             {
                 FileID = 5,
-                FileName = "/pics/landing/special.png",
+                FileName = "/pics/landing/jackfruit-wrap-special.png",
                 ContentType = "image/png"
             };
             ctx.Files.Add(landing5);
@@ -135,6 +135,13 @@ public class SeedData
                 Tag = "spicy"
             };
             ctx.ProductTags.Add(spicy);
+
+            ProductTag special = new ProductTag
+            {
+                TagID = 4,
+                Tag = "special"
+            };
+            ctx.ProductTags.Add(special);
             
             Product p1 = new Product
             {
@@ -307,6 +314,24 @@ public class SeedData
                 }
             };
             ctx.Products.Add(p10);
+            
+            Product p11 = new Product
+            {
+                ProductId = 11,
+                ProductName = "Ital Jerk Jackfruit Wrap",
+                ProductIngredients = "Spices, fruit, and tasty things",
+                ProductPrice = 15M,
+                ProductPhoto = landing2,
+                ProductCategory = new List<ProductType>
+                {
+                    food
+                },
+                Tags = new List<ProductTag>
+                {
+                    spicy, vegan, special
+                }
+            };
+            ctx.Products.Add(p11);
             #endregion
             ctx.SaveChanges();
         }
