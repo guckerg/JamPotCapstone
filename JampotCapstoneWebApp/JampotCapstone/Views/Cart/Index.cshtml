@@ -3,7 +3,9 @@
 @{
     ViewData["Title"] = "View Cart";
 }
-
+<head>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
 <div class="text-center">
     <h1 class="display-3 title">VIEW CART</h1>
 </div>
@@ -25,10 +27,13 @@
                             <p>@item.ProductPrice.ToString("C", new CultureInfo("en-us"))</p>
                         </div>
                         <div class="quantity-control">
-                            <button class="qty-btn">+</button>
-                            <span class="qty-number">@item.Quantity.ToString()</span>
-                            <button class="qty-btn">-</button>
-                        </div>
+                        <button onclick="addToCart(@item.ProductId)" class="qty-btn fa fa-plus"></button>
+                        <span id="loading-spinner-@item.ProductId" class="spinner-border spinner-border-sm" role="status" aria-hidden="true" style="display:none;"></span>
+                        <span id="qty-number-@item.ProductId" class="qty-number">@item.Quantity.ToString()</span>
+                        <button id="remove-btn-@item.ProductId" onclick="removeFromCart(@item.ProductId)" class="qty-btn">
+                            <i id="remove-icon-@item.ProductId" class="fa fa-minus"></i>
+                        </button>
+                    </div>
                     </div>
                 </div>
             }
@@ -49,3 +54,98 @@
             Order and OrderItem will be saved to the database once the checkout process is complete-->
     </div>
 </div>
+<!--Script for updating/removing things from the cart-->
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+    @if (Model.Items != null)
+    {
+        @foreach (var item in Model.Items)
+        {
+            @:updateRemoveButton(@item.ProductId, @item.Quantity);
+        }
+    }
+    });
+
+    function removeFromCart(productId) {
+        let qtyElement = document.getElementById('qty-number-' + productId);
+        let spinner = document.getElementById('loading-spinner-' + productId);
+
+        spinner.style.display = "inline-block";
+
+        fetch('/Cart/RemoveFromCart', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+                // 'RequestVerificationToken': document.querySelector('input[name="__RequestVerificationToken"]').value
+            },
+            body: JSON.stringify({ productId: productId })
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                qtyElement.innerText = data.newQuantity;
+                updateRemoveButton(productId, data.newQuantity);
+                location.reload();
+            } else {
+                alert('Failed to remove item.');
+            }
+        })
+        .catch(error => {
+            console.error('Error removing item:', error);
+            qtyElement.innerText = "Error!";
+        })
+        .finally(() => {
+            // Hide the spinner after the request is done
+            spinner.style.display = "none";
+        });
+    }
+
+    function addToCart(productId){
+        let qtyElement = document.getElementById('qty-number-' + productId);
+        let spinner = document.getElementById('loading-spinner-' + productId);
+
+        spinner.style.display = "inline-block"; 
+
+        fetch('/Cart/AddToCart', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+                // 'RequestVerificationToken': document.querySelector('input[name="__RequestVerificationToken"]').value
+            },
+            body: JSON.stringify({productId: productId})
+        })
+        .then(response => response.json())
+        .then(data => {
+              if (data.success) {
+                qtyElement.innerText = data.newQuantity;
+                updateRemoveButton(productId, data.newQuantity);
+                location.reload();
+            } else {
+                alert('Failed to add item.');
+            }
+        })
+         .catch(error => {
+            console.error('Error adding item:', error);
+            qtyElement.innerText = "Error!";
+        })
+        .finally(() => {
+            // Hide the spinner after the request is done
+            spinner.style.display = "none";
+        });
+    }
+
+    function updateRemoveButton(productId, quantity) {
+        let removeIcon = document.getElementById('remove-icon-' + productId);
+
+        if (quantity <= 1) {
+            // Change to trash can
+            removeIcon.classList.remove('fa-minus');
+            removeIcon.classList.add('fa-trash');
+        } else {
+            // Change back to minus
+            removeIcon.classList.remove('fa-trash');
+            removeIcon.classList.add('fa-minus');
+        }
+    }
+</script>
+
