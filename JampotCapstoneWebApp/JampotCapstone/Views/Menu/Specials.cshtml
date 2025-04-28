@@ -13,7 +13,7 @@
     {
         foreach (Product p in Model.Specials.Products)
         {
-            File photo = null;
+            JampotCapstone.Models.File photo = null;
             foreach (var f in Model.Promotions)
             {
                 int startIndex = p.ProductPhoto.FileName.LastIndexOf('/');

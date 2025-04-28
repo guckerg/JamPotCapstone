@@ -8,5 +8,11 @@ namespace JampotCapstone.Controllers
         {
             return View();
         }
+
+        public IActionResult Ask()
+        {
+            return View();
+        }
+        
     }
 }
