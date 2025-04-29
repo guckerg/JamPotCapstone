@@ -23,7 +23,7 @@ namespace JampotCapstone.Controllers
                 Items = cartItems.Select(item => new CartItemViewModel
                 {
                     ProductId = item.ProductId,
-                    ProductName = item.Product?.ProductName ?? "",
+                    ProductName = item.Product.ProductName,
                     ProductPrice = item.Product.ProductPrice,
                     ProductPhoto = item.Product.ProductPhoto,
                     Quantity = item.Quantity
@@ -108,8 +108,9 @@ namespace JampotCapstone.Controllers
             }
 
             var totalCartQuantity = cartItems.Sum(i => i.Quantity);
+            var newQuantity = 0;
 
-            return Json(new { success = true, totalCartQuantity });
+            return Json(new { success = true, totalCartQuantity, newQuantity });
         }
 
         public class RemoveFromCartRequest

@@ -85,7 +85,6 @@
             if (data.success) {
                 qtyElement.innerText = data.newQuantity;
                 updateRemoveButton(productId, data.newQuantity);
-                location.reload();
             } else {
                 alert('Failed to remove item.');
             }
