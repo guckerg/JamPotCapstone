@@ -32,28 +32,28 @@
                 <label for="name" class="control-label col-lg-2 bodyText">Name</label>
                 <div class="col-lg-10">
                     <span asp-validation-for="Application.Name" class="text-danger"></span>
-                    <input id="name" name="Name" class="form-control col-lg-10" /><br />
+                    <input id="name" name="Application.Name" class="form-control col-lg-10" /><br />
                 </div>
             </div>
             <div class="row lg">
                 <label for="phoneNumber" class="control-label col-lg-2 bodyText">Phone Number</label>
                 <div class="col-lg-10">
                     <span asp-validation-for="Application.PhoneNumber" class="text-danger"></span>
-                    <input id="phoneNumber" name="PhoneNumber" class="form-control col-lg-10" /><br />
+                    <input id="phoneNumber" name="Application.PhoneNumber" class="form-control col-lg-10" /><br />
                 </div>
             </div>
             <div class="row lg">
                 <label for="name" class="control-label col-lg-2 bodyText">Email</label>
                 <div class="col-lg-10">
                     <span asp-validation-for="Application.Email" class="text-danger"></span>
-                    <input type="email" id="title" name="PostTitle" class="form-control col-lg-10" /><br />
+                    <input type="email" id="Email" name="Application.Email" class="form-control col-lg-10" /><br />
                 </div>
             </div>
             <div class="row lg mb-3">
                 <label for="position" class="control-label col-lg-2 bodyText">Position</label>
                 <div class="col-lg-10">
                     <span asp-validation-for="Application.JobTitleID" class="text-danger"></span>
-                    <select id="position" name="Position" asp-for="Application.JobTitleID" asp-items="ViewBag.PositionID" class="form-control col-lg-10">
+                    <select id="position" name="Application.JobTitleID" asp-for="Application.JobTitleID" asp-items="Model.Positions" class="form-control col-lg-10">
                         <option value="">-- Select a Position --</option>
                     </select>
                 </div>
@@ -61,23 +61,23 @@
             <div class="row lg mb-3">
                 <label for="resume" class="control-label col-lg-2 bodyText">Upload Resume</label>
                 <div class="col-lg-4">
-                    <input id="resume" name="Resume" type="file" class="form-control col-lg-10" />
-                    <span asp-validation-for="Application.Resume" class="text-danger"></span>
+                    <input id="resume" name="ResumeUpload" type="file" class="form-control col-lg-10" />
+                    <span asp-validation-for="ResumeUpload" class="text-danger"></span>
                 </div>
             </div>
             <div class="row lg mb-3">
-                <label for="name" class="control-label col-lg-2 bodyText">Insight 1</label>
+                <label for="question1" class="control-label col-lg-2 bodyText">Insight 1</label>
                 <div class="col-lg-10">
                     <span asp-validation-for="Application.Question1" class="text-danger"></span>
-                    <textarea id="question1" name="Question1" class="form-control col-lg-10" 
+                    <textarea id="question1" name="Application.Question1" class="form-control col-lg-10" 
                     placeholder="Tell us your story..."></textarea>
                 </div>
             </div>
             <div class="row lg mb-3">
-                <label for="name" class="control-label col-lg-2 bodyText">Insight 2</label>
+                <label for="question2" class="control-label col-lg-2 bodyText">Insight 2</label>
                 <div class="col-lg-10">
                     <span asp-validation-for="Application.Question2" class="text-danger"></span>
-                    <textarea id="question2" name="Question2" class="form-control col-lg-10"
+                    <textarea id="question2" name="Application.Question2" class="form-control col-lg-10"
                      placeholder="Tell us your goals..."></textarea>
                 </div>
             </div>

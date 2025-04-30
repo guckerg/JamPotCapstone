@@ -17,13 +17,13 @@ namespace JampotCapstone.Models
         public string Email { get; set; } = string.Empty;
 
         [Required]
-        public File Resume { get; set; }
-
-        [Required]
         public int JobTitleID { get; set; }
 
         public string Question1 { get; set; } = string.Empty;
 
         public string Question2 { get; set; } = string.Empty;
+
+        public int? ResumeFileID { get; set; } //nullable initially
+        public File ResumeFile { get; set; } //navigation prop
     }
 }
