@@ -334,6 +334,65 @@ public class SeedData
             ctx.Products.Add(p11);
             #endregion
             ctx.SaveChanges();
+
+            #region text
+
+            TextElement hours = new TextElement
+            {
+                Name = "Landing Hours",
+                Content =
+                    "7am-5pm Monday-Friday<br/>\n8am-5pm Saturday<br/>\n65-1158 Mamalahoa Hwy<br/>\nWaimea, HI 96743<br/>\n(808) 238-0671",
+                Location = "/Home"
+            };
+            ctx.TextElements.Add(hours);
+
+            TextElement catering1 = new TextElement
+            {
+                Name = "Catering First Column",
+                Content =
+                    "At Jam Pot, we bring the vibrant flavors and warm hospitality of Jamaica to the heart of Hawaii. Whether you're planning a family luau, corporate gathering, or an island celebration, our catering services are designed to add a touch of sunshine and Caribbean flair to any event. Our signature Jerk Chicken Wrap is sure to delight your taste buds, perfectly complemented by the refreshing tropical notes of our Lycheehoo! special. From savory dishes to invigorating beverages, every bite and sip is crafted with love and the freshest ingredients.",
+                Location = "/Catering"
+            };
+            ctx.TextElements.Add(catering1);
+
+            TextElement catering2 = new TextElement
+            {
+                Name = "Catering Second Column",
+                Content =
+                    "No event is too big or small—our team will work closely with you to create a menu tailored to your needs. We specialize in offering a variety of wholesome and flavorful options, including wraps, bowls, patties, and salads. Every dish is made fresh, showcasing the authentic tastes of Jamaica while embracing the island spirit of Hawaii. With our commitment to quality and attention to detail, Jam Pot takes the stress out of catering so you can focus on making memories.",
+                Location = "/Catering"
+            };
+            ctx.TextElements.Add(catering2);
+
+            TextElement catering3 = new TextElement
+            {
+                Name = "Catering Third Column",
+                Content =
+                    "Let us help you make your next event unforgettable. Contact Jam Pot today to learn more about our catering packages, pricing, and availability. Together, we'll bring the essence of Jamaica and the aloha spirit to your celebration, making it truly special.",
+                Location = "/Catering"
+            };
+            ctx.TextElements.Add(catering3);
+
+            TextElement about = new TextElement
+            {
+                Name = "About Us",
+                Content =
+                    "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.",
+                Location = "/AboutUs"
+            };
+            ctx.TextElements.Add(about);
+
+            TextElement careers = new TextElement
+            {
+                Name = "Hiring Intro",
+                Content =
+                    "Jampot is currently offering career options for: <br />[Line Cook], [Dishwasher] <br />You are welcome to apply for non-listed positions, but we may not reach out until those roles are needed.",
+                Location = "/Careers"
+            };
+            ctx.TextElements.Add(careers);
+            ctx.SaveChanges();
+
+            #endregion
         }
     }
 }
