@@ -21,24 +21,32 @@
                 <div class="container align-items-center">
                     <ul class="navbar-nav flex-grow-1 align-items-center">
                         <li class="nav-item m-2">
-                            <a class="btn btn-warning text-dark fs-4" asp-area="" asp-controller="Order" asp-action="Index">ORDER</a>
+                            <!-- Desktop button -->
+                            <a class="btn btn-warning text-dark fs-4 d-none d-lg-inline" asp-area="" asp-controller="Order" asp-action="Index">ORDER</a>
+                            <!-- Mobile text link -->
+                            <a class="mobile-nav fs-1 d-inline d-lg-none" asp-area="" asp-controller="Order" asp-action="Index">ORDER</a>
                         </li>
                         <li class="nav-item m-2">
-                            <a class="btn btn-warning text-dark fs-4" asp-area="" asp-controller="Catering" asp-action="Index">CATERING</a>
+                            <a class="btn btn-warning text-dark fs-4 d-none d-lg-inline" asp-area="" asp-controller="Catering" asp-action="Index">CATERING</a>
+                            <a class="mobile-nav fs-1 d-inline d-lg-none" asp-area="" asp-controller="Catering" asp-action="Index">CATERING</a>
                         </li>
                         <li class="nav-item m-2">
-                            <a class="btn btn-success text-dark fs-1" asp-area="" asp-controller="Menu" asp-action="Index">MENU</a>
+                            <a class="btn btn-success text-dark fs-1 d-none d-lg-inline" asp-area="" asp-controller="Menu" asp-action="Index">MENU</a>
+                            <a class="mobile-nav fs-1 d-inline d-lg-none" asp-area="" asp-controller="Menu" asp-action="Index">MENU</a>
                         </li>
                         <li class="nav-item m-2">
-                            <a class="btn btn-warning text-dark fs-4" asp-area="" asp-controller="AboutUs" asp-action="Index">ABOUT</a>
+                            <a class="btn btn-warning text-dark fs-4 d-none d-lg-inline" asp-area="" asp-controller="AboutUs" asp-action="Index">ABOUT</a>
+                            <a class="mobile-nav fs-1 d-inline d-lg-none" asp-area="" asp-controller="AboutUs" asp-action="Index">ABOUT</a>
                         </li>
                         <li class="nav-item m-2">
-                            <a class="btn btn-warning text-dark fs-4" asp-area="" asp-controller="ContactUs" asp-action="Index">CONTACT</a>
+                            <a class="btn btn-warning text-dark fs-4 d-none d-lg-inline" asp-area="" asp-controller="ContactUs" asp-action="Index">CONTACT</a>
+                            <a class="mobile-nav fs-1 d-inline d-lg-none" asp-area="" asp-controller="ContactUs" asp-action="Index">CONTACT</a>
                         </li>
                         @if (User.IsInRole("Admin"))
                         {
                             <li class="nav-item m-2">
-                                <a class="btn btn-warning text-dark fs-4" asp-area="" asp-controller="Admin" asp-action="Index">ADMIN</a>
+                                <a class="btn btn-warning text-dark fs-4 d-none d-lg-inline" asp-area="" asp-controller="Admin" asp-action="Index">ADMIN</a>
+                                <a class="mobile-nav fs-1 d-inline d-lg-none" asp-area="" asp-controller="Admin" asp-action="Index">ADMIN</a>
                             </li>
                         }
                     </ul>

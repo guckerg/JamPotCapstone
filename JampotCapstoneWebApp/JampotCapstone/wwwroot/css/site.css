@@ -138,6 +138,12 @@ body {
   color: var(--JampotGreen);
 }
 
+.mobile-nav {
+    font-family: "Zinjaro", serif;
+    color: var(--JampotYellow);
+    text-decoration: none;
+}
+
 .content {
   font-family: "Garet", sans-serif;
 }
