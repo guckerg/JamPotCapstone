@@ -106,16 +106,15 @@ namespace JampotCapstone.Migrations
                         .IsRequired()
                         .HasColumnType("longtext");
 
+                    b.Property<int>("JobTitleID")
+                        .HasColumnType("int");
+
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasMaxLength(255)
                         .HasColumnType("varchar(255)");
 
                     b.Property<string>("PhoneNumber")
-                        .IsRequired()
-                        .HasColumnType("longtext");
-
-                    b.Property<string>("Position")
                         .IsRequired()
                         .HasColumnType("longtext");
 
@@ -127,14 +126,14 @@ namespace JampotCapstone.Migrations
                         .IsRequired()
                         .HasColumnType("longtext");
 
-                    b.Property<int>("ResumeFileID")
+                    b.Property<int?>("ResumeFileID")
                         .HasColumnType("int");
 
                     b.HasKey("ApplicationID");
 
                     b.HasIndex("ResumeFileID");
 
-                    b.ToTable("Applications", (string)null);
+                    b.ToTable("Applications");
                 });
 
             modelBuilder.Entity("JampotCapstone.Models.File", b =>
@@ -155,7 +154,7 @@ namespace JampotCapstone.Migrations
 
                     b.HasKey("FileID");
 
-                    b.ToTable("Files", (string)null);
+                    b.ToTable("Files");
                 });
 
             modelBuilder.Entity("JampotCapstone.Models.JobTitle", b =>
@@ -172,7 +171,7 @@ namespace JampotCapstone.Migrations
 
                     b.HasKey("JobTitleID");
 
-                    b.ToTable("JobTitles", (string)null);
+                    b.ToTable("JobTitles");
                 });
 
             modelBuilder.Entity("JampotCapstone.Models.Product", b =>
@@ -203,7 +202,7 @@ namespace JampotCapstone.Migrations
 
                     b.HasIndex("ProductPhotoFileID");
 
-                    b.ToTable("Products", (string)null);
+                    b.ToTable("Products");
                 });
 
             modelBuilder.Entity("JampotCapstone.Models.ProductTag", b =>
@@ -220,7 +219,7 @@ namespace JampotCapstone.Migrations
 
                     b.HasKey("TagID");
 
-                    b.ToTable("ProductTags", (string)null);
+                    b.ToTable("ProductTags");
                 });
 
             modelBuilder.Entity("JampotCapstone.Models.ProductType", b =>
@@ -237,7 +236,7 @@ namespace JampotCapstone.Migrations
 
                     b.HasKey("TypeId");
 
-                    b.ToTable("ProductTypes", (string)null);
+                    b.ToTable("ProductTypes");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
@@ -388,7 +387,7 @@ namespace JampotCapstone.Migrations
 
                     b.HasIndex("TagsTagID");
 
-                    b.ToTable("ProductProductTag", (string)null);
+                    b.ToTable("ProductProductTag");
                 });
 
             modelBuilder.Entity("ProductProductType", b =>
@@ -403,18 +402,16 @@ namespace JampotCapstone.Migrations
 
                     b.HasIndex("ProductsProductId");
 
-                    b.ToTable("ProductProductType", (string)null);
+                    b.ToTable("ProductProductType");
                 });
 
             modelBuilder.Entity("JampotCapstone.Models.Application", b =>
                 {
-                    b.HasOne("JampotCapstone.Models.File", "Resume")
+                    b.HasOne("JampotCapstone.Models.File", "ResumeFile")
                         .WithMany()
-                        .HasForeignKey("ResumeFileID")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("ResumeFileID");
 
-                    b.Navigation("Resume");
+                    b.Navigation("ResumeFile");
                 });
 
             modelBuilder.Entity("JampotCapstone.Models.Product", b =>

@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using Microsoft.AspNetCore.Mvc.ModelBinding.Validation;
 
 namespace JampotCapstone.Models
 {
@@ -24,6 +25,8 @@ namespace JampotCapstone.Models
         public string Question2 { get; set; } = string.Empty;
 
         public int? ResumeFileID { get; set; } //nullable initially
+
+        [ValidateNever]
         public File ResumeFile { get; set; } //navigation prop
     }
 }

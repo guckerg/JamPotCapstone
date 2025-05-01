@@ -118,7 +118,7 @@ namespace JampotCapstone.Migrations
                         .IsRequired()
                         .HasColumnType("longtext");
 
-                    b.Property<string>("Position")
+                    b.Property<string>("JobTitleID")
                         .IsRequired()
                         .HasColumnType("longtext");
 
