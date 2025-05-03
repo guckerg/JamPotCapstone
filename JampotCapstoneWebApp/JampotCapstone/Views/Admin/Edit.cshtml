@@ -7,6 +7,7 @@
 <h2>Edit</h2>
 <span class="text-danger">@TempData["Message"]</span>
 <form method="post" asp-action="Edit">
+    <input type="hidden" asp-for="TextElementId"/>
     <div class="row mb-3">
         <label asp-for="Name" class="col-sm-2 col-form-label">Name</label>
         <div class="col-sm-10">
@@ -19,5 +20,7 @@
             <textarea class="form-control" asp-for="Content">@Model.Content</textarea>
         </div>
     </div>
+    <input type="hidden" asp-for="Location"/>
     <button type="submit" class="btn btn-primary">Save Changes</button>
+    <a asp-action="Index" class="btn btn-danger">Cancel</a>
 </form>

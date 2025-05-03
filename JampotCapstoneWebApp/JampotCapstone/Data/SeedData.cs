@@ -341,7 +341,7 @@ public class SeedData
             {
                 Name = "Landing Hours",
                 Content =
-                    "7am-5pm Monday-Friday<br/>\n8am-5pm Saturday<br/>\n65-1158 Mamalahoa Hwy<br/>\nWaimea, HI 96743<br/>\n(808) 238-0671",
+                    "7am-5pm Monday-Friday\n8am-5pm Saturday\n65-1158 Mamalahoa Hwy\nWaimea, HI 96743\n(808) 238-0671",
                 Location = "/Home"
             };
             ctx.TextElements.Add(hours);
