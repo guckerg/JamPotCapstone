@@ -34,8 +34,19 @@ public class AdminController : Controller
             _context.TextElements.Update(model);
             if (_context.SaveChanges() > 0)
             {
-                return 
+                TempData["Message"] = "Element successfully updated.";
+                return RedirectToAction("Index");
+            }
+            else
+            {
+                TempData["Message"] = "Changes could not be saved. Please try again.";
             }
         }
+        else
+        {
+            TempData["Message"] = "There were data-entry errors. Please check the form.";
+            TempData["context"] = "danger";
+        }
+        return View(model);
     }
 }
