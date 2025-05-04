@@ -413,13 +413,14 @@ public class SeedData
                 Content = "Monday - Friday: 7:00am - 5:00pm\nSaturday: 8:00am - 5:00pm",
                 Location = "/ContactUs"
             };
+            ctx.TextElements.Add(contact3);
 
             TextElement faq1 = new TextElement
             {
                 Name = "What are your holiday hours?",
                 Content =
                     "We are closed on Thanksgiving Day and Christmas Day to allow our employees to spend time with their families.",
-                Location = "/Ask"
+                Location = "/AboutUs/Ask"
             };
             ctx.TextElements.Add(faq1);
 
@@ -427,7 +428,7 @@ public class SeedData
             {
                 Name = "Do you offer delivery?",
                 Content = "No.",
-                Location = "/Ask"
+                Location = "/AboutUs/Ask"
             };
             ctx.TextElements.Add(faq2);
 
@@ -435,15 +436,15 @@ public class SeedData
             {
                 Name = "Do you have any ongoing promotions or special offers?",
                 Content = "Check out our Specials page",
-                Location = "/Ask"
+                Location = "/AboutUs/Ask"
             };
-            ctx.TextElements.Add(contact3);
+            ctx.TextElements.Add(faq3);
 
             TextElement faq4 = new TextElement
             {
                 Name = "Do you offer online ordering?",
                 Content = "Yes! Check out our Order Page",
-                Location = "/Ask"
+                Location = "/AboutUs/Ask"
             };
             ctx.TextElements.Add(faq4);
 
@@ -451,7 +452,7 @@ public class SeedData
             {
                 Name = "How do I apply for a job at this restaurant?",
                 Content = "You can fill out an application on our Careers page in the menu at the bottom of the page.",
-                Location = "/Ask"
+                Location = "/AboutUs/Ask"
             };
             ctx.TextElements.Add(faq5);
 
@@ -459,7 +460,7 @@ public class SeedData
             {
                 Name = "Do you offer catering?",
                 Content = "Yes! Check out our Catering page in the menu above.",
-                Location = "/Ask"
+                Location = "/AboutUs/Ask"
             };
             ctx.TextElements.Add(faq6);
             

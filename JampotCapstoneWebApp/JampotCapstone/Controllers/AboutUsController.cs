@@ -1,6 +1,8 @@
 ﻿using JampotCapstone.Data;
 using Microsoft.AspNetCore.Mvc;
 using JampotCapstone.Models;
+using Microsoft.EntityFrameworkCore;
+
 namespace JampotCapstone.Controllers
 {
     public class AboutUsController : Controller
@@ -13,13 +15,16 @@ namespace JampotCapstone.Controllers
         }
         public IActionResult Index()
         {
-            TextElement? model = _context.TextElements.SingleOrDefault(t => t.Location.ToLower().Contains("aboutus"));
+            TextElement? model = _context.TextElements.FirstOrDefault(t => t.Location.ToLower().Contains("aboutus"));
             return View(model);
         }
 
-        public IActionResult Ask()
+        public async Task<IActionResult> Ask()
         {
-            return View();
+            List<TextElement> model =
+                await _context.TextElements.
+                    Where(t => t.Location.ToLower().Contains("ask")).ToListAsync();
+            return View(model);
         }
         
     }

@@ -1,3 +1,4 @@
+using System.Net.Mime;
 using JampotCapstone.Data;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -20,9 +21,9 @@ public class AdminController : Controller
         return View();
     }
 
-    public IActionResult Edit(int id)
+    public IActionResult Edit(int id = 0)
     {
-        TextElement model = _context.TextElements.Find(id);
+        TextElement? model = id == 0 ? new TextElement() : _context.TextElements.Find(id);
         return View(model);
     }
 
@@ -31,7 +32,13 @@ public class AdminController : Controller
     {
         if (ModelState.IsValid)
         {
-            _context.TextElements.Update(model);
+            if (model.TextElementId == 0)
+            {
+                _context.TextElements.Add(model);
+            } else
+            {
+                _context.TextElements.Update(model);
+            }
             if (_context.SaveChanges() > 0)
             {
                 TempData["Message"] = "Element successfully updated.";
@@ -48,5 +55,26 @@ public class AdminController : Controller
             TempData["context"] = "danger";
         }
         return View(model);
+    }
+
+    public IActionResult Delete(int id)
+    {
+        TextElement? toDelete = _context.TextElements.Find(id);
+        if (toDelete != null)
+        {
+            _context.TextElements.Remove(toDelete);
+            if (_context.SaveChanges() > 0)
+            {
+                TempData["Message"] = "Text block successfully deleted.";
+                TempData["context"] = "success";
+            }
+        }
+        else
+        {
+            TempData["Message"] = "That text block was not found. Please try again.";
+            TempData["context"] = "danger";
+        }
+
+        return View("Index");
     }
 }
