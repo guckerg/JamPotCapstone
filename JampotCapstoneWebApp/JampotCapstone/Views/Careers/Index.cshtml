@@ -1,6 +1,6 @@
 ﻿@model Application
 @{
-    ViewData["Title"] = "Contact Us";
+    ViewData["Title"] = "Careers";
 }
 
 <div class="text-center">
@@ -10,7 +10,7 @@
             <!--Header Statement for Careers-->
             <div class="col-lg">
                 <p class="bodyText">
-                    @if(Model != null)
+                    @if(ViewBag.Text != null)
                     {
                         string[] paragraphs = ViewBag.Text.Content.Split("\n");
                         @foreach (string par in paragraphs)

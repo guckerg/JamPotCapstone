@@ -386,10 +386,83 @@ public class SeedData
             {
                 Name = "Hiring Intro",
                 Content =
-                    "Jampot is currently offering career options for: <br />[Line Cook], [Dishwasher] <br />You are welcome to apply for non-listed positions, but we may not reach out until those roles are needed.",
+                    "Jampot is currently offering career options for:\n[Line Cook], [Dishwasher]\nYou are welcome to apply for non-listed positions, but we may not reach out until those roles are needed.",
                 Location = "/Careers"
             };
             ctx.TextElements.Add(careers);
+
+            TextElement contact1 = new TextElement
+            {
+                Name = "ADDRESS",
+                Content = "65-1158 Mamalahoa Hwy\nWaimea, HI 96743",
+                Location = "/ContactUs"
+            };
+            ctx.TextElements.Add(contact1);
+
+            TextElement contact2 = new TextElement
+            {
+                Name = "PHONE",
+                Content = "(808) 238-0671",
+                Location = "/ContactUs"
+            };
+            ctx.TextElements.Add(contact2);
+
+            TextElement contact3 = new TextElement
+            {
+                Name = "HOURS",
+                Content = "Monday - Friday: 7:00am - 5:00pm\nSaturday: 8:00am - 5:00pm",
+                Location = "/ContactUs"
+            };
+
+            TextElement faq1 = new TextElement
+            {
+                Name = "What are your holiday hours?",
+                Content =
+                    "We are closed on Thanksgiving Day and Christmas Day to allow our employees to spend time with their families.",
+                Location = "/Ask"
+            };
+            ctx.TextElements.Add(faq1);
+
+            TextElement faq2 = new TextElement
+            {
+                Name = "Do you offer delivery?",
+                Content = "No.",
+                Location = "/Ask"
+            };
+            ctx.TextElements.Add(faq2);
+
+            TextElement faq3 = new TextElement
+            {
+                Name = "Do you have any ongoing promotions or special offers?",
+                Content = "Check out our Specials page",
+                Location = "/Ask"
+            };
+            ctx.TextElements.Add(contact3);
+
+            TextElement faq4 = new TextElement
+            {
+                Name = "Do you offer online ordering?",
+                Content = "Yes! Check out our Order Page",
+                Location = "/Ask"
+            };
+            ctx.TextElements.Add(faq4);
+
+            TextElement faq5 = new TextElement
+            {
+                Name = "How do I apply for a job at this restaurant?",
+                Content = "You can fill out an application on our Careers page in the menu at the bottom of the page.",
+                Location = "/Ask"
+            };
+            ctx.TextElements.Add(faq5);
+
+            TextElement faq6 = new TextElement
+            {
+                Name = "Do you offer catering?",
+                Content = "Yes! Check out our Catering page in the menu above.",
+                Location = "/Ask"
+            };
+            ctx.TextElements.Add(faq6);
+            
             ctx.SaveChanges();
 
             #endregion
