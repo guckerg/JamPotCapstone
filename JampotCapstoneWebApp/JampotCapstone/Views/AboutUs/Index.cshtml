@@ -33,19 +33,25 @@
         <span class="dot" onclick="currentSlide(2)"></span>
         <span class="dot" onclick="currentSlide(3)"></span>
     </div>
+    <div class="row">
     <!--Content paragraph-->
         @if (Model != null)
         {
             string[] paragraphs = Model.Content.Split("\n");
-            foreach (string par in paragraphs)
-            {
-                <p class="bodyText">@par</p>
-            }
+            <p class="bodyText">
+                @foreach (string par in paragraphs)
+                {
+                    <br/>@par
+                }
+                @if (User.IsInRole("Admin"))
+                {
+                    <a asp-controller="Admin" asp-action="Edit" asp-route-id="@Model.TextElementId" class="col-1"><i class="fa-regular fa-pen-to-square"></i></a>
+                }
+            </p>
+            
         }
-        @if (User.IsInRole("Admin"))
-        {
-            <a asp-controller="Admin" asp-action="Edit" asp-route-id="@Model.TextElementId"><i class="fa-regular fa-pen-to-square"></i></a>
-        }
+    </div>
+        
 </div>
 <!--JavaScript for Slideshow-->
 <script>

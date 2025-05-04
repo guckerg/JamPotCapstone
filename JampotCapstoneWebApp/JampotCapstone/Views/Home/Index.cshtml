@@ -15,17 +15,20 @@
             </iframe>
         </div>
         <div class="col-lg-6">
-            <div class="row m-5 justify-self-center text-jampot-green">
+            <div class="row m-5 justify-self-center">
                 @if (Model.Hours != null)
                 {
+                    
                     string[] paragraphs = Model.Hours.Content.Split("\n");
-                    foreach (string par in paragraphs)
+                    <div class="col text-jampot-green">
+                    @foreach (string par in paragraphs)
                     {
                         @par<br/>
                     }
+                    </div>
                     @if (User.IsInRole("Admin"))
                     {
-                        <a asp-controller="Admin" asp-action="Edit" asp-route-id="@Model.Hours.TextElementId"><i class="fa-regular fa-pen-to-square"></i></a>
+                        <a asp-controller="Admin" asp-action="Edit" asp-route-id="@Model.Hours.TextElementId" class="col-1"><i class="fa-regular fa-pen-to-square"></i></a>
                     }
                 }
             </div>
