@@ -23,7 +23,7 @@ namespace JampotCapstone.Controllers
         {
             List<TextElement> model =
                 await _context.TextElements.
-                    Where(t => t.Location.ToLower().Contains("ask")).ToListAsync();
+                    Where(t => t.Location.ToLower().Contains("faq")).ToListAsync();
             return View(model);
         }
         
