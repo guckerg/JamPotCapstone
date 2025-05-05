@@ -9,8 +9,8 @@
 <div class="container">
     <div class="row p-3">
         <div class="col-lg-6">
-            <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d608.4910102057805!2d-155.66804235426838!3d20.02240139386646!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x7953832efd9a7f39%3A0x1e1767ac46fda672!2sJam%20Pot!5e0!3m2!1sen!2sus!4v1744755433281!5m2!1sen!2sus" 
-                    height="450" style="border:0; width:100%;" loading="lazy" 
+            <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d608.4910102057805!2d-155.66804235426838!3d20.02240139386646!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x7953832efd9a7f39%3A0x1e1767ac46fda672!2sJam%20Pot!5e0!3m2!1sen!2sus!4v1744755433281!5m2!1sen!2sus"
+                    height="450" style="border:0; width:100%;" loading="lazy"
                     referrerpolicy="no-referrer-when-downgrade">
             </iframe>
         </div>
@@ -18,23 +18,26 @@
             <div class="row m-5 justify-self-center">
                 @if (Model.Hours != null)
                 {
-                    
                     string[] paragraphs = Model.Hours.Content.Split("\n");
                     <div class="col text-jampot-green">
-                    @foreach (string par in paragraphs)
-                    {
-                        @par<br/>
-                    }
+                        @foreach (string par in paragraphs)
+                        {
+                            <br/>@par
+                        }
+                        @if (User.IsInRole("Admin"))
+                        {
+                            <a asp-controller="Admin" asp-action="Edit" asp-route-id="@Model.Hours.TextElementId" class="col-1">
+                                <i class="fa-regular fa-pen-to-square text-primary"></i>
+                            </a>
+                        }
                     </div>
-                    @if (User.IsInRole("Admin"))
-                    {
-                        <a asp-controller="Admin" asp-action="Edit" asp-route-id="@Model.Hours.TextElementId" class="col-1"><i class="fa-regular fa-pen-to-square"></i></a>
-                    }
                 }
             </div>
-            <div class="row"><img class="landing-special" src="@Model.Special.FileName" alt="Description"/></div>
+            <div class="row">
+                <img class="landing-special" src="@Model.Special.FileName" alt="Description"/>
+            </div>
         </div>
-        
+
     </div>
     <div class="row">
         @if (Model.Photos.Count > 0)
@@ -48,4 +51,3 @@
         }
     </div>
 </div>
-

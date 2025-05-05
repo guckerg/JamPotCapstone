@@ -40,7 +40,10 @@
     </div>   
     <div class="col-lg" id="pic">
         <img src="/pics/People.png" alt="happy people" class="photo"/>
-        <a class="btn btn-primary m-5" asp-action="Edit" asp-controller="Admin">Add New FAQ</a>
+        @if(User.IsInRole("Admin"))
+        {
+            <a class="btn btn-primary m-5" asp-action="Edit" asp-controller="Admin">Add New FAQ</a>
+        }
     </div>
 </div>
 
