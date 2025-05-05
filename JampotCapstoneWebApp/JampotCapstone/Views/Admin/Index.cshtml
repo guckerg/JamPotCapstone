@@ -1,8 +1,51 @@
-
+@model AdminViewModel
 @{
     ViewBag.Title = "Admin Management";
-    Layout = "_Layout";
 }
 
 <h2 class="title text-jampot-green">ADMIN MANAGEMENT</h2>
 <span class="text-success">@TempData["Message"]</span>
+@if (Model != null)
+{
+    <div class="row">
+        <div class="col-6">
+            <h3>Editable Text Blocks</h3>
+            @if (Model.Textblocks.Count > 0)
+            {
+                List<string> locations = [];
+                foreach (TextElement text in Model.Textblocks)
+                {
+                    if (!locations.Contains(text.Location))
+                    {
+                        <h5>@text.Location</h5>
+                        locations.Add(text.Location);
+                    }
+
+                    <p>
+                        @text.Name
+                        <a asp-action="Edit" asp-controller="Admin" asp-route-id="@text.TextElementId" class="p-3">
+                            <i class="fa-regular fa-pen-to-square"></i>
+                        </a>
+                        @if (text.Location.ToLower().Contains("faq"))
+                        {
+                            <a asp-action="Delete" asp-controller="Admin" asp-route-id="@text.TextElementId">
+                                <i class="fa-solid fa-trash-can text-danger"></i>
+                            </a>
+                            <a asp-action="Edit" asp-controller="Admin" class="btn btn-primary">Add New</a>
+                        }
+                        
+
+                    </p>
+                }
+            }
+        </div>
+        <div class="col-4">
+            <h3>Photo Edit</h3>
+        </div>
+        <div class="col-4">
+            <h3>Products</h3>
+            @*I set up the view model to include all of the items (I could think of) that will need to be edited, 
+                but I haven't printed them to the page, as the edit pages haven't been set up yet*@
+        </div>
+    </div>
+}

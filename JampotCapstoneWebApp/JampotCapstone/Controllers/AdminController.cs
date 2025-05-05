@@ -3,6 +3,8 @@ using JampotCapstone.Data;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using JampotCapstone.Models;
+using JampotCapstone.Models.ViewModels;
+using Microsoft.EntityFrameworkCore;
 
 namespace JampotCapstone.Controllers;
 
@@ -16,9 +18,15 @@ public class AdminController : Controller
         _context = ctx;
     }
     
-    public IActionResult Index()
+    public async Task<IActionResult> Index()
     {
-        return View();
+        AdminViewModel model = new AdminViewModel
+        {
+            Textblocks = await _context.TextElements.OrderBy(t => t.Location).ToListAsync(),
+            Photos = await _context.Files.ToListAsync(),
+            Products = await _context.Products.ToListAsync()
+        };
+        return View(model);
     }
 
     public IActionResult Edit(int id = 0)
