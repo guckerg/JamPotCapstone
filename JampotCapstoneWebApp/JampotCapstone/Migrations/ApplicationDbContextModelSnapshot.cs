@@ -239,6 +239,31 @@ namespace JampotCapstone.Migrations
                     b.ToTable("ProductTypes");
                 });
 
+            modelBuilder.Entity("JampotCapstone.Models.TextElement", b =>
+                {
+                    b.Property<int>("TextElementId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    MySqlPropertyBuilderExtensions.UseMySqlIdentityColumn(b.Property<int>("TextElementId"));
+
+                    b.Property<string>("Content")
+                        .IsRequired()
+                        .HasColumnType("longtext");
+
+                    b.Property<string>("Location")
+                        .IsRequired()
+                        .HasColumnType("longtext");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("longtext");
+
+                    b.HasKey("TextElementId");
+
+                    b.ToTable("TextElements");
+                });
+
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
                 {
                     b.Property<string>("Id")

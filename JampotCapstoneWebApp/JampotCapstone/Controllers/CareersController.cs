@@ -13,18 +13,18 @@ namespace JampotCapstone.Controllers
     public class CareersController : Controller
     {
         IApplicationRepository repo;
-        private readonly ApplicationDbContext context;
+        private ApplicationDbContext _context;
 
         public CareersController(IApplicationRepository r, ApplicationDbContext c)
         {
             repo = r;
-            context = c;
+            _context = c;
         }
 
         public IActionResult Index()
         {
             //create a list of jobtitle objects currently available
-            var positions = context.JobTitles.Select(j => new { j.JobTitleID, j.JobTitleName }).ToList();
+            var positions = _context.JobTitles.Select(j => new { j.JobTitleID, j.JobTitleName }).ToList();
 
             //populate viewModel passing positions list for dropdown menu
             var viewModel = new CareersViewModel
@@ -32,6 +32,10 @@ namespace JampotCapstone.Controllers
                 Positions = new SelectList(positions, "JobTitleID", "JobTitleName"),
                 Application = new Application()
             };
+            
+            ViewBag.Text =
+                _context.TextElements
+                    .FirstOrDefault(t => t.Location.ToLower().Contains("careers"));
 
             return View(viewModel);
         }
@@ -44,7 +48,7 @@ namespace JampotCapstone.Controllers
 
             if (!ModelState.IsValid)
             {
-                viewModel.Positions = new SelectList(context.JobTitles, "JobTitleID", "JobTitleName");
+                viewModel.Positions = new SelectList(_context.JobTitles, "JobTitleID", "JobTitleName");
                 return View("Index", viewModel);
             }
 
@@ -57,7 +61,7 @@ namespace JampotCapstone.Controllers
                 if (!allowedExtensions.Contains(fileExtension))
                 {
                     ModelState.AddModelError("Resume", "Only .pdf, .doc, and .docx files are allowed.");
-                    viewModel.Positions = new SelectList(context.JobTitles, "JobTitleID", "JobTitleName");
+                    viewModel.Positions = new SelectList(_context.JobTitles, "JobTitleID", "JobTitleName");
                     return View("Index", viewModel);
                 }
 
@@ -81,8 +85,8 @@ namespace JampotCapstone.Controllers
                     FileName = filePath,  // Store the full path, or adjust as needed.
                     ContentType = Resume.ContentType,
                 };
-                context.Files.Add(file);
-                await context.SaveChangesAsync();
+                _context.Files.Add(file);
+                await _context.SaveChangesAsync();
 
                 //Link the uploaded file to the application.
                 viewModel.Application.ResumeFileID = file.FileID;

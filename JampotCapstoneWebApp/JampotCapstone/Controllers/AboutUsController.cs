@@ -1,17 +1,30 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using JampotCapstone.Data;
+using Microsoft.AspNetCore.Mvc;
+using JampotCapstone.Models;
+using Microsoft.EntityFrameworkCore;
 
 namespace JampotCapstone.Controllers
 {
     public class AboutUsController : Controller
     {
+        private ApplicationDbContext _context;
+
+        public AboutUsController(ApplicationDbContext ctx)
+        {
+            _context = ctx;
+        }
         public IActionResult Index()
         {
-            return View();
+            TextElement? model = _context.TextElements.FirstOrDefault(t => t.Location.ToLower().Contains("about"));
+            return View(model);
         }
 
-        public IActionResult Ask()
+        public async Task<IActionResult> Ask()
         {
-            return View();
+            List<TextElement> model =
+                await _context.TextElements.
+                    Where(t => t.Location.ToLower().Contains("faq")).ToListAsync();
+            return View(model);
         }
         
     }
