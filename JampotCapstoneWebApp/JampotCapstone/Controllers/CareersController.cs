@@ -35,7 +35,7 @@ namespace JampotCapstone.Controllers
             
             ViewBag.Text =
                 _context.TextElements
-                    .SingleOrDefaultAsync(t => t.Location.ToLower().Contains("careers"));
+                    .FirstOrDefault(t => t.Location.ToLower().Contains("careers"));
 
             return View(viewModel);
         }
@@ -105,7 +105,6 @@ namespace JampotCapstone.Controllers
         {
             repo.DeleteApplication(ApplicationID);
             return RedirectToAction("Index");
-            _context = ctx;
         }
     }
 }
