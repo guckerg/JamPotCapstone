@@ -4,6 +4,7 @@ using JampotCapstone.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace JampotCapstone.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250423220333_CreateJobTitles")]
+    partial class CreateJobTitles
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -106,15 +109,16 @@ namespace JampotCapstone.Migrations
                         .IsRequired()
                         .HasColumnType("longtext");
 
-                    b.Property<int>("JobTitleID")
-                        .HasColumnType("int");
-
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasMaxLength(255)
                         .HasColumnType("varchar(255)");
 
                     b.Property<string>("PhoneNumber")
+                        .IsRequired()
+                        .HasColumnType("longtext");
+
+                    b.Property<string>("JobTitleID")
                         .IsRequired()
                         .HasColumnType("longtext");
 
@@ -126,7 +130,7 @@ namespace JampotCapstone.Migrations
                         .IsRequired()
                         .HasColumnType("longtext");
 
-                    b.Property<int?>("ResumeFileID")
+                    b.Property<int>("ResumeFileID")
                         .HasColumnType("int");
 
                     b.HasKey("ApplicationID");
@@ -237,31 +241,6 @@ namespace JampotCapstone.Migrations
                     b.HasKey("TypeId");
 
                     b.ToTable("ProductTypes");
-                });
-
-            modelBuilder.Entity("JampotCapstone.Models.TextElement", b =>
-                {
-                    b.Property<int>("TextElementId")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    MySqlPropertyBuilderExtensions.UseMySqlIdentityColumn(b.Property<int>("TextElementId"));
-
-                    b.Property<string>("Content")
-                        .IsRequired()
-                        .HasColumnType("longtext");
-
-                    b.Property<string>("Location")
-                        .IsRequired()
-                        .HasColumnType("longtext");
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasColumnType("longtext");
-
-                    b.HasKey("TextElementId");
-
-                    b.ToTable("TextElements");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
@@ -432,11 +411,13 @@ namespace JampotCapstone.Migrations
 
             modelBuilder.Entity("JampotCapstone.Models.Application", b =>
                 {
-                    b.HasOne("JampotCapstone.Models.File", "ResumeFile")
+                    b.HasOne("JampotCapstone.Models.File", "Resume")
                         .WithMany()
-                        .HasForeignKey("ResumeFileID");
+                        .HasForeignKey("ResumeFileID")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
-                    b.Navigation("ResumeFile");
+                    b.Navigation("Resume");
                 });
 
             modelBuilder.Entity("JampotCapstone.Models.Product", b =>

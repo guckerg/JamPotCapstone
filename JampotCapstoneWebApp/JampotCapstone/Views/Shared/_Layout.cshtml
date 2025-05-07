@@ -10,7 +10,7 @@
 </head>
 <body class="bg-black text-white">
 <header>
-    <nav class="navbar navbar-expand-lg navbar-toggleable-lg navbar-dark bg-black border-bottom box-shadow mb-3">
+    <nav class="navbar navbar-expand-lg navbar-toggleable-lg navbar-dark bg-black box-shadow mb-3">
         <div class="container-fluid">
             <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index"><img src="~/pics/JampotLogo.png" alt="image of the Jampot logo" class="logo"/></a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
@@ -21,24 +21,32 @@
                 <div class="container align-items-center">
                     <ul class="navbar-nav flex-grow-1 align-items-center">
                         <li class="nav-item m-2">
-                            <a class="btn btn-warning text-dark fs-4" asp-area="" asp-controller="Order" asp-action="Index">ORDER</a>
+                            <!-- Desktop button -->
+                            <a class="btn btn-warning text-dark fs-4 d-none d-lg-inline" asp-area="" asp-controller="Order" asp-action="Index">ORDER</a>
+                            <!-- Mobile text link -->
+                            <a class="mobile-nav fs-1 d-inline d-lg-none" asp-area="" asp-controller="Order" asp-action="Index">ORDER</a>
                         </li>
                         <li class="nav-item m-2">
-                            <a class="btn btn-warning text-dark fs-4" asp-area="" asp-controller="Catering" asp-action="Index">CATERING</a>
+                            <a class="btn btn-warning text-dark fs-4 d-none d-lg-inline" asp-area="" asp-controller="Catering" asp-action="Index">CATERING</a>
+                            <a class="mobile-nav fs-1 d-inline d-lg-none" asp-area="" asp-controller="Catering" asp-action="Index">CATERING</a>
                         </li>
                         <li class="nav-item m-2">
-                            <a class="btn btn-success text-dark fs-1" asp-area="" asp-controller="Menu" asp-action="Index">MENU</a>
+                            <a class="btn btn-success text-dark fs-1 d-none d-lg-inline" asp-area="" asp-controller="Menu" asp-action="Index">MENU</a>
+                            <a class="mobile-nav fs-1 d-inline d-lg-none" asp-area="" asp-controller="Menu" asp-action="Index">MENU</a>
                         </li>
                         <li class="nav-item m-2">
-                            <a class="btn btn-warning text-dark fs-4" asp-area="" asp-controller="AboutUs" asp-action="Index">ABOUT</a>
+                            <a class="btn btn-warning text-dark fs-4 d-none d-lg-inline" asp-area="" asp-controller="AboutUs" asp-action="Index">ABOUT</a>
+                            <a class="mobile-nav fs-1 d-inline d-lg-none" asp-area="" asp-controller="AboutUs" asp-action="Index">ABOUT</a>
                         </li>
                         <li class="nav-item m-2">
-                            <a class="btn btn-warning text-dark fs-4" asp-area="" asp-controller="ContactUs" asp-action="Index">CONTACT</a>
+                            <a class="btn btn-warning text-dark fs-4 d-none d-lg-inline" asp-area="" asp-controller="ContactUs" asp-action="Index">CONTACT</a>
+                            <a class="mobile-nav fs-1 d-inline d-lg-none" asp-area="" asp-controller="ContactUs" asp-action="Index">CONTACT</a>
                         </li>
                         @if (User.IsInRole("Admin"))
                         {
-                            <li class="nav-item">
-                                <a class="btn btn-warning text-dark fs-4" asp-area="" asp-controller="Admin" asp-action="Index">ADMIN</a>
+                            <li class="nav-item m-2">
+                                <a class="btn btn-warning text-dark fs-4 d-none d-lg-inline" asp-area="" asp-controller="Admin" asp-action="Index">ADMIN</a>
+                                <a class="mobile-nav fs-1 d-inline d-lg-none" asp-area="" asp-controller="Admin" asp-action="Index">ADMIN</a>
                             </li>
                         }
                     </ul>
@@ -47,14 +55,15 @@
             </div>
         </div>
     </nav>
+    <hr style="width:100%; background-color: var(--JampotYellow); opacity:1;" />
 </header>
 <div class="container">
-    <main role="main" class="pb-3">
+    <main role="main" class="pb-2">
         @RenderBody()
     </main>
 </div>
-
-<footer class="border-top footer bg-black text-jampot-green">
+<footer class="footer bg-black text-jampot-green">
+        <hr style="width:100%; background-color: var(--JampotYellow); opacity:1;" />
     <div class="container">
         <div class="row align-items-center text-center">
             <ul class="col list-unstyled">

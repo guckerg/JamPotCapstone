@@ -467,6 +467,25 @@ public class SeedData
             ctx.SaveChanges();
 
             #endregion
+
+            #region jobs
+
+            JobTitle lineCook = new JobTitle
+            {
+                JobTitleID = 1,
+                JobTitleName = "Line Cook",
+            };
+            ctx.JobTitles.Add(lineCook);
+
+            JobTitle dishwasher = new JobTitle
+            {
+                JobTitleID = 2,
+                JobTitleName = "Dishwasher",
+            };
+            ctx.JobTitles.Add(dishwasher);
+
+            #endregion
+            ctx.SaveChanges();
         }
     }
 }
