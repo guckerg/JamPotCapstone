@@ -29,13 +29,13 @@ html {
   }
 }
 
-.btn:focus,
+/*.btn:focus,
 .btn:active:focus,
 .btn-link.nav-link:focus,
 .form-control:focus,
 .form-check-input:focus {
   box-shadow: 0 0 0 0.1rem white, 0 0 0 0.25rem #258cfb;
-}
+}*/
 
 html {
   position: relative;
@@ -125,17 +125,23 @@ body {
 }
 
 .footer {
-  position: absolute;
-  bottom: 0;
-  width: 100%;
-  white-space: nowrap;
-  line-height: 20px;
-  background-color: black;
+    position: relative;
+    bottom: 0;
+    width: 100%;
+    white-space: nowrap;
+    line-height: 20px;
+    background-color: black;
 }
 
 .title {
   font-family: "Zinjaro", serif;
   color: var(--JampotGreen);
+}
+
+.mobile-nav {
+    font-family: "Zinjaro", serif;
+    color: var(--JampotYellow);
+    text-decoration: none;
 }
 
 .content {
