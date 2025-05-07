@@ -15,7 +15,7 @@ namespace JampotCapstone.Controllers
         }
         public IActionResult Index()
         {
-            TextElement? model = _context.TextElements.FirstOrDefault(t => t.Location.ToLower().Contains("aboutus"));
+            TextElement? model = _context.TextElements.FirstOrDefault(t => t.Location.ToLower().Contains("about"));
             return View(model);
         }
 
