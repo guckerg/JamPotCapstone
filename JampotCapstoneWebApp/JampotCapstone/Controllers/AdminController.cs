@@ -65,6 +65,11 @@ public class AdminController : Controller
         return View(model);
     }
 
+    public IActionResult EditPhoto()
+    {
+        return View();
+    }
+
     public IActionResult Delete(int id)
     {
         TextElement? toDelete = _context.TextElements.Find(id);

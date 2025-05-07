@@ -1,0 +1,17 @@
+
+
+@{
+    ViewBag.Title = "Change Photo";
+}
+
+<h2>Change Photo</h2>
+<form method="post" asp-action="EditPhoto">
+    <div class="row mb-3">
+        <label asp-for="FileName" class="col-sm-2 col-form-label">File Name</label>
+        <div class="col-sm-10">
+            <input type="text" class="form-control" name="filename">
+        </div>
+    </div>
+    <button type="submit" class="btn btn-primary col-2">Save Changes</button>
+    <a asp-action="Index" class="btn btn-danger col-2">Cancel</a>
+</form>

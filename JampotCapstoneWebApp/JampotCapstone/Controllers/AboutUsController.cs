@@ -1,6 +1,7 @@
 ﻿using JampotCapstone.Data;
 using Microsoft.AspNetCore.Mvc;
 using JampotCapstone.Models;
+using JampotCapstone.Models.ViewModels;
 using Microsoft.EntityFrameworkCore;
 
 namespace JampotCapstone.Controllers
@@ -19,11 +20,16 @@ namespace JampotCapstone.Controllers
             return View(model);
         }
 
-        public async Task<IActionResult> Ask()
+        public async Task<IActionResult> Ask(string filename = "people.png")
         {
-            List<TextElement> model =
-                await _context.TextElements.
-                    Where(t => t.Location.ToLower().Contains("faq")).ToListAsync();
+            ContentViewModel model = new ContentViewModel
+            {
+                Textblocks = await _context.TextElements.
+                    Where(t => t.Location.ToLower().Contains("faq")).ToListAsync(),
+                Photo = await _context.Files
+                    .FirstOrDefaultAsync(f => f.FileName.ToLower().Contains(filename.ToLower()))
+            };
+                
             return View(model);
         }
         
