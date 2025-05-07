@@ -1,28 +1,32 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using Microsoft.AspNetCore.Mvc.ModelBinding.Validation;
 
 namespace JampotCapstone.Models
 {
     public class Application
     {
+        [Key]
         public int ApplicationID { get; set; }
 
         [StringLength(255)]
+        [Required]
         public string Name { get; set; }
 
-        public string PhoneNumber { get; set; }
+        public string PhoneNumber { get; set; } = string.Empty;
 
         [RegularExpression(@"^[A-Za-z0-9\.]+@[A-Za-z0-9\.]+$")]
-        public string Email { get; set; }
+        public string Email { get; set; } = string.Empty;
 
-        public File Resume { get; set; }
-
-        public JobTitle Position { get; set; }
+        [Required]
+        public int JobTitleID { get; set; }
 
         public string Question1 { get; set; } = string.Empty;
 
         public string Question2 { get; set; } = string.Empty;
 
-        //May use if client decided to have accounts for users.
-        //public AppUser Applicant { get; set; }
+        public int? ResumeFileID { get; set; } //nullable initially
+
+        [ValidateNever]
+        public File ResumeFile { get; set; } //navigation prop
     }
 }
