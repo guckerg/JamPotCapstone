@@ -76,17 +76,17 @@
                         <tr>
                             <td>@product.ProductName</td>
                             <td>
-                                <a asp-action="Edit" asp-controller="Admin" asp-route-id="@product.ProductId">
+                                <a asp-action="ProductEdit" asp-controller="Admin" asp-route-id="@product.ProductId">
                                     <i class="fa-regular fa-pen-to-square"></i>
                                 </a>
                             </td>
                             <td>
-                                <a asp-action="Delete" asp-controller="Admin" asp-route-id="@product.ProductId"> 
+                                <a asp-action="DeleteProduct" asp-controller="Admin" asp-route-id="@product.ProductId"> 
                                      <i class="fa-solid fa-trash-can text-danger"></i> 
                                  </a>
                             </td>
                             <td>
-                                <a asp-action="Edit" asp-controller="Admin" class="btn btn-primary">Add New</a>
+                                <a asp-action="ProductEdit" asp-controller="Admin" class="btn btn-primary">Add New</a>
                             </td>
                         </tr>
                     }

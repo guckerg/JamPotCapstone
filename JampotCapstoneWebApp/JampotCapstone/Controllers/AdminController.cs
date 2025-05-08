@@ -85,4 +85,10 @@ public class AdminController : Controller
 
         return View("Index");
     }
+
+    public IActionResult ProductEdit(int id = 0)
+    {
+        Product? model = id == 0 ? new Product() : _context.Products.Find(id);
+        return View(model);
+    }
 }
