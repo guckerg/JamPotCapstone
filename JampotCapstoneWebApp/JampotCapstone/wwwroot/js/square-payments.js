@@ -4,16 +4,14 @@
         return;
     }
 
-    // Use dynamically injected values if available; fallback to hardcoded sandbox credentials.
-    const appId = window.squareAppId || 'sandbox-sq0idb-WOtifQSKNybOUxarQkzTEg';
-    const locationId = window.squareLocationId || 'LMZKPRF20WXFP';
+    const appId = 'sandbox-sq0idb-WOtifQSKNybOUxarQkzTEg';
+    const locationId = 'LMZKPRF20WXFP';
 
     try {
         const payments = window.Square.payments(appId, locationId);
         const card = await payments.card();
         await card.attach('#card-container');
 
-        // listen for the form submission that triggers payment
         const paymentForm = document.getElementById('payment-form');
         if (paymentForm) {
             paymentForm.addEventListener('submit', async (event) => {
@@ -34,7 +32,6 @@
 });
 
 async function processPayment(token) {
-    console.log("token", token);
     try {
         const response = await fetch('/api/payment/process', {
             method: 'POST',
@@ -44,6 +41,7 @@ async function processPayment(token) {
         const data = await response.json();
         if (response.ok) {
             alert('Payment processed successfully!');
+            $('#squarePaymentModal').modal('hide');
         } else {
             alert('Payment failed: ' + data.error);
         }
