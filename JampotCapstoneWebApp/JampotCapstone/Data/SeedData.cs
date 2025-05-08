@@ -92,9 +92,8 @@ public class SeedData
             };
             ctx.Files.Add(placeholder);
 
-            #endregion
-
             ctx.SaveChanges();
+            #endregion
 
             #region products
 
@@ -332,8 +331,8 @@ public class SeedData
                 }
             };
             ctx.Products.Add(p11);
-            #endregion
             ctx.SaveChanges();
+            #endregion
 
             #region text
 
@@ -484,8 +483,9 @@ public class SeedData
             };
             ctx.JobTitles.Add(dishwasher);
 
-            #endregion
             ctx.SaveChanges();
+            #endregion
+
         }
     }
 }

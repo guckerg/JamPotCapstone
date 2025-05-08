@@ -29,14 +29,14 @@ public class AdminController : Controller
         return View(model);
     }
 
-    public IActionResult Edit(int id = 0)
+    public IActionResult TextEdit(int id = 0)
     {
         TextElement? model = id == 0 ? new TextElement() : _context.TextElements.Find(id);
         return View(model);
     }
 
     [HttpPost]
-    public IActionResult Edit(TextElement model)
+    public IActionResult TextEdit(TextElement model)
     {
         if (ModelState.IsValid)
         {
@@ -65,7 +65,7 @@ public class AdminController : Controller
         return View(model);
     }
 
-    public IActionResult Delete(int id)
+    public IActionResult DeleteText(int id)
     {
         TextElement? toDelete = _context.TextElements.Find(id);
         if (toDelete != null)

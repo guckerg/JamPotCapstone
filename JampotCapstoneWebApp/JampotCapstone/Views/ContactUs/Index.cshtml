@@ -22,7 +22,7 @@
                         <h1 class="display-6 title text-jampot-green">@text.Name</h1>
                         @if (User.IsInRole("Admin"))
                         {
-                            <a asp-action="Edit" asp-controller="Admin" asp-route-id="@text.TextElementId">
+                            <a asp-action="TextEdit" asp-controller="Admin" asp-route-id="@text.TextElementId">
                                 <i class="fa-regular fa-pen-to-square"></i>
                             </a>
                         }
