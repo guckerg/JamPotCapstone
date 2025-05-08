@@ -91,4 +91,56 @@ public class AdminController : Controller
         Product? model = id == 0 ? new Product() : _context.Products.Find(id);
         return View(model);
     }
+
+    [HttpPost]
+    public IActionResult ProductEdit(Product model)
+    {
+        if (ModelState.IsValid)
+        {
+            if (model.ProductId == 0)
+            {
+                _context.Products.Add(model);
+            }
+            else
+            {
+                _context.Products.Update(model);
+            }
+            if (_context.SaveChanges() > 0)
+            {
+                TempData["Message"] = "Element successfully updated.";
+                return RedirectToAction("Index");
+            }
+            else
+            {
+                TempData["Message"] = "Changes could not be saved. Please try again.";
+            }
+        }
+        else
+        {
+            TempData["Message"] = "There were data-entry errors. Please check the form.";
+            TempData["context"] = "danger";
+        }
+        return View(model);
+    }
+
+    public IActionResult DeleteProduct(int id)
+    {
+        Product? toDelete = _context.Products.Find(id);
+        if (toDelete != null)
+        {
+            _context.Products.Remove(toDelete);
+            if (_context.SaveChanges() > 0)
+            {
+                TempData["Message"] = "Product successfully deleted.";
+                TempData["context"] = "success";
+            }
+        }
+        else
+        {
+            TempData["Message"] = "The product was not found. Please try again.";
+            TempData["context"] = "danger";
+        }
+
+        return View("Index");
+    }
 }
