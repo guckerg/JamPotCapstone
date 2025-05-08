@@ -34,6 +34,7 @@
 });
 
 async function processPayment(token) {
+    console.log("token", token);
     try {
         const response = await fetch('/api/payment/process', {
             method: 'POST',

@@ -2,6 +2,8 @@
 using Microsoft.Extensions.Configuration;
 using System.Threading.Tasks;
 using JampotCapstone.Models;
+using Square;
+using Square.Payments;
 
 namespace JampotCapstone.Controllers
 {
@@ -18,21 +20,54 @@ namespace JampotCapstone.Controllers
         [HttpPost("process")]
         public async Task<IActionResult> ProcessPayment([FromBody] PaymentRequest request)
         {
-            // Retrieve credentials from configuration if needed
-            var squareAppId = _configuration["Square:ApplicationId"];
-            var squareLocationId = _configuration["Square:LocationId"];
+            var client = new SquareClient(
+                token: _configuration["Square:AccessToken"],
+                clientOptions: new ClientOptions
+                {
+                    BaseUrl = SquareEnvironment.Sandbox
+                }
+            );
 
-            // Here, integrate with Square's .NET SDK or perform an HTTP call to Square's Payments API.
-            // Below is a simplified placeholder for actual payment processing logic.
-            bool paymentSucceeded = true;  // Replace with real processing logic
+            try {
+                var response = await client.Payments.CreateAsync(
+                    new CreatePaymentRequest
+                    {
+                        SourceId = request.Token,  // your token from tokenization
+                        IdempotencyKey = Guid.NewGuid().ToString(),
+                        AmountMoney = new Money { Amount = request.Amount, Currency = Currency.Usd },
+                        Autocomplete = true,
+                        LocationId = _configuration["Square:LocationId"]
+                    }
+                );
 
-            if (paymentSucceeded)
-            {
-                return Ok(new { success = true, message = "Payment processed successfully." });
+                if (response.Payment != null)
+                {
+                    return Ok(new
+                    {
+                        success = true,
+                        message = "Payment processed successfully.",
+                        paymentId = response.Payment.Id
+                    });
+                } else
+                {
+                    string errorMessage = string.Join(", ", response.Errors);
+                    return BadRequest(new { success = false, error = errorMessage });
+                }
             }
-            else
+            catch (SquareApiException e)
             {
-                return BadRequest(new { success = false, error = "Payment processing failed." });
+                Console.WriteLine(e.Body);
+                Console.WriteLine(e.StatusCode);
+
+                // Access the parsed error objects
+                foreach (var error in e.Errors)
+                {
+                    Console.WriteLine($"Category: {error.Category}");
+                    Console.WriteLine($"Code: {error.Code}");
+                    Console.WriteLine($"Detail: {error.Detail}");
+                    Console.WriteLine($"Field: {error.Field}");
+                }
+                return BadRequest(new { success = false, error = "my bad return message" });
             }
         }
     }
