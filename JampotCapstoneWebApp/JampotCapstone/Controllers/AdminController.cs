@@ -88,6 +88,7 @@ public class AdminController : Controller
 
     public IActionResult ProductEdit(int id = 0)
     {
+        var categories = _context.Products.Select(c => new { c.ProductId, c.ProductCategory }).ToList();
         Product? model = id == 0 ? new Product() : _context.Products.Find(id);
         return View(model);
     }
