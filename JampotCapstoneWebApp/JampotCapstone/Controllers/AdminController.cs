@@ -17,7 +17,7 @@ public class AdminController : Controller
     {
         _context = ctx;
     }
-    
+
     public async Task<IActionResult> Index()
     {
         AdminViewModel model = new AdminViewModel
@@ -43,7 +43,8 @@ public class AdminController : Controller
             if (model.TextElementId == 0)
             {
                 _context.TextElements.Add(model);
-            } else
+            }
+            else
             {
                 _context.TextElements.Update(model);
             }
