@@ -72,10 +72,21 @@ public class AdminController : Controller
     }
 
     [HttpPost]
-    public async Task<IActionResult> EditPhoto(string filename, string pageId)
+    public async Task<IActionResult> EditPhoto(string filename, int pageId)
     {
         Models.File? model = await _context.Files.FirstOrDefaultAsync(f => f.FileName.ToLower().Contains(filename.ToLower()));
-        return RedirectToAction("Ask", "AboutUs", model);
+        Page currentPage = _context.Pages.Find(pageId);
+        model.Page = currentPage;
+        _context.Files.Update(model);
+        if (await _context.SaveChangesAsync() > 0)
+        {
+            TempData["Message"] = "Photo successfully changed.";
+        }
+        else
+        {
+            TempData["Message"] = "There was a problem saving the changes. Please try again.";
+        }
+        return RedirectToAction("Index");
     }
 
     public IActionResult Delete(int id)

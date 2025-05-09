@@ -22,12 +22,18 @@ namespace JampotCapstone.Controllers
 
         public async Task<IActionResult> Ask()
         {
-            int pageId = await _context.Pages.Where(p => p.PageTitle.ToLower() == "faq").Select(p => p.PageId).FirstOrDefaultAsync();
+            int pageId = await _context.Pages.Where(p => p.PageTitle.ToLower() == "faq")
+                .Select(p => p.PageId).FirstOrDefaultAsync();
+            Models.File photo = await _context.Files.FirstOrDefaultAsync(f => f.Page.PageId == pageId);
+            if (photo == null)
+            {
+                photo = await _context.Files.FirstOrDefaultAsync(f => f.FileName.ToLower().Contains("people"));
+            }
             ContentViewModel model = new ContentViewModel
             {
                 Textblocks = await _context.TextElements.
                     Where(t => t.Location.ToLower().Contains("faq")).ToListAsync(),
-                Photo = await _context.Files.FirstOrDefaultAsync(f => f.Page.PageId == pageId)
+                Photo = photo
             };
                 
             return View(model);
