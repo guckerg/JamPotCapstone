@@ -524,6 +524,12 @@ public class SeedData
                 PageTitle = "Careers",
             };
             ctx.Pages.Add(careersPage);
+
+            Page menu = new Page
+            {
+                PageTitle = "Menu",
+            };
+            ctx.Pages.Add(menu);
             #endregion
             
             ctx.SaveChanges();

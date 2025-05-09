@@ -65,22 +65,32 @@ public class AdminController : Controller
         return View(model);
     }
 
-    public IActionResult EditPhoto()
+    public IActionResult EditPhoto(int position)
     {
-        List<Page> pages = _context.Pages.ToList();
-        return View(pages);
+        EditViewModel model = new EditViewModel
+        {
+            Position = position,
+            Pages = _context.Pages.ToList(),
+        };
+        return View(model);
     }
 
     [HttpPost]
-    public async Task<IActionResult> EditPhoto(string filename, int pageId)
+    public async Task<IActionResult> EditPhoto(EditViewModel model)
     {
-        Models.File? model = await _context.Files.FirstOrDefaultAsync(f => f.FileName.ToLower().Contains(filename.ToLower()));
-        Page currentPage = _context.Pages.Find(pageId);
-        if (!model.Pages.Contains(currentPage))
+        Models.File? photo = await _context.Files.Where(f => f.FileName.ToLower().Contains(model.Key.ToLower()))
+            .Include(f => f.Pages)
+            .FirstOrDefaultAsync();
+        Page? currentPage = await _context.Pages.Include(p => p.Files).FirstOrDefaultAsync(p => p.PageId == model.Page);
+        if (currentPage.Files.Count > 0)
         {
-            model.Pages.Add(currentPage);
+            currentPage.Files[model.Position] = photo;
         }
-        _context.Files.Update(model);
+        else
+        {
+            currentPage.Files.Add(photo);
+        }
+        _context.Pages.Update(currentPage);
         if (await _context.SaveChangesAsync() > 0)
         {
             TempData["Message"] = "Photo successfully changed.";
