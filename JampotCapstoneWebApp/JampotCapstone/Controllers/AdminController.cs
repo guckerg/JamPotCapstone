@@ -76,7 +76,10 @@ public class AdminController : Controller
     {
         Models.File? model = await _context.Files.FirstOrDefaultAsync(f => f.FileName.ToLower().Contains(filename.ToLower()));
         Page currentPage = _context.Pages.Find(pageId);
-        model.Page = currentPage;
+        if (!model.Pages.Contains(currentPage))
+        {
+            model.Pages.Add(currentPage);
+        }
         _context.Files.Update(model);
         if (await _context.SaveChangesAsync() > 0)
         {

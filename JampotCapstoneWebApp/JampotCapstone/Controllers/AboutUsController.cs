@@ -22,12 +22,17 @@ namespace JampotCapstone.Controllers
 
         public async Task<IActionResult> Ask()
         {
-            int pageId = await _context.Pages.Where(p => p.PageTitle.ToLower() == "faq")
-                .Select(p => p.PageId).FirstOrDefaultAsync();
-            Models.File photo = await _context.Files.FirstOrDefaultAsync(f => f.Page.PageId == pageId);
-            if (photo == null)
+            Page? currentPage = await _context.Pages.Where(p => p.PageTitle.ToLower() == "faq")
+                .Include(p => p.Files)
+                .FirstOrDefaultAsync();
+            Models.File photo;
+            if (currentPage.Files.Count == 0)
             {
-                photo = await _context.Files.FirstOrDefaultAsync(f => f.FileName.ToLower().Contains("people"));
+                photo = await _context.Files.FirstOrDefaultAsync(f => f.FileName.ToLower().Contains("people")); // default image
+            }
+            else
+            {
+                photo = currentPage.Files.FirstOrDefault();                
             }
             ContentViewModel model = new ContentViewModel
             {

@@ -22,6 +22,21 @@ namespace JampotCapstone.Migrations
 
             MySqlModelBuilderExtensions.AutoIncrementColumns(modelBuilder);
 
+            modelBuilder.Entity("FilePage", b =>
+                {
+                    b.Property<int>("FilesFileID")
+                        .HasColumnType("int");
+
+                    b.Property<int>("PagesPageId")
+                        .HasColumnType("int");
+
+                    b.HasKey("FilesFileID", "PagesPageId");
+
+                    b.HasIndex("PagesPageId");
+
+                    b.ToTable("FilePage");
+                });
+
             modelBuilder.Entity("JampotCapstone.Models.AppUser", b =>
                 {
                     b.Property<string>("Id")
@@ -152,12 +167,7 @@ namespace JampotCapstone.Migrations
                         .IsRequired()
                         .HasColumnType("longtext");
 
-                    b.Property<int?>("PageId")
-                        .HasColumnType("int");
-
                     b.HasKey("FileID");
-
-                    b.HasIndex("PageId");
 
                     b.ToTable("Files");
                 });
@@ -452,6 +462,21 @@ namespace JampotCapstone.Migrations
                     b.ToTable("ProductProductType");
                 });
 
+            modelBuilder.Entity("FilePage", b =>
+                {
+                    b.HasOne("JampotCapstone.Models.File", null)
+                        .WithMany()
+                        .HasForeignKey("FilesFileID")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("JampotCapstone.Models.Page", null)
+                        .WithMany()
+                        .HasForeignKey("PagesPageId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
             modelBuilder.Entity("JampotCapstone.Models.Application", b =>
                 {
                     b.HasOne("JampotCapstone.Models.File", "ResumeFile")
@@ -459,15 +484,6 @@ namespace JampotCapstone.Migrations
                         .HasForeignKey("ResumeFileID");
 
                     b.Navigation("ResumeFile");
-                });
-
-            modelBuilder.Entity("JampotCapstone.Models.File", b =>
-                {
-                    b.HasOne("JampotCapstone.Models.Page", "Page")
-                        .WithMany()
-                        .HasForeignKey("PageId");
-
-                    b.Navigation("Page");
                 });
 
             modelBuilder.Entity("JampotCapstone.Models.Product", b =>
