@@ -67,7 +67,15 @@ public class AdminController : Controller
 
     public IActionResult EditPhoto()
     {
-        return View();
+        List<Page> pages = _context.Pages.ToList();
+        return View(pages);
+    }
+
+    [HttpPost]
+    public async Task<IActionResult> EditPhoto(string filename, string pageId)
+    {
+        Models.File? model = await _context.Files.FirstOrDefaultAsync(f => f.FileName.ToLower().Contains(filename.ToLower()));
+        return RedirectToAction("Ask", "AboutUs", model);
     }
 
     public IActionResult Delete(int id)

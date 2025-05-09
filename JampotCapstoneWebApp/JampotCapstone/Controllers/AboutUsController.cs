@@ -20,14 +20,14 @@ namespace JampotCapstone.Controllers
             return View(model);
         }
 
-        public async Task<IActionResult> Ask(string filename = "people.png")
+        public async Task<IActionResult> Ask()
         {
+            int pageId = await _context.Pages.Where(p => p.PageTitle.ToLower() == "faq").Select(p => p.PageId).FirstOrDefaultAsync();
             ContentViewModel model = new ContentViewModel
             {
                 Textblocks = await _context.TextElements.
                     Where(t => t.Location.ToLower().Contains("faq")).ToListAsync(),
-                Photo = await _context.Files
-                    .FirstOrDefaultAsync(f => f.FileName.ToLower().Contains(filename.ToLower()))
+                Photo = await _context.Files.FirstOrDefaultAsync(f => f.Page.PageId == pageId)
             };
                 
             return View(model);

@@ -152,7 +152,12 @@ namespace JampotCapstone.Migrations
                         .IsRequired()
                         .HasColumnType("longtext");
 
+                    b.Property<int?>("PageId")
+                        .HasColumnType("int");
+
                     b.HasKey("FileID");
+
+                    b.HasIndex("PageId");
 
                     b.ToTable("Files");
                 });
@@ -172,6 +177,23 @@ namespace JampotCapstone.Migrations
                     b.HasKey("JobTitleID");
 
                     b.ToTable("JobTitles");
+                });
+
+            modelBuilder.Entity("JampotCapstone.Models.Page", b =>
+                {
+                    b.Property<int>("PageId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    MySqlPropertyBuilderExtensions.UseMySqlIdentityColumn(b.Property<int>("PageId"));
+
+                    b.Property<string>("PageTitle")
+                        .IsRequired()
+                        .HasColumnType("longtext");
+
+                    b.HasKey("PageId");
+
+                    b.ToTable("Pages");
                 });
 
             modelBuilder.Entity("JampotCapstone.Models.Product", b =>
@@ -437,6 +459,15 @@ namespace JampotCapstone.Migrations
                         .HasForeignKey("ResumeFileID");
 
                     b.Navigation("ResumeFile");
+                });
+
+            modelBuilder.Entity("JampotCapstone.Models.File", b =>
+                {
+                    b.HasOne("JampotCapstone.Models.Page", "Page")
+                        .WithMany()
+                        .HasForeignKey("PageId");
+
+                    b.Navigation("Page");
                 });
 
             modelBuilder.Entity("JampotCapstone.Models.Product", b =>

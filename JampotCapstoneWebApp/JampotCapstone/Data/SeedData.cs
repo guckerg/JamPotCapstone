@@ -486,6 +486,47 @@ public class SeedData
 
             #endregion
             ctx.SaveChanges();
+
+            #region pages
+
+            Page home = new Page
+            {
+                PageTitle = "Home",
+            };
+            ctx.Pages.Add(home);
+            
+            Page ask = new Page
+            {
+                PageTitle = "FAQ",
+            };
+            ctx.Pages.Add(ask);
+
+            Page aboutUs = new Page
+            {
+                PageTitle = "About Us",
+            };
+            ctx.Pages.Add(aboutUs);
+            
+            Page contact = new Page
+            {
+                PageTitle = "Contact Us",
+            };
+            ctx.Pages.Add(contact);
+
+            Page catering = new Page
+            {
+                PageTitle = "Catering",
+            };
+            ctx.Pages.Add(catering);
+            
+            Page careersPage = new Page
+            {
+                PageTitle = "Careers",
+            };
+            ctx.Pages.Add(careersPage);
+            #endregion
+            
+            ctx.SaveChanges();
         }
     }
 }

@@ -1,5 +1,4 @@
-
-
+@model List<Page>
 @{
     ViewBag.Title = "Change Photo";
 }
@@ -7,9 +6,21 @@
 <h2>Change Photo</h2>
 <form method="post" asp-action="EditPhoto">
     <div class="row mb-3">
-        <label asp-for="FileName" class="col-sm-2 col-form-label">File Name</label>
+        <label for="filename" class="col-sm-2 col-form-label">File Name</label>
         <div class="col-sm-10">
-            <input type="text" class="form-control" name="filename">
+            <input type="text" class="form-control" id="filename" name="filename">
+        </div>
+    </div>
+    <div class="row p-2">
+        <label for="page" class="col-form-label col-md-3 mb-3">Category</label>
+        <div class="col-md-3">
+            <select name="pageId" id="page" class="form-select">
+                <option value="">select a page</option>
+                @foreach (Page p in Model)
+                {
+                    <option value="@p.PageId">@p.PageTitle</option>
+                }
+            </select>
         </div>
     </div>
     <button type="submit" class="btn btn-primary col-2">Save Changes</button>
