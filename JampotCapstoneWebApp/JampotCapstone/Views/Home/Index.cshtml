@@ -35,6 +35,12 @@
             </div>
             <div class="row">
                 <img class="landing-special" src="@Model.Special.FileName" alt="Description"/>
+                @if (User.IsInRole("Admin"))
+                {
+                    <a asp-action="EditPhoto" asp-controller="Admin" asp-route-id="@Model.Special.FileID">
+                        <i class="fa-regular fa-pen-to-square"></i>
+                    </a>
+                }
             </div>
         </div>
 
@@ -44,8 +50,17 @@
         {
             foreach (JampotCapstone.Models.File photo in Model.Photos)
             {
+                int startIndex = photo.FileName.IndexOf("/");
+                int endIndex = photo.FileName.IndexOf(".");
+                string filename = photo.FileName.Substring(startIndex, endIndex - startIndex);
                 <div class="col-sm-12 col-md-6">
-                    <img class="p-3 w-100" src="@photo.FileName" alt="Description"/>
+                    <img class="p-3 w-100" src="@photo.FileName" alt="@filename"/>
+                    @if (User.IsInRole("Admin"))
+                    {
+                        <a asp-action="EditPhoto" asp-controller="Admin" asp-route-id="@photo.FileID">
+                            <i class="fa-regular fa-pen-to-square"></i>
+                        </a>
+                    }
                 </div>
             }
         }

@@ -65,11 +65,11 @@ public class AdminController : Controller
         return View(model);
     }
 
-    public IActionResult EditPhoto(int position)
+    public IActionResult EditPhoto(int id)
     {
         EditViewModel model = new EditViewModel
         {
-            Position = position,
+            Position = id,
             Pages = _context.Pages.ToList(),
         };
         return View(model);
@@ -81,10 +81,13 @@ public class AdminController : Controller
         Models.File? photo = await _context.Files.Where(f => f.FileName.ToLower().Contains(model.Key.ToLower()))
             .Include(f => f.Pages)
             .FirstOrDefaultAsync();
-        Page? currentPage = await _context.Pages.Include(p => p.Files).FirstOrDefaultAsync(p => p.PageId == model.Page);
+        Page? currentPage = await _context.Pages.Include(p => p.Files)
+            .FirstOrDefaultAsync(p => p.PageId == model.Page);
         if (currentPage.Files.Count > 0)
         {
-            currentPage.Files[model.Position] = photo;
+            Models.File oldPhoto = currentPage.Files.Find(f => f.FileID == model.Position);
+            int index = currentPage.Files.IndexOf(oldPhoto);
+            currentPage.Files[index] = photo;
         }
         else
         {

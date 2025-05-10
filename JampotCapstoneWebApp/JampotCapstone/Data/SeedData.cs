@@ -92,6 +92,30 @@ public class SeedData
             };
             ctx.Files.Add(placeholder);
 
+            File electrolyte = new File
+            {
+                FileID = 8,
+                FileName = "/pics/ElectrolyteRefresh.png",
+                ContentType = "image/png"
+            };
+            ctx.Files.Add(electrolyte);
+
+            File garden = new File
+            {
+                FileID = 9,
+                FileName = "/pics/GardenWrap.png",
+                ContentType = "image/png"
+            };
+            ctx.Files.Add(garden);
+
+            File menu = new File
+            {
+                FileID = 10,
+                FileName = "/pics/Menu.png",
+                ContentType = "image/png"
+            };
+            ctx.Files.Add(menu);
+
             #endregion
 
             ctx.SaveChanges();
@@ -492,18 +516,25 @@ public class SeedData
             Page home = new Page
             {
                 PageTitle = "Home",
+                Files = [
+                    landing5, landing1, landing2, landing6, landing3
+                ]
             };
             ctx.Pages.Add(home);
             
             Page ask = new Page
             {
                 PageTitle = "FAQ",
+                Files = [
+                    landing6
+                ]
             };
             ctx.Pages.Add(ask);
 
             Page aboutUs = new Page
             {
                 PageTitle = "About Us",
+                Files = [landing1, landing6, landing2]
             };
             ctx.Pages.Add(aboutUs);
             
@@ -516,20 +547,22 @@ public class SeedData
             Page catering = new Page
             {
                 PageTitle = "Catering",
+                Files = [placeholder, electrolyte, garden]
             };
             ctx.Pages.Add(catering);
             
             Page careersPage = new Page
             {
-                PageTitle = "Careers",
+                PageTitle = "Careers"
             };
             ctx.Pages.Add(careersPage);
 
-            Page menu = new Page
+            Page menuPage = new Page
             {
                 PageTitle = "Menu",
+                Files = [menu]
             };
-            ctx.Pages.Add(menu);
+            ctx.Pages.Add(menuPage);
             #endregion
             
             ctx.SaveChanges();
