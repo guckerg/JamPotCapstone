@@ -26,7 +26,7 @@ public class AdminController : Controller
                 .Include(t => t.Location).ToListAsync(),
             Photos = await _context.Files.ToListAsync(),
             Products = await _context.Products.ToListAsync(),
-            Pages = await _context.Pages.Include(p => p.Files).ToListAsync(),
+            Pages = await _context.Pages.Where(p => p.Files.Count > 0).Include(p => p.Files).ToListAsync(),
         };
         return View(model);
     }

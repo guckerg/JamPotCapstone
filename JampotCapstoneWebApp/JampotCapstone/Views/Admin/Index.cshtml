@@ -58,13 +58,13 @@
             </table>
         }
         <h3 class="text-center text-jampot-yellow content">Photo Edit</h3>
-        <a asp-controller="Admin" asp-action="Add">Add New Photo</a>
+        <a asp-controller="Admin" asp-action="Add" class="btn btn-primary offset-8">Add New Photo</a>
         @if (Model.Photos.Count > 0)
         {
             foreach (Page p in Model.Pages)
             {
                 string title = p.PageTitle;
-                <h4>@title</h4>
+                <h4 class="text-jampot-green">@title</h4>
                 foreach (var photo in Model.Photos)
                 {
                     if (photo.Pages.Find(p => p.PageTitle == title) != null)
