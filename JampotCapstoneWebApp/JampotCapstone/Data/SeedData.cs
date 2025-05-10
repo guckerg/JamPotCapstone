@@ -358,159 +358,6 @@ public class SeedData
             ctx.Products.Add(p11);
             #endregion
             ctx.SaveChanges();
-
-            #region text
-
-            TextElement hours = new TextElement
-            {
-                Name = "Landing Hours",
-                Content =
-                    "7am-5pm Monday-Friday\n8am-5pm Saturday\n65-1158 Mamalahoa Hwy\nWaimea, HI 96743\n(808) 238-0671",
-                Location = "Home"
-            };
-            ctx.TextElements.Add(hours);
-
-            TextElement catering1 = new TextElement
-            {
-                Name = "FLAVORS",
-                Content =
-                    "At Jam Pot, we bring the vibrant flavors and warm hospitality of Jamaica to the heart of Hawaii. Whether you're planning a family luau, corporate gathering, or an island celebration, our catering services are designed to add a touch of sunshine and Caribbean flair to any event. Our signature Jerk Chicken Wrap is sure to delight your taste buds, perfectly complemented by the refreshing tropical notes of our Lycheehoo! special. From savory dishes to invigorating beverages, every bite and sip is crafted with love and the freshest ingredients.",
-                Location = "Catering"
-            };
-            ctx.TextElements.Add(catering1);
-
-            TextElement catering2 = new TextElement
-            {
-                Name = "OPTIONS",
-                Content =
-                    "No event is too big or small—our team will work closely with you to create a menu tailored to your needs. We specialize in offering a variety of wholesome and flavorful options, including wraps, bowls, patties, and salads. Every dish is made fresh, showcasing the authentic tastes of Jamaica while embracing the island spirit of Hawaii. With our commitment to quality and attention to detail, Jam Pot takes the stress out of catering so you can focus on making memories.",
-                Location = "Catering"
-            };
-            ctx.TextElements.Add(catering2);
-
-            TextElement catering3 = new TextElement
-            {
-                Name = "WHY JAMPOT?",
-                Content =
-                    "Let us help you make your next event unforgettable. Contact Jam Pot today to learn more about our catering packages, pricing, and availability. Together, we'll bring the essence of Jamaica and the aloha spirit to your celebration, making it truly special.",
-                Location = "Catering"
-            };
-            ctx.TextElements.Add(catering3);
-
-            TextElement about = new TextElement
-            {
-                Name = "About Us",
-                Content =
-                    "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.",
-                Location = "AboutUs"
-            };
-            ctx.TextElements.Add(about);
-
-            TextElement careers = new TextElement
-            {
-                Name = "Hiring Intro",
-                Content =
-                    "Jampot is currently offering career options for:\n[Line Cook], [Dishwasher]\nYou are welcome to apply for non-listed positions, but we may not reach out until those roles are needed.",
-                Location = "Careers"
-            };
-            ctx.TextElements.Add(careers);
-
-            TextElement contact1 = new TextElement
-            {
-                Name = "ADDRESS",
-                Content = "65-1158 Mamalahoa Hwy\nWaimea, HI 96743",
-                Location = "ContactUs"
-            };
-            ctx.TextElements.Add(contact1);
-
-            TextElement contact2 = new TextElement
-            {
-                Name = "PHONE",
-                Content = "(808) 238-0671",
-                Location = "ContactUs"
-            };
-            ctx.TextElements.Add(contact2);
-
-            TextElement contact3 = new TextElement
-            {
-                Name = "HOURS",
-                Content = "Monday-Friday: 7:00am-5:00pm\nSaturday: 8:00am-5:00pm",
-                Location = "ContactUs"
-            };
-            ctx.TextElements.Add(contact3);
-
-            TextElement faq1 = new TextElement
-            {
-                Name = "What are your holiday hours?",
-                Content =
-                    "We are closed on Thanksgiving Day and Christmas Day to allow our employees to spend time with their families.",
-                Location = "FAQ"
-            };
-            ctx.TextElements.Add(faq1);
-
-            TextElement faq2 = new TextElement
-            {
-                Name = "Do you offer delivery?",
-                Content = "No.",
-                Location = "FAQ"
-            };
-            ctx.TextElements.Add(faq2);
-
-            TextElement faq3 = new TextElement
-            {
-                Name = "Do you have any ongoing promotions or special offers?",
-                Content = "Check out our Specials page",
-                Location = "FAQ"
-            };
-            ctx.TextElements.Add(faq3);
-
-            TextElement faq4 = new TextElement
-            {
-                Name = "Do you offer online ordering?",
-                Content = "Yes! Check out our Order Page",
-                Location = "FAQ"
-            };
-            ctx.TextElements.Add(faq4);
-
-            TextElement faq5 = new TextElement
-            {
-                Name = "How do I apply for a job at this restaurant?",
-                Content = "You can fill out an application on our Careers page in the menu at the bottom of the page.",
-                Location = "FAQ"
-            };
-            ctx.TextElements.Add(faq5);
-
-            TextElement faq6 = new TextElement
-            {
-                Name = "Do you offer catering?",
-                Content = "Yes! Check out our Catering page in the menu above.",
-                Location = "FAQ"
-            };
-            ctx.TextElements.Add(faq6);
-            
-            ctx.SaveChanges();
-
-            #endregion
-
-            #region jobs
-
-            JobTitle lineCook = new JobTitle
-            {
-                JobTitleID = 1,
-                JobTitleName = "Line Cook",
-            };
-            ctx.JobTitles.Add(lineCook);
-
-            JobTitle dishwasher = new JobTitle
-            {
-                JobTitleID = 2,
-                JobTitleName = "Dishwasher",
-            };
-            ctx.JobTitles.Add(dishwasher);
-
-            #endregion
-            ctx.SaveChanges();
-
             #region pages
 
             Page home = new Page
@@ -564,6 +411,159 @@ public class SeedData
             };
             ctx.Pages.Add(menuPage);
             #endregion
+            #region text
+
+            TextElement hours = new TextElement
+            {
+                Name = "Landing Hours",
+                Content =
+                    "7am-5pm Monday-Friday\n8am-5pm Saturday\n65-1158 Mamalahoa Hwy\nWaimea, HI 96743\n(808) 238-0671",
+                Location = home
+            };
+            ctx.TextElements.Add(hours);
+
+            TextElement catering1 = new TextElement
+            {
+                Name = "FLAVORS",
+                Content =
+                    "At Jam Pot, we bring the vibrant flavors and warm hospitality of Jamaica to the heart of Hawaii. Whether you're planning a family luau, corporate gathering, or an island celebration, our catering services are designed to add a touch of sunshine and Caribbean flair to any event. Our signature Jerk Chicken Wrap is sure to delight your taste buds, perfectly complemented by the refreshing tropical notes of our Lycheehoo! special. From savory dishes to invigorating beverages, every bite and sip is crafted with love and the freshest ingredients.",
+                Location = catering
+            };
+            ctx.TextElements.Add(catering1);
+
+            TextElement catering2 = new TextElement
+            {
+                Name = "OPTIONS",
+                Content =
+                    "No event is too big or small—our team will work closely with you to create a menu tailored to your needs. We specialize in offering a variety of wholesome and flavorful options, including wraps, bowls, patties, and salads. Every dish is made fresh, showcasing the authentic tastes of Jamaica while embracing the island spirit of Hawaii. With our commitment to quality and attention to detail, Jam Pot takes the stress out of catering so you can focus on making memories.",
+                Location = catering
+            };
+            ctx.TextElements.Add(catering2);
+
+            TextElement catering3 = new TextElement
+            {
+                Name = "WHY JAMPOT?",
+                Content =
+                    "Let us help you make your next event unforgettable. Contact Jam Pot today to learn more about our catering packages, pricing, and availability. Together, we'll bring the essence of Jamaica and the aloha spirit to your celebration, making it truly special.",
+                Location = catering
+            };
+            ctx.TextElements.Add(catering3);
+
+            TextElement about = new TextElement
+            {
+                Name = "About Us",
+                Content =
+                    "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.",
+                Location = aboutUs
+            };
+            ctx.TextElements.Add(about);
+
+            TextElement careers = new TextElement
+            {
+                Name = "Hiring Intro",
+                Content =
+                    "Jampot is currently offering career options for:\n[Line Cook], [Dishwasher]\nYou are welcome to apply for non-listed positions, but we may not reach out until those roles are needed.",
+                Location = careersPage
+            };
+            ctx.TextElements.Add(careers);
+
+            TextElement contact1 = new TextElement
+            {
+                Name = "ADDRESS",
+                Content = "65-1158 Mamalahoa Hwy\nWaimea, HI 96743",
+                Location = contact
+            };
+            ctx.TextElements.Add(contact1);
+
+            TextElement contact2 = new TextElement
+            {
+                Name = "PHONE",
+                Content = "(808) 238-0671",
+                Location = contact
+            };
+            ctx.TextElements.Add(contact2);
+
+            TextElement contact3 = new TextElement
+            {
+                Name = "HOURS",
+                Content = "Monday-Friday: 7:00am-5:00pm\nSaturday: 8:00am-5:00pm",
+                Location = contact
+            };
+            ctx.TextElements.Add(contact3);
+
+            TextElement faq1 = new TextElement
+            {
+                Name = "What are your holiday hours?",
+                Content =
+                    "We are closed on Thanksgiving Day and Christmas Day to allow our employees to spend time with their families.",
+                Location = ask
+            };
+            ctx.TextElements.Add(faq1);
+
+            TextElement faq2 = new TextElement
+            {
+                Name = "Do you offer delivery?",
+                Content = "No.",
+                Location = ask
+            };
+            ctx.TextElements.Add(faq2);
+
+            TextElement faq3 = new TextElement
+            {
+                Name = "Do you have any ongoing promotions or special offers?",
+                Content = "Check out our Specials page",
+                Location = ask
+            };
+            ctx.TextElements.Add(faq3);
+
+            TextElement faq4 = new TextElement
+            {
+                Name = "Do you offer online ordering?",
+                Content = "Yes! Check out our Order Page",
+                Location = ask
+            };
+            ctx.TextElements.Add(faq4);
+
+            TextElement faq5 = new TextElement
+            {
+                Name = "How do I apply for a job at this restaurant?",
+                Content = "You can fill out an application on our Careers page in the menu at the bottom of the page.",
+                Location = ask
+            };
+            ctx.TextElements.Add(faq5);
+
+            TextElement faq6 = new TextElement
+            {
+                Name = "Do you offer catering?",
+                Content = "Yes! Check out our Catering page in the menu above.",
+                Location = ask
+            };
+            ctx.TextElements.Add(faq6);
+            
+            ctx.SaveChanges();
+
+            #endregion
+
+            #region jobs
+
+            JobTitle lineCook = new JobTitle
+            {
+                JobTitleID = 1,
+                JobTitleName = "Line Cook",
+            };
+            ctx.JobTitles.Add(lineCook);
+
+            JobTitle dishwasher = new JobTitle
+            {
+                JobTitleID = 2,
+                JobTitleName = "Dishwasher",
+            };
+            ctx.JobTitles.Add(dishwasher);
+
+            #endregion
+            ctx.SaveChanges();
+
+          
             
             ctx.SaveChanges();
         }

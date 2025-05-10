@@ -16,7 +16,7 @@ namespace JampotCapstone.Controllers
         }
         public IActionResult Index()
         {
-            TextElement? model = _context.TextElements.FirstOrDefault(t => t.Location.ToLower().Contains("about"));
+            TextElement? model = _context.TextElements.FirstOrDefault(t => t.Location.PageTitle.ToLower().Contains("about"));
             return View(model);
         }
 
@@ -37,7 +37,7 @@ namespace JampotCapstone.Controllers
             ContentViewModel model = new ContentViewModel
             {
                 Textblocks = await _context.TextElements.
-                    Where(t => t.Location.ToLower().Contains("faq")).ToListAsync(),
+                    Where(t => t.Location.PageTitle.ToLower().Contains("faq")).ToListAsync(),
                 Photo = photo
             };
                 

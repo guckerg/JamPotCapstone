@@ -22,7 +22,8 @@ public class AdminController : Controller
     {
         AdminViewModel model = new AdminViewModel
         {
-            Textblocks = await _context.TextElements.OrderBy(t => t.Location).ToListAsync(),
+            Textblocks = await _context.TextElements.OrderBy(t => t.Location)
+                .Include(t => t.Location).ToListAsync(),
             Photos = await _context.Files.ToListAsync(),
             Products = await _context.Products.ToListAsync()
         };
@@ -31,6 +32,7 @@ public class AdminController : Controller
 
     public IActionResult Edit(int id = 0)
     {
+        ViewBag.Pages = _context.Pages.ToList();
         TextElement? model = id == 0 ? new TextElement() : _context.TextElements.Find(id);
         return View(model);
     }
@@ -42,6 +44,8 @@ public class AdminController : Controller
         {
             if (model.TextElementId == 0)
             {
+                int id = model.PageId;
+                model.Location = _context.Pages.Find(id);
                 _context.TextElements.Add(model);
             } else
             {
@@ -123,6 +127,6 @@ public class AdminController : Controller
             TempData["context"] = "danger";
         }
 
-        return View("Index");
+        return RedirectToAction("Index");
     }
 }
