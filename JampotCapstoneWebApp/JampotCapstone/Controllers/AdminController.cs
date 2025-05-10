@@ -24,7 +24,8 @@ public class AdminController : Controller
         {
             Textblocks = await _context.TextElements.OrderBy(t => t.Location).ToListAsync(),
             Photos = await _context.Files.ToListAsync(),
-            Products = await _context.Products.ToListAsync()
+            Products = await _context.Products.ToListAsync(),
+            Pages = await _context.Pages.Include(p => p.Files).ToListAsync(),
         };
         return View(model);
     }
@@ -103,6 +104,34 @@ public class AdminController : Controller
             TempData["Message"] = "There was a problem saving the changes. Please try again.";
         }
         return RedirectToAction("Index");
+    }
+
+    public IActionResult Add()
+    {
+        return View();
+    }
+
+    [HttpPost]
+    public async Task<IActionResult> Add(Models.File model)
+    {
+        if (ModelState.IsValid)
+        {
+            _context.Files.Add(model);
+            if (await _context.SaveChangesAsync() > 0)
+            {
+                TempData["Message"] = "File successfully added.";
+                return RedirectToAction("Index");
+            }
+            else
+            {
+                ModelState.AddModelError("", "There was a problem saving the file. Please try again.");
+            }
+        }
+        else
+        {
+            ModelState.AddModelError("", "There were data-entry errors. Please check the form.");
+        }
+        return View(model);
     }
 
     public IActionResult Delete(int id)
