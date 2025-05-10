@@ -1,56 +1,62 @@
-﻿@{
+﻿@using Microsoft.EntityFrameworkCore.Infrastructure
+@model CateringViewModel
+@{
     ViewData["Title"] = "Catering";
 }
 
 <div class="text-center">
-    <h1 class="display-3 title">CATERING</h1>
+    <!--Make Title "Zinjaro" Font-->
+    <h1 class="display-3 title text-jampot-green">CATERING</h1>
     <div class="container">
         <!--Row of placeholder images-->
         <div class="row">
-            <div class="col-md">
-                <img src="/pics/DesertBowl.png" class="img-fluid responsiveSquare" alt="Desert Bowl">
-            </div>
-            <div class="col-md">
+            @if (Model.Photos.Count > 0)
+            {
+                foreach(JampotCapstone.Models.File photo in Model.Photos)
+                {
+                    int startIndex = photo.FileName.IndexOf("/");
+                    int endIndex = photo.FileName.IndexOf(".");
+                    string filename = photo.FileName.Substring(startIndex, endIndex - startIndex);
+                    <div class="col-md">
+                        <img src="@photo.FileName" class="img-fluid responsiveSquare" alt="@filename">
+                        @if (User.IsInRole("Admin"))
+                        {
+                            <a asp-controller="Admin" asp-action="EditPhoto" asp-route-id="@photo.FileID">
+                                <i class="fa-regular fa-pen-to-square"></i>
+                            </a>
+                        }
+                    </div>
+                }
+            }
+            @*<div class="col-md">
                 <img src="/pics/ElectrolyteRefresh.png" class="img-fluid responsiveSquare" alt="Electrolyte Refresh Drink">
             </div>
             <div class="col-md">
                 <img src="/pics/GardenWrap.png" class="img-fluid responsiveSquare" alt="Vegan Garden Wrap">
-            </div>
+            </div>*@
         </div>
         <!--Text elements with features and catering details-->
         <div class="row">
-            <div class="col-lg">
-                <h1 class="display-6 title">WHAT WE OFFER</h1>
-                <p class="bodyText">
-                    At Jam Pot, we bring the vibrant flavors and warm hospitality of Jamaica to the heart of Hawaii.
-                    Whether you're planning a family luau, corporate gathering, or an island celebration, our
-                    catering services are designed to add a touch of sunshine and Caribbean flair to any event.
-                    Our signature Jerk Chicken Wrap is sure to delight your taste buds, perfectly complemented
-                    by the refreshing tropical notes of our Lycheehoo! special. From savory dishes to invigorating
-                    beverages, every bite and sip is crafted with love and the freshest ingredients.
-                </p>
-                <div class="text-success bodyText">
-                    Now catering HOT and COLD food for your next event!
+            @if(Model.Textblocks.Count > 0)
+            {
+                foreach (TextElement col in Model.Textblocks)
+                {
+                <div class="col-lg">
+                    <h1 class="display-6 title text-jampot-green">@col.Name</h1>
+                    <p class="bodyText">
+                        @{ string[] paragraphs = col.Content.Split("\n");}
+                        @foreach(string par in paragraphs)
+                        {
+                            <br/>@par
+                        }
+                        @if (User.IsInRole("Admin"))
+                        {
+                            <a asp-action="Edit" asp-controller="Admin" asp-route-id="@col.TextElementId"><i class="fa-regular fa-pen-to-square"></i></a>
+                        }
+                    </p>
                 </div>
-            </div>
-            <div class="col-lg">
-                <h1 class="display-6 title">OPTIONS</h1>
-                <p class="bodyText">
-                    No event is too big or small—our team will work closely with you to create a menu tailored to
-                    your needs. We specialize in offering a variety of wholesome and flavorful options, including
-                    wraps, bowls, patties, and salads. Every dish is made fresh, showcasing the authentic tastes of
-                    Jamaica while embracing the island spirit of Hawaii. With our commitment to quality and attention
-                    to detail, Jam Pot takes the stress out of catering so you can focus on making memories.
-                </p>
-            </div>
-            <div class="col-lg">
-                <h1 class="display-6 title">WHY JAM POT?</h1>
-                <p class="bodyText">
-                    Let us help you make your next event unforgettable. Contact Jam Pot today to learn more about
-                    our catering packages, pricing, and availability. Together, we'll bring the essence of Jamaica
-                    and the aloha spirit to your celebration, making it truly special.
-                </p>
-            </div>
+                }
+            }
         </div>
         <div class="nav-item row">
             <a class="btn btn-warning text-dark fs-4 col-lg-5 mx-auto mb-5 title" asp-area="" asp-controller="ContactUs" asp-action="Index">CONTACT US</a>

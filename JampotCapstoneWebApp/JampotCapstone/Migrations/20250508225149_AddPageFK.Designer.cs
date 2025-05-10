@@ -4,6 +4,7 @@ using JampotCapstone.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace JampotCapstone.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250508225149_AddPageFK")]
+    partial class AddPageFK
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -21,21 +24,6 @@ namespace JampotCapstone.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 64);
 
             MySqlModelBuilderExtensions.AutoIncrementColumns(modelBuilder);
-
-            modelBuilder.Entity("FilePage", b =>
-                {
-                    b.Property<int>("FilesFileID")
-                        .HasColumnType("int");
-
-                    b.Property<int>("PagesPageId")
-                        .HasColumnType("int");
-
-                    b.HasKey("FilesFileID", "PagesPageId");
-
-                    b.HasIndex("PagesPageId");
-
-                    b.ToTable("FilePage");
-                });
 
             modelBuilder.Entity("JampotCapstone.Models.AppUser", b =>
                 {
@@ -167,7 +155,12 @@ namespace JampotCapstone.Migrations
                         .IsRequired()
                         .HasColumnType("longtext");
 
+                    b.Property<int?>("PageId")
+                        .HasColumnType("int");
+
                     b.HasKey("FileID");
+
+                    b.HasIndex("PageId");
 
                     b.ToTable("Files");
                 });
@@ -283,16 +276,15 @@ namespace JampotCapstone.Migrations
                         .IsRequired()
                         .HasColumnType("longtext");
 
+                    b.Property<string>("Location")
+                        .IsRequired()
+                        .HasColumnType("longtext");
+
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasColumnType("longtext");
 
-                    b.Property<int>("PageId")
-                        .HasColumnType("int");
-
                     b.HasKey("TextElementId");
-
-                    b.HasIndex("PageId");
 
                     b.ToTable("TextElements");
                 });
@@ -463,21 +455,6 @@ namespace JampotCapstone.Migrations
                     b.ToTable("ProductProductType");
                 });
 
-            modelBuilder.Entity("FilePage", b =>
-                {
-                    b.HasOne("JampotCapstone.Models.File", null)
-                        .WithMany()
-                        .HasForeignKey("FilesFileID")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("JampotCapstone.Models.Page", null)
-                        .WithMany()
-                        .HasForeignKey("PagesPageId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-                });
-
             modelBuilder.Entity("JampotCapstone.Models.Application", b =>
                 {
                     b.HasOne("JampotCapstone.Models.File", "ResumeFile")
@@ -485,6 +462,15 @@ namespace JampotCapstone.Migrations
                         .HasForeignKey("ResumeFileID");
 
                     b.Navigation("ResumeFile");
+                });
+
+            modelBuilder.Entity("JampotCapstone.Models.File", b =>
+                {
+                    b.HasOne("JampotCapstone.Models.Page", "Page")
+                        .WithMany()
+                        .HasForeignKey("PageId");
+
+                    b.Navigation("Page");
                 });
 
             modelBuilder.Entity("JampotCapstone.Models.Product", b =>
@@ -496,17 +482,6 @@ namespace JampotCapstone.Migrations
                         .IsRequired();
 
                     b.Navigation("ProductPhoto");
-                });
-
-            modelBuilder.Entity("JampotCapstone.Models.TextElement", b =>
-                {
-                    b.HasOne("JampotCapstone.Models.Page", "Location")
-                        .WithMany()
-                        .HasForeignKey("PageId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Location");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
