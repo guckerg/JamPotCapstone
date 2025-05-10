@@ -16,7 +16,11 @@ namespace JampotCapstone.Controllers
         }
         public IActionResult Index()
         {
-            return View();
+            Page currentPage = _context.Pages.Where(p => p.PageTitle.ToLower().Contains("menu"))
+                .Include(p => p.Files)
+                .FirstOrDefault();
+            List<Models.File> photos = currentPage.Files;
+            return View(photos);
         }
 
         public async Task<IActionResult> Specials()
