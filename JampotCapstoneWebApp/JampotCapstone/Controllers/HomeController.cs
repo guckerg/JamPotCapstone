@@ -21,6 +21,7 @@ public class HomeController : Controller
     public async Task<IActionResult> Index()
     {
         HomeViewModel model = new HomeViewModel();
+        model.Hours = await _context.TextElements.SingleOrDefaultAsync(t => t.Location.ToLower().Contains("home"));
         model.Map = await _context.Files.Where(
             m => m.FileName.Contains("map") && m.FileName.Contains("landing")).FirstOrDefaultAsync();
         model.Special = await _context.Files.Where(

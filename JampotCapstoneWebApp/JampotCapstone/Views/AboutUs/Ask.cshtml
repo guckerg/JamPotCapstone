@@ -1,43 +1,49 @@
+@model List<TextElement>
 @{
-    ViewBag.Title = "Frequently Asked Questions";
-    Layout = "_Layout";
+    ViewBag.Title = "FAQs";
 }
 
-<h2 class="text-jampot-yellow">Frequently Asked Questions</h2>
+<h2 class="title text-jampot-yellow">FAQS</h2>
+<span class="text-@TempData["context"]">@TempData["Message"]</span>
 <div class="row">
     <div id="faqs" class="p-5 col-lg">
-        <details class="p-3">
-            <summary class="h5 text-jampot-green fw-bold">What are your holiday hours?</summary>
-            <p class="text-jampot-yellow fs-5">We are closed on Thanksgiving Day and Christmas Day to allow our employees to spend time with their families.</p>
-        </details>
-    
-        <details class="p-3">
-            <summary class="h5 text-jampot-green fw-bold">Do you offer delivery?</summary>
-            <p class="text-jampot-yellow fs-5">No.</p>
-        </details>
-    
-        <details class="p-3">
-            <summary class="h5 text-jampot-green fw-bold">Do you have any ongoing promotions or special offers?</summary>
-            <p class="text-jampot-yellow fs-5"> Check out our <a href="/Menu/Specials">Specials</a> page here!</p>
-        </details>
-    
-        <details class="p-3">
-            <summary class="h5 text-jampot-green fw-bold">Do you offer online ordering?</summary>
-            <p class="text-jampot-yellow fs-5">Yes! Check out our <a href="/Order/Index">Order Page</a> here!</p>
-        </details>
-    
-        <details class="p-3">
-            <summary class="h5 text-jampot-green fw-bold">How do I apply for a job at this restaurant?</summary>
-            <p class="text-jampot-yellow fs-5">You can fill out an application on our <a href="/Careers">Careers</a> page here.</p>
-        </details>
-    
-        <details class="p-3">
-            <summary class="h5 text-jampot-green fw-bold">Do you offer catering?</summary>
-            <p class="text-jampot-yellow fs-5">Yes! Check out our <a href="/Catering">Catering</a> page here.</p>
-        </details>
+        @if(Model.Count > 0)
+        {
+            @foreach (TextElement faq in Model)
+            {
+                <div class="row">
+                <details class="p-3 col">
+                    <summary class="h5 text-jampot-green fw-bold">@faq.Name</summary>
+                    <p class="text-jampot-yellow fs-5">
+                        @{
+                            string[] paragraphs = faq.Content.Split("\n");
+                        }
+                        @foreach(string par in paragraphs)
+                        {
+                            <br/>@par
+                        }
+                        
+                    </p>
+                </details>
+                @if(User.IsInRole("Admin"))
+                {
+                    <a asp-action="Edit" asp-controller="Admin" asp-route-id="@faq.TextElementId" class="col-1">
+                        <i class="fa-regular fa-pen-to-square"></i>
+                    </a>
+                    <a asp-action="Delete" asp-controller="Admin" asp-route-id="@faq.TextElementId" class="col-1">
+                        <i class="fa-solid fa-trash-can text-danger"></i>
+                    </a>
+                }
+                </div>
+            }
+        }
     </div>   
     <div class="col-lg" id="pic">
         <img src="/pics/People.png" alt="happy people" class="photo"/>
+        @if(User.IsInRole("Admin"))
+        {
+            <a class="btn btn-primary m-5" asp-action="Edit" asp-controller="Admin">Add New FAQ</a>
+        }
     </div>
 </div>
 

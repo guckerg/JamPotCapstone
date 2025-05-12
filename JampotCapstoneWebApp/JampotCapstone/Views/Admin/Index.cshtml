@@ -1,0 +1,65 @@
+@model AdminViewModel
+@{
+    ViewBag.Title = "Admin Management";
+}
+
+<h2 class="title text-jampot-green">ADMIN MANAGEMENT</h2>
+<span class="text-success">@TempData["Message"]</span>
+@if (Model != null)
+{
+    <hr class="yellowLine"/>
+    <div>
+        <h3 class="text-jampot-yellow text-center content">Editable Text Blocks</h3>
+        @if (Model.Textblocks.Count > 0)
+        {
+            <table class="table table-striped table-bordered table-dark">
+                <thead>
+                <tr>
+                    <th>Title</th>
+                    <th>Name of Page</th>
+                    <th>Edit</th>
+                    <th>Delete</th>
+                    <th>Create</th>
+                </tr>
+                </thead>
+                <tbody>
+                @{
+                    List<string> locations = [];
+                }
+                @foreach (TextElement text in Model.Textblocks)
+                {
+                    <tr>
+                        <td>@text.Name</td>
+                        <td>@text.Location</td>
+                        <td>
+                            <a asp-action="Edit" asp-controller="Admin" asp-route-id="@text.TextElementId">
+                                <i class="fa-regular fa-pen-to-square"></i>
+                            </a>
+                        </td>
+                        @if (text.Location.ToLower().Contains("faq"))
+                        {
+                            <td>
+                                <a asp-action="Delete" asp-controller="Admin" asp-route-id="@text.TextElementId">
+                                    <i class="fa-solid fa-trash-can text-danger"></i>
+                                </a>
+                            </td>
+                            <td>
+                                <a asp-action="Edit" asp-controller="Admin" class="btn btn-primary">Add New</a>
+                            </td>
+                        }
+                        else
+                        {
+                            <td></td>
+                            <td></td>
+                        }
+                    </tr>
+                }
+                </tbody>
+            </table>
+        }
+        <h3 class="text-center text-jampot-yellow content">Photo Edit</h3>
+        <h3 class="text-jampot-yellow text-center content">Products</h3>
+        @*I set up the view model to include all of the items (I could think of) that will need to be edited, 
+                but I haven't printed them to the page, as the edit pages haven't been set up yet*@
+    </div>
+}

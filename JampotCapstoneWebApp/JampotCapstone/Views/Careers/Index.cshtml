@@ -4,15 +4,25 @@
 }
 
 <div class="text-center">
-    <h1 class="display-4 title">CAREERS</h1>
+    <h1 class="display-4 title text-jampot-green">CAREERS</h1>
     <div class="container">
         <div class="row">
             <!--Header Statement for Careers-->
             <div class="col-lg">
                 <p class="bodyText">
-                    Jampot is currently offering career options for: <br />
-                    [Line Cook], [Dishwasher] <br />
-                    You are welcome to apply for non-listed positions, but we may not reach out until those roles are needed.
+                    @if(ViewBag.Text != null)
+                    {
+                        string[] paragraphs = ViewBag.Text.Content.Split("\n");
+                        @foreach (string par in paragraphs)
+                        {
+                            <br/>@par
+                        }
+
+                        if (User.IsInRole("Admin"))
+                        {
+                            <a asp-action="Edit" asp-controller="Admin" asp-route-id="@ViewBag.Text.TextElementId"><i class="fa-regular fa-pen-to-square"></i></a>
+                        }
+                    }
                 </p>
                 @if (TempData["SuccessMessage"] != null)
                 {

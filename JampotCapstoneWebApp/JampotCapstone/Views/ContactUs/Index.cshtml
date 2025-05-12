@@ -4,7 +4,7 @@
 }
 
 <div class="text-center">
-    <h1 class="display-4 title">CONTACT US</h1>
+    <h1 class="display-4 title text-jampot-green">CONTACT US</h1>
     @if (TempData["SuccessMessage"] != null)
     {
         <div class="alert alert-success">
@@ -13,31 +13,31 @@
     }
     <div class="container">
         <div class="row">
-            <!--Address/Mailing Details-->
-            <div class="col-lg">
-                <h1 class="display-6 title">ADDRESS</h1>
-                <p class="bodyText">
-                    65-1158 Mamalahoa Hwy <br />
-                    Waimea, HI 96743 <br />
-                </p>
-            </div>
-            <!--Phone/Call Details-->
-            <div class="col-lg">
-                <h1 class="display-6 title">PHONE</h1>
-                <p class="bodyText">
-                    (808) 238 - 0671 <br />
-                </p>
-            </div>
-            <!--Weekly Business Hours Details-->
-            <div class="col-lg">
-                <h1 class="display-6 title">HOURS</h1>
-                <p class="bodyText">
-                    Monday - Tuesday: 7:00am - 5:00pm <br />
-                    Wednesday: 8:00am - 5:00pm <br />
-                    Thursday - Friday: 7:00am - 5:00pm <br />
-                    Saturday: 8:00am - 5:00pm <br />
-                </p>
-            </div>
+            @if(ViewBag.Contact != null)
+            {
+                foreach (TextElement text in ViewBag.Contact)
+                {
+                    <!--Address/Mailing Details-->
+                    <div class="col-lg">
+                        <h1 class="display-6 title text-jampot-green">@text.Name</h1>
+                        @if (User.IsInRole("Admin"))
+                        {
+                            <a asp-action="Edit" asp-controller="Admin" asp-route-id="@text.TextElementId">
+                                <i class="fa-regular fa-pen-to-square"></i>
+                            </a>
+                        }
+                        @{
+                            string[] paragraphs = text.Content.Split("\n");
+                        }
+                        <p class="bodyText">
+                        @foreach(string par in paragraphs)
+                        {
+                                <br/>@par
+                        }
+                        </p>
+                    </div>    
+                }
+            }
         </div>
         <div class="row">
             <p class="bodyText">Send Us A Message!</p>
