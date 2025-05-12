@@ -92,6 +92,30 @@ public class SeedData
             };
             ctx.Files.Add(placeholder);
 
+            File electrolyte = new File
+            {
+                FileID = 8,
+                FileName = "/pics/ElectrolyteRefresh.png",
+                ContentType = "image/png"
+            };
+            ctx.Files.Add(electrolyte);
+
+            File garden = new File
+            {
+                FileID = 9,
+                FileName = "/pics/GardenWrap.png",
+                ContentType = "image/png"
+            };
+            ctx.Files.Add(garden);
+
+            File menu = new File
+            {
+                FileID = 10,
+                FileName = "/pics/Menu.png",
+                ContentType = "image/png"
+            };
+            ctx.Files.Add(menu);
+
             #endregion
 
             ctx.SaveChanges();
@@ -334,7 +358,59 @@ public class SeedData
             ctx.Products.Add(p11);
             #endregion
             ctx.SaveChanges();
+            #region pages
 
+            Page home = new Page
+            {
+                PageTitle = "Home",
+                Files = [
+                    landing5, landing1, landing2, landing6, landing3
+                ]
+            };
+            ctx.Pages.Add(home);
+            
+            Page ask = new Page
+            {
+                PageTitle = "FAQ",
+                Files = [
+                    landing6
+                ]
+            };
+            ctx.Pages.Add(ask);
+
+            Page aboutUs = new Page
+            {
+                PageTitle = "About Us",
+                Files = [landing1, landing6, landing2]
+            };
+            ctx.Pages.Add(aboutUs);
+            
+            Page contact = new Page
+            {
+                PageTitle = "Contact Us",
+            };
+            ctx.Pages.Add(contact);
+
+            Page catering = new Page
+            {
+                PageTitle = "Catering",
+                Files = [placeholder, electrolyte, garden]
+            };
+            ctx.Pages.Add(catering);
+            
+            Page careersPage = new Page
+            {
+                PageTitle = "Careers"
+            };
+            ctx.Pages.Add(careersPage);
+
+            Page menuPage = new Page
+            {
+                PageTitle = "Menu",
+                Files = [menu]
+            };
+            ctx.Pages.Add(menuPage);
+            #endregion
             #region text
 
             TextElement hours = new TextElement
@@ -342,7 +418,7 @@ public class SeedData
                 Name = "Landing Hours",
                 Content =
                     "7am-5pm Monday-Friday\n8am-5pm Saturday\n65-1158 Mamalahoa Hwy\nWaimea, HI 96743\n(808) 238-0671",
-                Location = "Home"
+                Location = home
             };
             ctx.TextElements.Add(hours);
 
@@ -351,7 +427,7 @@ public class SeedData
                 Name = "FLAVORS",
                 Content =
                     "At Jam Pot, we bring the vibrant flavors and warm hospitality of Jamaica to the heart of Hawaii. Whether you're planning a family luau, corporate gathering, or an island celebration, our catering services are designed to add a touch of sunshine and Caribbean flair to any event. Our signature Jerk Chicken Wrap is sure to delight your taste buds, perfectly complemented by the refreshing tropical notes of our Lycheehoo! special. From savory dishes to invigorating beverages, every bite and sip is crafted with love and the freshest ingredients.",
-                Location = "Catering"
+                Location = catering
             };
             ctx.TextElements.Add(catering1);
 
@@ -360,7 +436,7 @@ public class SeedData
                 Name = "OPTIONS",
                 Content =
                     "No event is too big or small—our team will work closely with you to create a menu tailored to your needs. We specialize in offering a variety of wholesome and flavorful options, including wraps, bowls, patties, and salads. Every dish is made fresh, showcasing the authentic tastes of Jamaica while embracing the island spirit of Hawaii. With our commitment to quality and attention to detail, Jam Pot takes the stress out of catering so you can focus on making memories.",
-                Location = "Catering"
+                Location = catering
             };
             ctx.TextElements.Add(catering2);
 
@@ -369,7 +445,7 @@ public class SeedData
                 Name = "WHY JAMPOT?",
                 Content =
                     "Let us help you make your next event unforgettable. Contact Jam Pot today to learn more about our catering packages, pricing, and availability. Together, we'll bring the essence of Jamaica and the aloha spirit to your celebration, making it truly special.",
-                Location = "Catering"
+                Location = catering
             };
             ctx.TextElements.Add(catering3);
 
@@ -378,7 +454,7 @@ public class SeedData
                 Name = "About Us",
                 Content =
                     "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.",
-                Location = "AboutUs"
+                Location = aboutUs
             };
             ctx.TextElements.Add(about);
 
@@ -387,7 +463,7 @@ public class SeedData
                 Name = "Hiring Intro",
                 Content =
                     "Jampot is currently offering career options for:\n[Line Cook], [Dishwasher]\nYou are welcome to apply for non-listed positions, but we may not reach out until those roles are needed.",
-                Location = "Careers"
+                Location = careersPage
             };
             ctx.TextElements.Add(careers);
 
@@ -395,7 +471,7 @@ public class SeedData
             {
                 Name = "ADDRESS",
                 Content = "65-1158 Mamalahoa Hwy\nWaimea, HI 96743",
-                Location = "ContactUs"
+                Location = contact
             };
             ctx.TextElements.Add(contact1);
 
@@ -403,7 +479,7 @@ public class SeedData
             {
                 Name = "PHONE",
                 Content = "(808) 238-0671",
-                Location = "ContactUs"
+                Location = contact
             };
             ctx.TextElements.Add(contact2);
 
@@ -411,7 +487,7 @@ public class SeedData
             {
                 Name = "HOURS",
                 Content = "Monday-Friday: 7:00am-5:00pm\nSaturday: 8:00am-5:00pm",
-                Location = "ContactUs"
+                Location = contact
             };
             ctx.TextElements.Add(contact3);
 
@@ -420,7 +496,7 @@ public class SeedData
                 Name = "What are your holiday hours?",
                 Content =
                     "We are closed on Thanksgiving Day and Christmas Day to allow our employees to spend time with their families.",
-                Location = "FAQ"
+                Location = ask
             };
             ctx.TextElements.Add(faq1);
 
@@ -428,7 +504,7 @@ public class SeedData
             {
                 Name = "Do you offer delivery?",
                 Content = "No.",
-                Location = "FAQ"
+                Location = ask
             };
             ctx.TextElements.Add(faq2);
 
@@ -436,7 +512,7 @@ public class SeedData
             {
                 Name = "Do you have any ongoing promotions or special offers?",
                 Content = "Check out our Specials page",
-                Location = "FAQ"
+                Location = ask
             };
             ctx.TextElements.Add(faq3);
 
@@ -444,7 +520,7 @@ public class SeedData
             {
                 Name = "Do you offer online ordering?",
                 Content = "Yes! Check out our Order Page",
-                Location = "FAQ"
+                Location = ask
             };
             ctx.TextElements.Add(faq4);
 
@@ -452,7 +528,7 @@ public class SeedData
             {
                 Name = "How do I apply for a job at this restaurant?",
                 Content = "You can fill out an application on our Careers page in the menu at the bottom of the page.",
-                Location = "FAQ"
+                Location = ask
             };
             ctx.TextElements.Add(faq5);
 
@@ -460,7 +536,7 @@ public class SeedData
             {
                 Name = "Do you offer catering?",
                 Content = "Yes! Check out our Catering page in the menu above.",
-                Location = "FAQ"
+                Location = ask
             };
             ctx.TextElements.Add(faq6);
             
@@ -485,6 +561,10 @@ public class SeedData
             ctx.JobTitles.Add(dishwasher);
 
             #endregion
+            ctx.SaveChanges();
+
+          
+            
             ctx.SaveChanges();
         }
     }

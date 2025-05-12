@@ -34,7 +34,21 @@
                 }
             </div>
             <div class="row">
-                <img class="landing-special" src="@Model.Special.FileName" alt="Description"/>
+                @if(Model.Photos.Find(p => p.FileName.Contains("special")) != null){
+                    <img class="landing-special" src="@Model.Photos.Find(p => p.FileName.Contains("special")).FileName" alt="Description"/>
+                }
+                else
+                {
+                    <p>
+                        No special found.
+                    </p>
+                }
+                @if (User.IsInRole("Admin"))
+                {
+                    <a asp-action="EditPhoto" asp-controller="Admin" asp-route-id="@Model.Special.FileID">
+                        <i class="fa-regular fa-pen-to-square"></i>
+                    </a>
+                }
             </div>
         </div>
 
@@ -44,9 +58,21 @@
         {
             foreach (JampotCapstone.Models.File photo in Model.Photos)
             {
-                <div class="col-sm-12 col-md-6">
-                    <img class="p-3 w-100" src="@photo.FileName" alt="Description"/>
-                </div>
+                if (!photo.FileName.Contains("special"))
+                {
+                    int startIndex = photo.FileName.IndexOf("/");
+                    int endIndex = photo.FileName.IndexOf(".");
+                    string filename = photo.FileName.Substring(startIndex, endIndex - startIndex);
+                    <div class="col-sm-12 col-md-6">
+                        <img class="p-3 w-100" src="@photo.FileName" alt="@filename"/>
+                        @if (User.IsInRole("Admin"))
+                        {
+                            <a asp-action="EditPhoto" asp-controller="Admin" asp-route-id="@photo.FileID">
+                                <i class="fa-regular fa-pen-to-square"></i>
+                            </a>
+                        }
+                    </div>
+                }
             }
         }
     </div>

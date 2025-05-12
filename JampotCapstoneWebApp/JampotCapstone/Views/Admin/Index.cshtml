@@ -30,13 +30,13 @@
                 {
                     <tr>
                         <td>@text.Name</td>
-                        <td>@text.Location</td>
+                        <td>@text.Location.PageTitle</td>
                         <td>
                             <a asp-action="Edit" asp-controller="Admin" asp-route-id="@text.TextElementId">
                                 <i class="fa-regular fa-pen-to-square"></i>
                             </a>
                         </td>
-                        @if (text.Location.ToLower().Contains("faq"))
+                        @if (text.Location.PageTitle.ToLower().Contains("faq"))
                         {
                             <td>
                                 <a asp-action="Delete" asp-controller="Admin" asp-route-id="@text.TextElementId">
@@ -58,6 +58,25 @@
             </table>
         }
         <h3 class="text-center text-jampot-yellow content">Photo Edit</h3>
+        <a asp-controller="Admin" asp-action="Add" class="btn btn-primary offset-8">Add New Photo</a>
+        @if (Model.Photos.Count > 0)
+        {
+            foreach (Page p in Model.Pages)
+            {
+                string title = p.PageTitle;
+                <h4 class="text-jampot-green">@title</h4>
+                foreach (var photo in Model.Photos)
+                {
+                    if (photo.Pages.Find(p => p.PageTitle == title) != null)
+                    {
+                        int startIndex = photo.FileName.LastIndexOf("/");
+                        int endIndex = photo.FileName.IndexOf(".");
+                        string filename = photo.FileName.Substring(startIndex, endIndex - startIndex);
+                        <img src="@photo.FileName" alt="@filename" width="200px"/>
+                    }
+                }
+            }
+        }
         <h3 class="text-jampot-yellow text-center content">Products</h3>
         @*I set up the view model to include all of the items (I could think of) that will need to be edited, 
                 but I haven't printed them to the page, as the edit pages haven't been set up yet*@
