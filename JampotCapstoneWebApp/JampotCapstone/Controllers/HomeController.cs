@@ -25,8 +25,8 @@ public class HomeController : Controller
         Page currentPage = await _context.Pages.Where(p => p.PageTitle.ToLower().Contains("home"))
             .Include(p => p.Files).FirstOrDefaultAsync();
         model.Photos = currentPage.Files;
-        model.Special = model.Photos.Find(f => f.FileName.ToLower().Contains("special"));
-        model.Photos.Remove(model.Special);
+        // model.Special = model.Photos.Find(f => f.FileName.ToLower().Contains("special"));
+        // model.Photos.Remove(model.Special);
         return View(model);
     }
 
