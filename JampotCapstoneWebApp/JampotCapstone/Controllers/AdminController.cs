@@ -22,8 +22,8 @@ public class AdminController : Controller
     {
         AdminViewModel model = new AdminViewModel
         {
-            Textblocks = await _context.TextElements.OrderBy(t => t.Location)
-                .Include(t => t.Location).ToListAsync(),
+            Textblocks = await _context.TextElements.OrderBy(t => t.Page)
+                .Include(t => t.Page).ToListAsync(),
             Photos = await _context.Files.ToListAsync(),
             Products = await _context.Products.ToListAsync(),
             Pages = await _context.Pages.Where(p => p.Files.Count > 0).Include(p => p.Files).ToListAsync(),
@@ -46,7 +46,7 @@ public class AdminController : Controller
             if (model.TextElementId == 0)
             {
                 int id = model.PageId;
-                model.Location = _context.Pages.Find(id);
+                model.Page = _context.Pages.Find(id);
                 _context.TextElements.Add(model);
             } else
             {

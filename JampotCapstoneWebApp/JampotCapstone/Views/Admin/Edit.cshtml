@@ -24,7 +24,7 @@
         <label asp-for="PageId" class="col-sm-2 col-form-label">Name of Page</label>
         <div class="col-sm-10">
             <select asp-for="PageId">
-                <option value="@Model.PageId">@Model.Location.PageTitle</option>
+                <option value="@Model.PageId">@Model.Page.PageTitle</option>
                 @foreach (Page p in ViewBag.Pages)
                 {
                     <option value="@p.PageId">@p.PageTitle</option>

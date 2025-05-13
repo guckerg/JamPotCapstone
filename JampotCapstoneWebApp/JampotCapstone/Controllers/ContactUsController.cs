@@ -18,7 +18,7 @@ namespace JampotCapstone.Controllers
 
         public async Task<IActionResult> Index()
         {
-            ViewBag.Contact = await _context.TextElements.Where(t => t.Location.PageTitle.ToLower().Contains("contact")).ToListAsync();
+            ViewBag.Contact = await _context.TextElements.Where(t => t.Page.PageTitle.ToLower().Contains("contact")).ToListAsync();
             return View();
         }
 

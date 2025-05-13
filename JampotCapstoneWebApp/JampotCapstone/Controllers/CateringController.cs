@@ -18,7 +18,7 @@ namespace JampotCapstone.Controllers
         { 
             CateringViewModel model = new CateringViewModel();
             model.Textblocks = await _context.TextElements
-                .Where(t => t.Location.PageTitle.ToLower().Contains("catering")).ToListAsync();
+                .Where(t => t.Page.PageTitle.ToLower().Contains("catering")).ToListAsync();
             Page currentPage = _context.Pages.Where(p => p.PageTitle.ToLower().Contains("catering"))
                 .Include(p => p.Files).FirstOrDefault();
             model.Photos = currentPage.Files;

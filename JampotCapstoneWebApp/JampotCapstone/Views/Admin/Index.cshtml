@@ -30,13 +30,13 @@
                 {
                     <tr>
                         <td>@text.Name</td>
-                        <td>@text.Location.PageTitle</td>
+                        <td>@text.Page.PageTitle</td>
                         <td>
                             <a asp-action="Edit" asp-controller="Admin" asp-route-id="@text.TextElementId">
                                 <i class="fa-regular fa-pen-to-square"></i>
                             </a>
                         </td>
-                        @if (text.Location.PageTitle.ToLower().Contains("faq"))
+                        @if (text.Page.PageTitle.ToLower().Contains("faq"))
                         {
                             <td>
                                 <a asp-action="Delete" asp-controller="Admin" asp-route-id="@text.TextElementId">

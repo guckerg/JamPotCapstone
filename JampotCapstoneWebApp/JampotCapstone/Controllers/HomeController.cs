@@ -21,7 +21,7 @@ public class HomeController : Controller
     public async Task<IActionResult> Index()
     {
         HomeViewModel model = new HomeViewModel();
-        model.Hours = await _context.TextElements.FirstOrDefaultAsync(t => t.Location.PageTitle.ToLower().Contains("home"));
+        model.Hours = await _context.TextElements.FirstOrDefaultAsync(t => t.Page.PageTitle.ToLower().Contains("home"));
         Page currentPage = await _context.Pages.Where(p => p.PageTitle.ToLower().Contains("home"))
             .Include(p => p.Files).FirstOrDefaultAsync();
         model.Photos = currentPage.Files;
