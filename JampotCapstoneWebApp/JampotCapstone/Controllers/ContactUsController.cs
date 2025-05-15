@@ -9,16 +9,18 @@ namespace JampotCapstone.Controllers
     {
         private readonly IEmailSender _emailSender;
         private ApplicationDbContext _context;
+        private ITextElementRepository _repo;
 
-        public ContactUsController(IEmailSender emailSender, ApplicationDbContext ctx)
+        public ContactUsController(IEmailSender emailSender, ApplicationDbContext ctx, ITextElementRepository r)
         {
             _emailSender = emailSender;
             _context = ctx;
+            _repo = r;
         }
 
         public async Task<IActionResult> Index()
         {
-            ViewBag.Contact = await _context.TextElements.Where(t => t.Page.PageTitle.ToLower().Contains("contact")).ToListAsync();
+            ViewBag.Contact = await _repo.GetTextElementsByPage("contact");
             return View();
         }
 

@@ -9,14 +9,16 @@ namespace JampotCapstone.Controllers
     public class AboutUsController : Controller
     {
         private ApplicationDbContext _context;
+        private ITextElementRepository _repo;
 
-        public AboutUsController(ApplicationDbContext ctx)
+        public AboutUsController(ApplicationDbContext ctx, ITextElementRepository r)
         {
             _context = ctx;
+            _repo = r;
         }
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
-            TextElement? model = _context.TextElements.FirstOrDefault(t => t.Page.PageTitle.ToLower().Contains("about"));
+            TextElement? model = await _repo.GetTextElementByPage("about");
             return View(model);
         }
 
@@ -36,8 +38,7 @@ namespace JampotCapstone.Controllers
             }
             ContentViewModel model = new ContentViewModel
             {
-                Textblocks = await _context.TextElements.
-                    Where(t => t.Page.PageTitle.ToLower().Contains("faq")).ToListAsync(),
+                Textblocks = await _repo.GetTextElementsByPage("faq"),
                 Photo = photo
             };
                 

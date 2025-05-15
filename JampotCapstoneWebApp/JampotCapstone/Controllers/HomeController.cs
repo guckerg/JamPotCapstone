@@ -11,28 +11,28 @@ public class HomeController : Controller
 {
     private readonly ILogger<HomeController> _logger;
     private readonly ApplicationDbContext _context;
+    private readonly ITextElementRepository _repo;
 
-    public HomeController(ILogger<HomeController> logger, ApplicationDbContext ctx)
+    public HomeController(ILogger<HomeController> logger, ApplicationDbContext ctx, ITextElementRepository r)
     {
         _context = ctx;
         _logger = logger;
+        _repo = r;
     }
 
     public async Task<IActionResult> Index()
     {
-        HomeViewModel model = new HomeViewModel();
-        model.Hours = await _context.TextElements.FirstOrDefaultAsync(t => t.Page.PageTitle.ToLower().Contains("home"));
-        Page currentPage = await _context.Pages.Where(p => p.PageTitle.ToLower().Contains("home"))
-            .Include(p => p.Files).FirstOrDefaultAsync();
-        model.Photos = currentPage.Files;
-        // model.Special = model.Photos.Find(f => f.FileName.ToLower().Contains("special"));
-        // model.Photos.Remove(model.Special);
+        // get the page for this method so as to load the photos associated with it
+        Page currentPage = await _context.Pages
+            .Where(p => p.PageTitle.ToLower().Contains("home"))
+            .Include(p => p.Files)  // associated photos
+            .FirstOrDefaultAsync(); // there should be only one page that meets the criteria
+        HomeViewModel model = new HomeViewModel
+        {
+            Hours = await _repo.GetTextElementByPage("home"),   // get the text element associated with the page
+            Photos = currentPage == null ? [] : currentPage.Files
+        };
         return View(model);
-    }
-
-    public IActionResult Privacy()
-    {
-        return View();
     }
 
     [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]

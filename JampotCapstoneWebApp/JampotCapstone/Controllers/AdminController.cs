@@ -12,18 +12,19 @@ namespace JampotCapstone.Controllers;
 public class AdminController : Controller
 {
     private readonly ApplicationDbContext _context;
+    private readonly ITextElementRepository _repo;
 
-    public AdminController(ApplicationDbContext ctx)
+    public AdminController(ApplicationDbContext ctx, ITextElementRepository r)
     {
         _context = ctx;
+        _repo = r;
     }
     
     public async Task<IActionResult> Index()
     {
         AdminViewModel model = new AdminViewModel
         {
-            Textblocks = await _context.TextElements.OrderBy(t => t.Page)
-                .Include(t => t.Page).ToListAsync(),
+            Textblocks = await _repo.GetAllTextElements(),
             Photos = await _context.Files.ToListAsync(),
             Products = await _context.Products.ToListAsync(),
             Pages = await _context.Pages.Where(p => p.Files.Count > 0).Include(p => p.Files).ToListAsync(),
@@ -31,10 +32,11 @@ public class AdminController : Controller
         return View(model);
     }
 
-    public IActionResult Edit(int id = 0)
+    public async Task<IActionResult> Edit(int id = 0)
     {
         ViewBag.Pages = _context.Pages.ToList();
-        TextElement? model = id == 0 ? new TextElement() : _context.TextElements.Find(id);
+        TextElement? model = id == 0 ? new TextElement() 
+            : await _repo.GetTextElementById(id);
         return View(model);
     }
 
@@ -47,10 +49,10 @@ public class AdminController : Controller
             {
                 int id = model.PageId;
                 model.Page = _context.Pages.Find(id);
-                _context.TextElements.Add(model);
+                _repo.CreateTextElement(model);
             } else
             {
-                _context.TextElements.Update(model);
+                _repo.UpdateTextElement(model);
             }
             if (_context.SaveChanges() > 0)
             {
@@ -88,7 +90,7 @@ public class AdminController : Controller
             .FirstOrDefaultAsync();
         Page? currentPage = await _context.Pages.Include(p => p.Files)
             .FirstOrDefaultAsync(p => p.PageId == model.Page);
-        if (currentPage.Files.Count > 0)
+        if (currentPage != null && currentPage.Files.Count > 0)
         {
             Models.File oldPhoto = currentPage.Files.Find(f => f.FileID == model.Position);
             int index = currentPage.Files.IndexOf(oldPhoto);
@@ -138,13 +140,13 @@ public class AdminController : Controller
         return View(model);
     }
 
-    public IActionResult Delete(int id)
+    public async Task<IActionResult> Delete(int id)
     {
-        TextElement? toDelete = _context.TextElements.Find(id);
+        TextElement? toDelete = await _repo.GetTextElementById(id);
         if (toDelete != null)
         {
-            _context.TextElements.Remove(toDelete);
-            if (_context.SaveChanges() > 0)
+            
+            if (await _repo.DeleteTextElement(toDelete) > 0)
             {
                 TempData["Message"] = "Text block successfully deleted.";
                 TempData["context"] = "success";

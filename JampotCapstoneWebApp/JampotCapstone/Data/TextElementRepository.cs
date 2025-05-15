@@ -14,19 +14,22 @@ public class TextElementRepository : ITextElementRepository
     
     public async Task<List<TextElement>> GetAllTextElements()
     {
-        List<TextElement> model = await _context.TextElements.ToListAsync();
+        List<TextElement> model = await _context.TextElements
+            .Include(t => t.Page).ToListAsync();
         return model;
     }
 
     public async Task<List<TextElement>> GetTextElementsByPage(string page)
     {
-        List<TextElement> model = await _context.TextElements.Where(t => t.Page.PageTitle == page).ToListAsync();
+        List<TextElement> model = await _context.TextElements
+            .Where(t => t.Page.PageTitle.ToLower().Contains(page))
+            .ToListAsync();
         return model;
     }
 
     public async Task<TextElement> GetTextElementByPage(string page)
     {
-        TextElement model = await _context.TextElements.FirstOrDefaultAsync(t => t.Page.PageTitle == page);
+        TextElement model = await _context.TextElements.FirstOrDefaultAsync(t => t.Page.PageTitle.ToLower().Contains(page));
         return model;
     }
 

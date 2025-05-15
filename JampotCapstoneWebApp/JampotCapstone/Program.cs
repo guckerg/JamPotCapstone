@@ -18,6 +18,7 @@ builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 
 //establishes repository
 builder.Services.AddTransient<IApplicationRepository, ApplicationRepository>();
+builder.Services.AddTransient<ITextElementRepository, TextElementRepository>();
 
 builder.Services.AddDefaultIdentity<AppUser>(options => options.SignIn.RequireConfirmedAccount = true)
     .AddRoles<IdentityRole>()
