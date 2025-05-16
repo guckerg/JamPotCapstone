@@ -32,20 +32,22 @@
     @*         <input type="file" class="form-control" asp-for="ProductPhoto" value="@Model.ProductPhoto"> *@
     @*     </div> *@
     @* </div> *@
-    @* <div class="row mb-3"> *@
-    @*     <label asp-for="ProductCategory" class="col-sm-2 col-form-label">ProductCategory</label> *@
-    @*     <div class="col-sm-10"> *@
-    @*         @* <select asp-for="ProductCategory" asp-items="@Model.ProductCategory" class="form-control"> *@ 
-    @*         @*     <option value="">-- Select a Category --</option> *@ 
-    @*         @* </select> *@ 
-    @*     </div> *@
-    @* </div> *@
-    @* <div class="row mb-3"> *@
-    @*     <label asp-for="Tags" class="col-sm-2 col-form-label">Tags</label> *@
-    @*     <div class="col-sm-10"> *@
-    @*         <input type="text" asp-for="Tags" value="@Model.Tags" /> *@
-    @*     </div> *@
-    @* </div> *@
+    <div class="row mb-3">
+        <label asp-for="Tags" class="col-sm-2 col-form-label">Tags</label>
+        <div class="col-sm-10">
+            <select id="tag" asp-items="Model.Tags">
+                <option value="">-- Select a Tag--</option>
+            </select>
+        </div>
+    </div>
+    <div class="row mb-3">
+        <label asp-for="Types" class="col-sm-2 col-form-label">Types</label>
+        <div class="col-sm-10">
+            <select id="type" asp-items="Model.Types">
+                <option value="">-- Select a Category--</option>
+            </select>
+        </div>
+    </div>
     <button type="submit" class="btn btn-primary col-2">Save Changes</button>
     <a asp-action="Index" class="btn btn-danger col-2">Cancel</a>
 </form>

@@ -5,6 +5,8 @@ using Microsoft.AspNetCore.Mvc;
 using JampotCapstone.Models;
 using JampotCapstone.Models.ViewModels;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.CodeAnalysis.Elfie.Diagnostics;
 
 namespace JampotCapstone.Controllers;
 
@@ -87,11 +89,19 @@ public class AdminController : Controller
         return View("Index");
     }
 
-    public IActionResult ProductEdit(int id = 0)
+    public IActionResult ProductEdit()
     {
-        var categories = _context.Products.Select(c => new { c.ProductId, c.ProductCategory }).ToList();
-        Product? model = id == 0 ? new Product() : _context.Products.Find(id);
-        return View(model);
+        //create a list of tag and type objects 
+        var tags = _context.ProductTags.Select(t => new { t.TagID, t.Tag }).ToList();
+        var types = _context.ProductTypes.Select(t => new { t.TypeId, t.Type }).ToList();
+
+        //populate viewModel passing tag and type list for dropdown menu
+        var viewModel = new ProductEditViewModel
+        {
+            Tags = new SelectList(tags, "TagID", "Tag"),
+            Types = new SelectList(types, "TypeId", "Type"),
+        };
+        return View(viewModel);
     }
 
     [HttpPost]
