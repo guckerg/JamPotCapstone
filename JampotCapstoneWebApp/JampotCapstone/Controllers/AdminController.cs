@@ -89,33 +89,51 @@ public class AdminController : Controller
         return View("Index");
     }
 
-    public IActionResult ProductEdit()
+    public IActionResult ProductEdit(int id = 0)
     {
-        //create a list of tag and type objects 
-        var tags = _context.ProductTags.Select(t => new { t.TagID, t.Tag }).ToList();
-        var types = _context.ProductTypes.Select(t => new { t.TypeId, t.Type }).ToList();
+        // Create a list of tag and type objects 
+        var tags = _context.ProductTags.ToList();
+        var types = _context.ProductTypes.ToList();
 
-        //populate viewModel passing tag and type list for dropdown menu
+        Product? model = id == 0
+            ? new Product()
+            : _context.Products
+                .Include(p => p.ProductCategory)
+                .Include(p => p.Tags)
+                .FirstOrDefault(p => p.ProductId == id);
+
+        if (model == null)
+        {
+            TempData["Message"] = "Product not found.";
+            return RedirectToAction("Index");
+        }
+
+        // Populate the view model from the product
         var viewModel = new ProductEditViewModel
         {
-            Tags = new SelectList(tags, "TagID", "Tag"),
-            Types = new SelectList(types, "TypeId", "Type"),
+            ProductId = model.ProductId,
+            ProductName = model.ProductName,
+            ProductPrice = model.ProductPrice,
+            ProductIngredients = model.ProductIngredients,
+            Tags = new SelectList(tags, "TagID", "Tag", model.Tags?.FirstOrDefault()?.TagID),
+            Types = new SelectList(types, "TypeId", "Type", model.ProductCategory?.FirstOrDefault()?.TypeId)
         };
+
         return View(viewModel);
     }
 
     [HttpPost]
-    public IActionResult ProductEdit(Product model)
+    public IActionResult ProductEdit(ProductEditViewModel viewModel)
     {
         if (ModelState.IsValid)
         {
-            if (model.ProductId == 0)
+            if (viewModel.ProductId == 0)
             {
-                _context.Products.Add(model);
+                _context.Products.Add(viewModel);
             }
             else
             {
-                _context.Products.Update(model);
+                _context.Products.Update(viewModel);
             }
             if (_context.SaveChanges() > 0)
             {
@@ -132,7 +150,7 @@ public class AdminController : Controller
             TempData["Message"] = "There were data-entry errors. Please check the form.";
             TempData["context"] = "danger";
         }
-        return View(model);
+        return View(viewModel);
     }
 
     public IActionResult DeleteProduct(int id)
