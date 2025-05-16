@@ -10,11 +10,13 @@ namespace JampotCapstone.Controllers
     {
         private ApplicationDbContext _context;
         private ITextElementRepository _repo;
+        private IPhotoRepository _photoRepo;
 
-        public AboutUsController(ApplicationDbContext ctx, ITextElementRepository r)
+        public AboutUsController(ApplicationDbContext ctx, ITextElementRepository r, IPhotoRepository p)
         {
             _context = ctx;
             _repo = r;
+            _photoRepo = p;
         }
         public async Task<IActionResult> Index()
         {
@@ -28,9 +30,9 @@ namespace JampotCapstone.Controllers
                 .Include(p => p.Files)
                 .FirstOrDefaultAsync();
             Models.File photo;
-            if (currentPage.Files.Count == 0)
+            if (currentPage != null && currentPage.Files.Count == 0) // if there are no photos currently associated with the page
             {
-                photo = await _context.Files.FirstOrDefaultAsync(f => f.FileName.ToLower().Contains("people")); // default image
+                photo = await _photoRepo.GetPhotoByNameAsync("people"); // load a default image
             }
             else
             {
