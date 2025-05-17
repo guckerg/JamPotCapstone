@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using JampotCapstone.Models;
 using JampotCapstone.Data;
+using JampotCapstone.Data.Interfaces;
 using Microsoft.EntityFrameworkCore;
 
 namespace JampotCapstone.Controllers
@@ -18,7 +19,7 @@ namespace JampotCapstone.Controllers
 
         public async Task<IActionResult> Index()
         {
-            ViewBag.Contact = await _repo.GetTextElementsByPage("contact");
+            ViewBag.Contact = await _repo.GetTextElementsByPageAsync("contact");
             return View();
         }
 

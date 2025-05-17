@@ -1,7 +1,6 @@
-using JampotCapstone.Models;
 using File = JampotCapstone.Models.File;
 
-namespace JampotCapstone.Data;
+namespace JampotCapstone.Data.Interfaces;
 
 public interface IPhotoRepository
 {

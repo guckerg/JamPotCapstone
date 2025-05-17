@@ -1,4 +1,5 @@
 ﻿using JampotCapstone.Data;
+using JampotCapstone.Data.Interfaces;
 using JampotCapstone.Models;
 using JampotCapstone.Models.ViewModels;
 using Microsoft.AspNetCore.Authorization;
@@ -36,7 +37,7 @@ namespace JampotCapstone.Controllers
             };
             
             ViewBag.Text =
-                await _textRepo.GetTextElementByPage("careers");
+                await _textRepo.GetTextElementByPageAsync("careers");
 
             return View(viewModel);
         }

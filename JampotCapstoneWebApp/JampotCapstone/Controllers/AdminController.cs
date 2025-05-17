@@ -1,5 +1,6 @@
 using System.Net.Mime;
 using JampotCapstone.Data;
+using JampotCapstone.Data.Interfaces;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using JampotCapstone.Models;
@@ -29,7 +30,7 @@ public class AdminController : Controller
     {
         AdminViewModel model = new AdminViewModel
         {
-            Textblocks = await _textRepo.GetAllTextElements(),
+            Textblocks = await _textRepo.GetAllTextElementsAsync(),
             Photos = await _photoRepo.GetAllPhotosAsync(),
             Products = await _productRepo.GetAllProductsAsync(),
             Pages = await _pageRepo.GetNonEmptyPagesAsync()
@@ -41,7 +42,7 @@ public class AdminController : Controller
     {
         ViewBag.Pages = _pageRepo.GetAllPagesAsync();
         TextElement? model = id == 0 ? new TextElement() // if an existing textblock was not sent to the controller, 
-            : await _textRepo.GetTextElementById(id);   // create a new one
+            : await _textRepo.GetTextElementByIdAsync(id);   // create a new one
         return View(model);
     }
 
@@ -54,10 +55,10 @@ public class AdminController : Controller
             if (model.TextElementId == 0) // id does not exist in the database, hence it is a new textblock
             {
                 model.Page = await _pageRepo.GetPageByNameAsync("faq"); // creation of a new textblock requires that it be on the faq page
-                result = await _textRepo.CreateTextElement(model);
+                result = await _textRepo.StoreTextElementAsync(model);
             } else // updating an existing record
             {
-                result = await _textRepo.UpdateTextElement(model);
+                result = await _textRepo.UpdateTextElementAsync(model);
             }
             if (result > 0)
             {
@@ -149,10 +150,10 @@ public class AdminController : Controller
 
     public async Task<IActionResult> Delete(int id)
     {
-        TextElement? toDelete = await _textRepo.GetTextElementById(id);
+        TextElement? toDelete = await _textRepo.GetTextElementByIdAsync(id);
         if (toDelete != null)
         {
-            if (await _textRepo.DeleteTextElement(toDelete) > 0)
+            if (await _textRepo.DeleteTextElementAsync(toDelete) > 0)
             {
                 TempData["Message"] = "Text block successfully deleted.";
                 TempData["context"] = "success";

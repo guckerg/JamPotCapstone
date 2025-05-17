@@ -1,5 +1,6 @@
 ﻿using System.Net;
 using JampotCapstone.Data;
+using JampotCapstone.Data.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 using JampotCapstone.Models;
 using JampotCapstone.Models.ViewModels;
@@ -19,7 +20,7 @@ namespace JampotCapstone.Controllers
         }
         public async Task<IActionResult> Index()
         {
-            TextElement? model = await _repo.GetTextElementByPage("about");
+            TextElement? model = await _repo.GetTextElementByPageAsync("about");
             return View(model);
         }
 
@@ -29,7 +30,7 @@ namespace JampotCapstone.Controllers
             File? photo = await _photoRepo.GetPhotoByPageAsync("faq");
             ContentViewModel model = new ContentViewModel
             {
-                Textblocks = await _repo.GetTextElementsByPage("faq")
+                Textblocks = await _repo.GetTextElementsByPageAsync("faq")
             };
             if (photo == null) // if there are no photos currently associated with the page
             {

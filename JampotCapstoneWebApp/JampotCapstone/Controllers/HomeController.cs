@@ -1,5 +1,6 @@
 using System.Diagnostics;
 using JampotCapstone.Data;
+using JampotCapstone.Data.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 using JampotCapstone.Models;
 using JampotCapstone.Models.ViewModels;
@@ -21,7 +22,7 @@ public class HomeController : Controller
     {
         HomeViewModel model = new HomeViewModel
         {
-            Hours = await _repo.GetTextElementByPage("home"),   // get the text element associated with the page
+            Hours = await _repo.GetTextElementByPageAsync("home"),   // get the text element associated with the page
             Photos = await _photoRepo.GetPhotosByPageAsync("home") // get the list of photos associated with the page
         };
         return View(model);

@@ -1,3 +1,4 @@
+using JampotCapstone.Data.Interfaces;
 using JampotCapstone.Models;
 using Microsoft.EntityFrameworkCore;
 namespace JampotCapstone.Data;

@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using JampotCapstone.Data;
+using JampotCapstone.Data.Interfaces;
 using JampotCapstone.Models;
 using Microsoft.Extensions.Options;
 

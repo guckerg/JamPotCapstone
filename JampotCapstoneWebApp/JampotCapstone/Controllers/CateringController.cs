@@ -1,4 +1,5 @@
 ﻿using JampotCapstone.Data;
+using JampotCapstone.Data.Interfaces;
 using JampotCapstone.Models;
 using JampotCapstone.Models.ViewModels;
 using Microsoft.AspNetCore.Mvc;
@@ -20,7 +21,7 @@ namespace JampotCapstone.Controllers
         {
             CateringViewModel model = new CateringViewModel
             {
-                Textblocks = await _repo.GetTextElementsByPage("catering"),
+                Textblocks = await _repo.GetTextElementsByPageAsync("catering"),
                 Photos = await _photoRepo.GetPhotosByPageAsync("catering")
             };
             return View(model);
