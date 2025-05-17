@@ -1,4 +1,5 @@
 ﻿using JampotCapstone.Data;
+using JampotCapstone.Data.Interfaces;
 using JampotCapstone.Models;
 using JampotCapstone.Models.ViewModels;
 using Microsoft.AspNetCore.Mvc;
@@ -8,20 +9,21 @@ namespace JampotCapstone.Controllers
 {
     public class CateringController : Controller
     {
-        private ApplicationDbContext _context;
+        private ITextElementRepository _repo;
+        private IPhotoRepository _photoRepo;
 
-        public CateringController(ApplicationDbContext ctx)
+        public CateringController(ITextElementRepository r, IPhotoRepository p)
         {
-            _context = ctx;
+            _repo = r;
+            _photoRepo = p;
         }
         public async Task<IActionResult> Index()
-        { 
-            CateringViewModel model = new CateringViewModel();
-            model.Textblocks = await _context.TextElements
-                .Where(t => t.Page.PageTitle.ToLower().Contains("catering")).ToListAsync();
-            Page currentPage = _context.Pages.Where(p => p.PageTitle.ToLower().Contains("catering"))
-                .Include(p => p.Files).FirstOrDefault();
-            model.Photos = currentPage.Files;
+        {
+            CateringViewModel model = new CateringViewModel
+            {
+                Textblocks = await _repo.GetTextElementsByPageAsync("catering"),
+                Photos = await _photoRepo.GetPhotosByPageAsync("catering")
+            };
             return View(model);
         }
     }

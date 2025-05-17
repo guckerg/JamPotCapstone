@@ -1,6 +1,6 @@
 ﻿using JampotCapstone.Models;
 
-namespace JampotCapstone.Data
+namespace JampotCapstone.Data.Interfaces
 {
     public interface IEmailSender
     {

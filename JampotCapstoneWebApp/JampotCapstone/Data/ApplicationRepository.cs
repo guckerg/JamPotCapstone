@@ -1,4 +1,5 @@
-﻿using JampotCapstone.Models;
+﻿using JampotCapstone.Data.Interfaces;
+using JampotCapstone.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 

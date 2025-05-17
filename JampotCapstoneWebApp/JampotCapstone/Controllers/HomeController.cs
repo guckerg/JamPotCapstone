@@ -1,38 +1,31 @@
 using System.Diagnostics;
 using JampotCapstone.Data;
+using JampotCapstone.Data.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 using JampotCapstone.Models;
 using JampotCapstone.Models.ViewModels;
-using Microsoft.EntityFrameworkCore;
 
 namespace JampotCapstone.Controllers;
 
 public class HomeController : Controller
 {
-    private readonly ILogger<HomeController> _logger;
-    private readonly ApplicationDbContext _context;
+    private readonly ITextElementRepository _repo;
+    private readonly IPhotoRepository _photoRepo;
 
-    public HomeController(ILogger<HomeController> logger, ApplicationDbContext ctx)
+    public HomeController(ITextElementRepository r, IPhotoRepository p)
     {
-        _context = ctx;
-        _logger = logger;
+        _repo = r;
+        _photoRepo = p;
     }
 
     public async Task<IActionResult> Index()
     {
-        HomeViewModel model = new HomeViewModel();
-        model.Hours = await _context.TextElements.FirstOrDefaultAsync(t => t.Page.PageTitle.ToLower().Contains("home"));
-        Page currentPage = await _context.Pages.Where(p => p.PageTitle.ToLower().Contains("home"))
-            .Include(p => p.Files).FirstOrDefaultAsync();
-        model.Photos = currentPage.Files;
-        // model.Special = model.Photos.Find(f => f.FileName.ToLower().Contains("special"));
-        // model.Photos.Remove(model.Special);
+        HomeViewModel model = new HomeViewModel
+        {
+            Hours = await _repo.GetTextElementByPageAsync("home"),
+            Photos = await _photoRepo.GetPhotosByPageAsync("home")
+        };
         return View(model);
-    }
-
-    public IActionResult Privacy()
-    {
-        return View();
     }
 
     [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]

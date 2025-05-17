@@ -5,6 +5,8 @@ VisualStudioVersion = 17.12.35527.113
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "JampotCapstone", "JampotCapstone\JampotCapstone.csproj", "{9CA847F1-AE51-4954-A5A0-53D06AB17016}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "JampotUnitTests", "JampotUnitTests\JampotUnitTests.csproj", "{1B2F179A-8728-4F00-B9C5-DBC73570A0D5}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -15,6 +17,10 @@ Global
 		{9CA847F1-AE51-4954-A5A0-53D06AB17016}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{9CA847F1-AE51-4954-A5A0-53D06AB17016}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{9CA847F1-AE51-4954-A5A0-53D06AB17016}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1B2F179A-8728-4F00-B9C5-DBC73570A0D5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1B2F179A-8728-4F00-B9C5-DBC73570A0D5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1B2F179A-8728-4F00-B9C5-DBC73570A0D5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1B2F179A-8728-4F00-B9C5-DBC73570A0D5}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

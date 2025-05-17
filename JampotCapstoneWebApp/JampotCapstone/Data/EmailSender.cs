@@ -1,6 +1,7 @@
 ﻿using JampotCapstone.Models;
 using System.Net;
 using System.Net.Mail;
+using JampotCapstone.Data.Interfaces;
 
 namespace JampotCapstone.Data
 {

@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using JampotCapstone.Models;
 using JampotCapstone.Data;
+using JampotCapstone.Data.Interfaces;
 using Microsoft.EntityFrameworkCore;
 
 namespace JampotCapstone.Controllers
@@ -8,17 +9,17 @@ namespace JampotCapstone.Controllers
     public class ContactUsController : Controller
     {
         private readonly IEmailSender _emailSender;
-        private ApplicationDbContext _context;
+        private ITextElementRepository _repo;
 
-        public ContactUsController(IEmailSender emailSender, ApplicationDbContext ctx)
+        public ContactUsController(IEmailSender emailSender, ITextElementRepository r)
         {
             _emailSender = emailSender;
-            _context = ctx;
+            _repo = r;
         }
 
         public async Task<IActionResult> Index()
         {
-            ViewBag.Contact = await _context.TextElements.Where(t => t.Page.PageTitle.ToLower().Contains("contact")).ToListAsync();
+            ViewBag.Contact = await _repo.GetTextElementsByPageAsync("contact");
             return View();
         }
 
