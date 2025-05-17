@@ -22,8 +22,8 @@ public class HomeController : Controller
     {
         HomeViewModel model = new HomeViewModel
         {
-            Hours = await _repo.GetTextElementByPageAsync("home"),   // get the text element associated with the page
-            Photos = await _photoRepo.GetPhotosByPageAsync("home") // get the list of photos associated with the page
+            Hours = await _repo.GetTextElementByPageAsync("home"),
+            Photos = await _photoRepo.GetPhotosByPageAsync("home")
         };
         return View(model);
     }
