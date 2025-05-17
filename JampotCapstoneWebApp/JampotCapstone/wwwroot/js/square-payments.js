@@ -43,8 +43,14 @@ async function processPayment(token) {
         if (response.ok) {
             alert('Payment processed successfully!');
             const modalEl = document.getElementById('squarePaymentModal');
-            const paymentModal = bootstrap.Modal.getInstance(modalEl);
+            const paymentModal = bootstrap.Modal.getOrCreateInstance(modalEl);
             paymentModal.hide();
+
+            document.body.classList.remove('modal-open');
+            const backdrop = document.querySelector('.modal-backdrop');
+            if (backdrop) {
+                backdrop.parentNode.removeChild(backdrop);
+            }
         } else {
             alert('Payment failed: ' + data.error);
         }
