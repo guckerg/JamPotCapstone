@@ -1,7 +1,9 @@
-﻿using JampotCapstone.Data;
+﻿using System.Net;
+using JampotCapstone.Data;
 using Microsoft.AspNetCore.Mvc;
 using JampotCapstone.Models;
 using JampotCapstone.Models.ViewModels;
+using File = JampotCapstone.Models.File;
 using Microsoft.EntityFrameworkCore;
 
 namespace JampotCapstone.Controllers
@@ -26,24 +28,20 @@ namespace JampotCapstone.Controllers
 
         public async Task<IActionResult> Ask()
         {
-            Page? currentPage = await _context.Pages.Where(p => p.PageTitle.ToLower() == "faq")
-                .Include(p => p.Files)
-                .FirstOrDefaultAsync();
-            Models.File photo;
-            if (currentPage != null && currentPage.Files.Count == 0) // if there are no photos currently associated with the page
+            // get a list of the photos associated with this page
+            File? photo = await _photoRepo.GetPhotoByPageAsync("faq");
+            ContentViewModel model = new ContentViewModel
             {
-                photo = await _photoRepo.GetPhotoByNameAsync("people"); // load a default image
+                Textblocks = await _repo.GetTextElementsByPage("faq")
+            };
+            if (photo == null) // if there are no photos currently associated with the page
+            {
+                model.Photo = await _photoRepo.GetPhotoByNameAsync("people"); // load a default image
             }
             else
             {
-                photo = currentPage.Files.FirstOrDefault();                
+                model.Photo = photo;
             }
-            ContentViewModel model = new ContentViewModel
-            {
-                Textblocks = await _repo.GetTextElementsByPage("faq"),
-                Photo = photo
-            };
-                
             return View(model);
         }
         

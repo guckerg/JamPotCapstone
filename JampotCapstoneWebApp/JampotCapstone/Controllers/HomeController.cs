@@ -12,25 +12,22 @@ public class HomeController : Controller
     private readonly ILogger<HomeController> _logger;
     private readonly ApplicationDbContext _context;
     private readonly ITextElementRepository _repo;
+    private readonly IPhotoRepository _photoRepo;
 
-    public HomeController(ILogger<HomeController> logger, ApplicationDbContext ctx, ITextElementRepository r)
+    public HomeController(ILogger<HomeController> logger, ApplicationDbContext ctx, ITextElementRepository r, IPhotoRepository p)
     {
         _context = ctx;
         _logger = logger;
         _repo = r;
+        _photoRepo = p;
     }
 
     public async Task<IActionResult> Index()
     {
-        // get the page for this method so as to load the photos associated with it
-        Page currentPage = await _context.Pages
-            .Where(p => p.PageTitle.ToLower().Contains("home"))
-            .Include(p => p.Files)  // associated photos
-            .FirstOrDefaultAsync(); // there should be only one page that meets the criteria
         HomeViewModel model = new HomeViewModel
         {
             Hours = await _repo.GetTextElementByPage("home"),   // get the text element associated with the page
-            Photos = currentPage == null ? [] : currentPage.Files
+            Photos = await _photoRepo.GetPhotosByPageAsync("home") // get the list of photos associated with the page
         };
         return View(model);
     }

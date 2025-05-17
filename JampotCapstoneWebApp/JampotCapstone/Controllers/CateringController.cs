@@ -10,22 +10,20 @@ namespace JampotCapstone.Controllers
     {
         private ApplicationDbContext _context;
         private ITextElementRepository _repo;
+        private IPhotoRepository _photoRepo;
 
-        public CateringController(ApplicationDbContext ctx, ITextElementRepository r)
+        public CateringController(ApplicationDbContext ctx, ITextElementRepository r, IPhotoRepository p)
         {
             _context = ctx;
             _repo = r;
+            _photoRepo = p;
         }
         public async Task<IActionResult> Index()
         {
-            
-            Page currentPage = _context.Pages
-                .Where(p => p.PageTitle.ToLower().Contains("catering"))
-                .Include(p => p.Files).FirstOrDefault();
             CateringViewModel model = new CateringViewModel
             {
                 Textblocks = await _repo.GetTextElementsByPage("catering"),
-                Photos = currentPage == null ? [] : currentPage.Files
+                Photos = await _photoRepo.GetPhotosByPageAsync("catering")
             };
             return View(model);
         }

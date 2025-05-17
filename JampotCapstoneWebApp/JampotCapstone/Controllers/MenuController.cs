@@ -2,6 +2,7 @@
 using JampotCapstone.Data;
 using JampotCapstone.Models;
 using JampotCapstone.Models.ViewModels;
+using File = JampotCapstone.Models.File;
 using Microsoft.EntityFrameworkCore;
 
 namespace JampotCapstone.Controllers
@@ -9,17 +10,16 @@ namespace JampotCapstone.Controllers
     public class MenuController : Controller
     {
         private readonly ApplicationDbContext _context;
+        private readonly IPhotoRepository _photoRepo;
 
-        public MenuController(ApplicationDbContext ctx)
+        public MenuController(ApplicationDbContext ctx, IPhotoRepository p)
         {
             _context = ctx;
+            _photoRepo = p;
         }
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
-            Page currentPage = _context.Pages.Where(p => p.PageTitle.ToLower().Contains("menu"))
-                .Include(p => p.Files)
-                .FirstOrDefault();
-            List<Models.File> photos = currentPage.Files;
+            List<File> photos = await _photoRepo.GetPhotosByPageAsync("menu");
             return View(photos);
         }
 

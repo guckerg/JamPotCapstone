@@ -13,11 +13,13 @@ public class AdminController : Controller
 {
     private readonly ApplicationDbContext _context;
     private readonly ITextElementRepository _repo;
+    private readonly IPhotoRepository _photoRepo;
 
-    public AdminController(ApplicationDbContext ctx, ITextElementRepository r)
+    public AdminController(ApplicationDbContext ctx, ITextElementRepository r, IPhotoRepository p)
     {
         _context = ctx;
         _repo = r;
+        _photoRepo = p;
     }
     
     public async Task<IActionResult> Index()
@@ -25,7 +27,7 @@ public class AdminController : Controller
         AdminViewModel model = new AdminViewModel
         {
             Textblocks = await _repo.GetAllTextElements(),
-            Photos = await _context.Files.ToListAsync(),
+            Photos = await _photoRepo.GetAllPhotosAsync(),
             Products = await _context.Products.ToListAsync(),
             Pages = await _context.Pages.Where(p => p.Files.Count > 0).Include(p => p.Files).ToListAsync(),
         };
@@ -85,14 +87,12 @@ public class AdminController : Controller
     [HttpPost]
     public async Task<IActionResult> EditPhoto(EditViewModel model)
     {
-        Models.File? photo = await _context.Files.Where(f => f.FileName.ToLower().Contains(model.Key.ToLower()))
-            .Include(f => f.Pages)
-            .FirstOrDefaultAsync();
+        Models.File? photo = await _photoRepo.GetPhotoByNameAsync(model.Key);
         Page? currentPage = await _context.Pages.Include(p => p.Files)
             .FirstOrDefaultAsync(p => p.PageId == model.Page);
         if (currentPage != null && currentPage.Files.Count > 0)
         {
-            Models.File oldPhoto = currentPage.Files.Find(f => f.FileID == model.Position);
+            Models.File oldPhoto = await _photoRepo.GetPhotoByIdAsync(model.Position);
             int index = currentPage.Files.IndexOf(oldPhoto);
             currentPage.Files[index] = photo;
         }
@@ -122,8 +122,7 @@ public class AdminController : Controller
     {
         if (ModelState.IsValid)
         {
-            _context.Files.Add(model);
-            if (await _context.SaveChangesAsync() > 0)
+            if (await _photoRepo.AddPhotoAsync(model) > 0)
             {
                 TempData["Message"] = "File successfully added.";
                 return RedirectToAction("Index");

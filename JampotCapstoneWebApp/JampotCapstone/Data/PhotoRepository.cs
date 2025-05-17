@@ -20,28 +20,23 @@ public class PhotoRepository : IPhotoRepository
 
     public async Task<File> GetPhotoByNameAsync(string name)
     {
-        File photo = await _context.Files
-            .FirstOrDefaultAsync(p => p.FileName.ToLower().Contains(name));
+        File? photo = await _context.Files.Include(f => f.Pages)
+            .FirstOrDefaultAsync(f => f.FileName.ToLower().Contains(name));
         return photo;
     }
 
     public async Task<List<File>> GetPhotosByPageAsync(string page)
     {
-        List<File> photos = [];
-        Page currentPage = await _context.Pages.Where(p => p.PageTitle.ToLower().Contains(page.ToLower()))
-            .Include(p => p.Files)
-            .FirstOrDefaultAsync();
-        if (currentPage != null)
-        {
-            photos = currentPage.Files;
-        }
-
+        List<File> photos = await _context.Files
+            .Where(f => f.Pages
+                .Any(p => p.PageTitle.ToLower().Contains(page)))
+            .ToListAsync();
         return photos;
     }
 
     public async Task<File> GetPhotoByPageAsync(string page)
     {
-        File photo = await _context.Files
+        File photo = await _context.Files.Include(f => f.Pages)
             .FirstOrDefaultAsync(f => f.Pages
                 .Any(p => p.PageTitle.ToLower().Contains(page.ToLower())));
         return photo;
