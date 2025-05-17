@@ -10,10 +10,10 @@ public class FakeFileRepository : IPhotoRepository
 
     public async Task<List<File>> GetAllPhotosAsync()
     {
-        return _files;
+        return _files.Where(f => f.ContentType.Contains("image")).ToList();
     }
 
-    public async Task<File> GetPhotoByNameAsync(string name)
+    public async Task<File> GetFileByNameAsync(string name)
     {
         return _files.Find(f => f.FileName.ToLower().Contains(name.ToLower()));
     }
@@ -42,13 +42,13 @@ public class FakeFileRepository : IPhotoRepository
         return model;
     }
 
-    public async Task<File> GetPhotoByIdAsync(int id)
+    public async Task<File> GetFileByIdAsync(int id)
     {
         File? model = _files.Find(t => t.FileID == id);
         return model;
     }
 
-    public async Task<int> AddPhotoAsync(File photo)
+    public async Task<int> AddFileAsync(File photo)
     {
         int result = 0;
         if(photo != null && photo.Pages.Count > 0)
@@ -60,7 +60,7 @@ public class FakeFileRepository : IPhotoRepository
         return result;
     }
 
-    public async Task<int> UpdatePhotoAsync(File photo)
+    public async Task<int> UpdateFileAsync(File photo)
     {
         int result = 0;
         int index = photo.FileID - 1;
@@ -72,7 +72,7 @@ public class FakeFileRepository : IPhotoRepository
         return result;
     }
 
-    public async Task<int> DeletePhotoAsync(File photo)
+    public async Task<int> DeleteFileAsync(File photo)
     {
         int result = 0;
         if (_files[photo.FileID - 1] == photo)

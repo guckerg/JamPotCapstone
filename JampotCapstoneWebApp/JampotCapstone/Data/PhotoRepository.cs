@@ -15,11 +15,13 @@ public class PhotoRepository : IPhotoRepository
     }
     public async Task<List<File>> GetAllPhotosAsync()
     {
-        List<File> photos = await _context.Files.Where(p => p.ContentType.Contains("image")).ToListAsync();
+        List<File> photos = await _context.Files
+            .Where(p => p.ContentType.Contains("image"))
+            .ToListAsync();
         return photos;
     }
 
-    public async Task<File> GetPhotoByNameAsync(string name)
+    public async Task<File> GetFileByNameAsync(string name)
     {
         File? photo = await _context.Files.Include(f => f.Pages)
             .FirstOrDefaultAsync(f => f.FileName.ToLower().Contains(name));
@@ -51,25 +53,25 @@ public class PhotoRepository : IPhotoRepository
         return photo;
     }
 
-    public async Task<File> GetPhotoByIdAsync(int id)
+    public async Task<File> GetFileByIdAsync(int id)
     {
         File photo = await _context.Files.FindAsync(id);
         return photo;
     }
 
-    public async Task<int> AddPhotoAsync(File photo)
+    public async Task<int> AddFileAsync(File photo)
     {
         _context.Files.Add(photo);
         return await _context.SaveChangesAsync();
     }
 
-    public async Task<int> UpdatePhotoAsync(File photo)
+    public async Task<int> UpdateFileAsync(File photo)
     {
         _context.Files.Update(photo);
         return await _context.SaveChangesAsync();
     }
 
-    public async Task<int> DeletePhotoAsync(File photo)
+    public async Task<int> DeleteFileAsync(File photo)
     {
         _context.Files.Remove(photo);
         return await _context.SaveChangesAsync();

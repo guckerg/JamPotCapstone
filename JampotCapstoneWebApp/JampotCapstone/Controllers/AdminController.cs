@@ -92,13 +92,13 @@ public class AdminController : Controller
     public async Task<IActionResult> EditPhoto(EditViewModel model)
     {
         int result = 0;
-        File? photo = await _photoRepo.GetPhotoByNameAsync(model.Key);
+        File? photo = await _photoRepo.GetFileByNameAsync(model.Key);
         Page? currentPage = await _pageRepo.GetPageByIdAsync(model.Page);
         if (currentPage != null)
         {
             if (currentPage.Files.Count > 0)
             {
-                File oldPhoto = await _photoRepo.GetPhotoByIdAsync(model.Position);
+                File oldPhoto = await _photoRepo.GetFileByIdAsync(model.Position);
                 int index = currentPage.Files.IndexOf(oldPhoto);
                 currentPage.Files[index] = photo;
             }
@@ -131,7 +131,7 @@ public class AdminController : Controller
     {
         if (ModelState.IsValid)
         {
-            if (await _photoRepo.AddPhotoAsync(model) > 0)
+            if (await _photoRepo.AddFileAsync(model) > 0)
             {
                 TempData["Message"] = "File successfully added.";
                 return RedirectToAction("Index");

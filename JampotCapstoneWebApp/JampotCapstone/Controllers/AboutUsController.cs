@@ -34,7 +34,7 @@ namespace JampotCapstone.Controllers
             };
             if (photo == null) // if there are no photos currently associated with the page
             {
-                model.Photo = await _photoRepo.GetPhotoByNameAsync("people"); // load a default image
+                model.Photo = await _photoRepo.GetFileByNameAsync("people"); // load a default image
             }
             else
             {
