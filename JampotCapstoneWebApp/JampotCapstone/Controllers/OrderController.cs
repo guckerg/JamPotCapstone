@@ -54,7 +54,7 @@ public class OrderController : Controller
             .Include(c => c.Products
                 .Where(p => p.ProductName.ToLower().Contains(key)))
             .ThenInclude(p => p.ProductPhoto)
-            .Include(c => c.Products)// have to reorient to the top level to get another item from the same level
+            .Include(c => c.Products) // have to reorient to the top level to get another item from the same level
                 .ThenInclude(p => p.Tags)
             .ToListAsync();
         return View("Index", model);

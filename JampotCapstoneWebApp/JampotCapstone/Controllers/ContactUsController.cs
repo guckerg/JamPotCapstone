@@ -8,13 +8,11 @@ namespace JampotCapstone.Controllers
     public class ContactUsController : Controller
     {
         private readonly IEmailSender _emailSender;
-        private ApplicationDbContext _context;
         private ITextElementRepository _repo;
 
-        public ContactUsController(IEmailSender emailSender, ApplicationDbContext ctx, ITextElementRepository r)
+        public ContactUsController(IEmailSender emailSender, ITextElementRepository r)
         {
             _emailSender = emailSender;
-            _context = ctx;
             _repo = r;
         }
 

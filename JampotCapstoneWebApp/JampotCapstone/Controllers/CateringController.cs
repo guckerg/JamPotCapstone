@@ -8,13 +8,11 @@ namespace JampotCapstone.Controllers
 {
     public class CateringController : Controller
     {
-        private ApplicationDbContext _context;
         private ITextElementRepository _repo;
         private IPhotoRepository _photoRepo;
 
-        public CateringController(ApplicationDbContext ctx, ITextElementRepository r, IPhotoRepository p)
+        public CateringController(ITextElementRepository r, IPhotoRepository p)
         {
-            _context = ctx;
             _repo = r;
             _photoRepo = p;
         }

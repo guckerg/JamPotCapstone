@@ -3,21 +3,16 @@ using JampotCapstone.Data;
 using Microsoft.AspNetCore.Mvc;
 using JampotCapstone.Models;
 using JampotCapstone.Models.ViewModels;
-using Microsoft.EntityFrameworkCore;
 
 namespace JampotCapstone.Controllers;
 
 public class HomeController : Controller
 {
-    private readonly ILogger<HomeController> _logger;
-    private readonly ApplicationDbContext _context;
     private readonly ITextElementRepository _repo;
     private readonly IPhotoRepository _photoRepo;
 
-    public HomeController(ILogger<HomeController> logger, ApplicationDbContext ctx, ITextElementRepository r, IPhotoRepository p)
+    public HomeController(ITextElementRepository r, IPhotoRepository p)
     {
-        _context = ctx;
-        _logger = logger;
         _repo = r;
         _photoRepo = p;
     }

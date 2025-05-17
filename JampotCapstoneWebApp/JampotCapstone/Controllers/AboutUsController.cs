@@ -4,19 +4,16 @@ using Microsoft.AspNetCore.Mvc;
 using JampotCapstone.Models;
 using JampotCapstone.Models.ViewModels;
 using File = JampotCapstone.Models.File;
-using Microsoft.EntityFrameworkCore;
 
 namespace JampotCapstone.Controllers
 {
     public class AboutUsController : Controller
     {
-        private ApplicationDbContext _context;
         private ITextElementRepository _repo;
         private IPhotoRepository _photoRepo;
 
-        public AboutUsController(ApplicationDbContext ctx, ITextElementRepository r, IPhotoRepository p)
+        public AboutUsController(ITextElementRepository r, IPhotoRepository p)
         {
-            _context = ctx;
             _repo = r;
             _photoRepo = p;
         }
