@@ -7,10 +7,6 @@ using Microsoft.Extensions.Options;
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
-/*var connectionString = builder.Configuration.GetConnectionString("DefaultConnection") ??
-                       throw new InvalidOperationException("Connection string 'DefaultConnection' not found.");
-builder.Services.AddDbContext<ApplicationDbContext>(options =>
-    options.UseSqlite(connectionString));*/
 var connectionString = builder.Configuration.GetConnectionString("MySqlConnection");
 builder.Services.AddDbContext<ApplicationDbContext>(
     options => options.UseMySql(connectionString, ServerVersion.AutoDetect(connectionString)));
@@ -21,6 +17,7 @@ builder.Services.AddTransient<IApplicationRepository, ApplicationRepository>();
 builder.Services.AddTransient<ITextElementRepository, TextElementRepository>();
 builder.Services.AddTransient<IPhotoRepository, PhotoRepository>();
 builder.Services.AddTransient<IPageRepository, PageRepository>();
+builder.Services.AddTransient<IProductRepository, ProductRepository>();
 
 builder.Services.AddDefaultIdentity<AppUser>(options => options.SignIn.RequireConfirmedAccount = true)
     .AddRoles<IdentityRole>()

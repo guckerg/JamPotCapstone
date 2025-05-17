@@ -25,6 +25,14 @@ public class PhotoRepository : IPhotoRepository
         return photo;
     }
 
+    public async Task<List<File>> GetFilesByNameAsync(string name)
+    {
+        List<File> photos = await _context.Files
+            .Where(f => f.FileName.ToLower().Contains(name.ToLower()))
+            .ToListAsync();
+        return photos;
+    }
+
     public async Task<List<File>> GetPhotosByPageAsync(string page)
     {
         List<File> photos = await _context.Files

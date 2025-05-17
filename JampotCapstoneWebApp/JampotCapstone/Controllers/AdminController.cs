@@ -12,26 +12,26 @@ namespace JampotCapstone.Controllers;
 [Authorize(Roles = "Admin")]
 public class AdminController : Controller
 {
-    private readonly ApplicationDbContext _context;
-    private readonly ITextElementRepository _repo;
+    private readonly ITextElementRepository _textRepo;
     private readonly IPhotoRepository _photoRepo;
     private readonly IPageRepository _pageRepo;
+    private readonly IProductRepository _productRepo;
 
-    public AdminController(ApplicationDbContext ctx, ITextElementRepository r, IPhotoRepository ph, IPageRepository p)
+    public AdminController(ITextElementRepository t, IPhotoRepository ph, IPageRepository p, IProductRepository r)
     {
-        _context = ctx;
-        _repo = r;
+        _textRepo = t;
         _photoRepo = ph;
         _pageRepo = p;
+        _productRepo = r;
     }
     
     public async Task<IActionResult> Index()
     {
         AdminViewModel model = new AdminViewModel
         {
-            Textblocks = await _repo.GetAllTextElements(),
+            Textblocks = await _textRepo.GetAllTextElements(),
             Photos = await _photoRepo.GetAllPhotosAsync(),
-            Products = await _context.Products.ToListAsync(),
+            Products = await _productRepo.GetAllProductsAsync(),
             Pages = await _pageRepo.GetNonEmptyPagesAsync()
         };
         return View(model);
@@ -40,8 +40,8 @@ public class AdminController : Controller
     public async Task<IActionResult> Edit(int id = 0)
     {
         ViewBag.Pages = _pageRepo.GetAllPagesAsync();
-        TextElement? model = id == 0 ? new TextElement() 
-            : await _repo.GetTextElementById(id);
+        TextElement? model = id == 0 ? new TextElement() // if an existing textblock was not sent to the controller, 
+            : await _textRepo.GetTextElementById(id);   // create a new one
         return View(model);
     }
 
@@ -54,10 +54,10 @@ public class AdminController : Controller
             if (model.TextElementId == 0) // id does not exist in the database, hence it is a new textblock
             {
                 model.Page = await _pageRepo.GetPageByNameAsync("faq"); // creation of a new textblock requires that it be on the faq page
-                result = await _repo.CreateTextElement(model);
+                result = await _textRepo.CreateTextElement(model);
             } else // updating an existing record
             {
-                result = await _repo.UpdateTextElement(model);
+                result = await _textRepo.UpdateTextElement(model);
             }
             if (result > 0)
             {
@@ -149,10 +149,10 @@ public class AdminController : Controller
 
     public async Task<IActionResult> Delete(int id)
     {
-        TextElement? toDelete = await _repo.GetTextElementById(id);
+        TextElement? toDelete = await _textRepo.GetTextElementById(id);
         if (toDelete != null)
         {
-            if (await _repo.DeleteTextElement(toDelete) > 0)
+            if (await _textRepo.DeleteTextElement(toDelete) > 0)
             {
                 TempData["Message"] = "Text block successfully deleted.";
                 TempData["context"] = "success";
