@@ -21,14 +21,17 @@
         </div>
     </div>
     <div class="row mb-3">
-        <label asp-for="Location" class="col-sm-2 col-form-label">Name of Page</label>
+        <label asp-for="PageId" class="col-sm-2 col-form-label">Name of Page</label>
         <div class="col-sm-10">
-            <input type="text" asp-for="Location" value="@Model.Location"/>        
+            <select asp-for="PageId">
+                <option value="@Model.PageId">@Model.Page.PageTitle</option>
+                @foreach (Page p in ViewBag.Pages)
+                {
+                    <option value="@p.PageId">@p.PageTitle</option>
+                }
+            </select>
         </div>
     </div>
     <button type="submit" class="btn btn-primary col-2">Save Changes</button>
     <a asp-action="Index" class="btn btn-danger col-2">Cancel</a>
 </form>
-<div>
-    <img src=""/>
-</div>

@@ -1,4 +1,5 @@
-﻿@model List<TextElement>
+﻿@using Microsoft.EntityFrameworkCore.Infrastructure
+@model CateringViewModel
 @{
     ViewData["Title"] = "Catering";
 }
@@ -9,21 +10,36 @@
     <div class="container">
         <!--Row of placeholder images-->
         <div class="row">
-            <div class="col-md">
-                <img src="/pics/DesertBowl.png" class="img-fluid responsiveSquare" alt="Desert Bowl">
-            </div>
-            <div class="col-md">
+            @if (Model.Photos.Count > 0)
+            {
+                foreach(JampotCapstone.Models.File photo in Model.Photos)
+                {
+                    int startIndex = photo.FileName.IndexOf("/");
+                    int endIndex = photo.FileName.IndexOf(".");
+                    string filename = photo.FileName.Substring(startIndex, endIndex - startIndex);
+                    <div class="col-md">
+                        <img src="@photo.FileName" class="img-fluid responsiveSquare" alt="@filename">
+                        @if (User.IsInRole("Admin"))
+                        {
+                            <a asp-controller="Admin" asp-action="EditPhoto" asp-route-id="@photo.FileID">
+                                <i class="fa-regular fa-pen-to-square"></i>
+                            </a>
+                        }
+                    </div>
+                }
+            }
+            @*<div class="col-md">
                 <img src="/pics/ElectrolyteRefresh.png" class="img-fluid responsiveSquare" alt="Electrolyte Refresh Drink">
             </div>
             <div class="col-md">
                 <img src="/pics/GardenWrap.png" class="img-fluid responsiveSquare" alt="Vegan Garden Wrap">
-            </div>
+            </div>*@
         </div>
         <!--Text elements with features and catering details-->
         <div class="row">
-            @if(Model.Count > 0)
+            @if(Model.Textblocks.Count > 0)
             {
-                foreach (TextElement col in Model)
+                foreach (TextElement col in Model.Textblocks)
                 {
                 <div class="col-lg">
                     <h1 class="display-6 title text-jampot-green">@col.Name</h1>

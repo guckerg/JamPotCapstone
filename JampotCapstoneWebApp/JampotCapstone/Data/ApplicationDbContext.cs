@@ -18,4 +18,5 @@ public class ApplicationDbContext : IdentityDbContext<AppUser>
     public DbSet<TextElement> TextElements { get; set; }
     public DbSet<Application> Applications { get; set; }
     public DbSet<JobTitle> JobTitles { get; set; }
+    public DbSet<Page> Pages { get; set; }
 }

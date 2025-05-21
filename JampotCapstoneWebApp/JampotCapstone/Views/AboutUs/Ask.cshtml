@@ -1,50 +1,65 @@
-@model List<TextElement>
+@model ContentViewModel
 @{
     ViewBag.Title = "FAQs";
 }
 
 <h2 class="title text-jampot-yellow">FAQS</h2>
 <span class="text-@TempData["context"]">@TempData["Message"]</span>
-<div class="row">
-    <div id="faqs" class="p-5 col-lg">
-        @if(Model.Count > 0)
-        {
-            @foreach (TextElement faq in Model)
+@if(Model != null)
+{
+    <div class="row">
+        <div id="faqs" class="p-5 col-lg">
+            @if (Model.Textblocks.Count > 0)
             {
-                <div class="row">
-                <details class="p-3 col">
-                    <summary class="h5 text-jampot-green fw-bold">@faq.Name</summary>
-                    <p class="text-jampot-yellow fs-5">
-                        @{
-                            string[] paragraphs = faq.Content.Split("\n");
-                        }
-                        @foreach(string par in paragraphs)
-                        {
-                            <br/>@par
-                        }
-                        
-                    </p>
-                </details>
-                @if(User.IsInRole("Admin"))
+                @foreach (TextElement faq in Model.Textblocks)
                 {
-                    <a asp-action="TextEdit" asp-controller="Admin" asp-route-id="@faq.TextElementId" class="col-1">
-                        <i class="fa-regular fa-pen-to-square"></i>
-                    </a>
-                    <a asp-action="DeleteText" asp-controller="Admin" asp-route-id="@faq.TextElementId" class="col-1">
-                        <i class="fa-solid fa-trash-can text-danger"></i>
-                    </a>
+                    <div class="row">
+                        <details class="p-3 col">
+                            <summary class="h5 text-jampot-green fw-bold">@faq.Name</summary>
+                            <p class="text-jampot-yellow fs-5">
+                                @{
+                                    string[] paragraphs = faq.Content.Split("\n");
+                                }
+                                @foreach (string par in paragraphs)
+                                {
+                                    <br/>
+                                    @par
+                                }
+
+                            </p>
+                        </details>
+                        @if (User.IsInRole("Admin"))
+                        {
+                            <a asp-action="Edit" asp-controller="Admin" asp-route-id="@faq.TextElementId" class="col-1">
+                                <i class="fa-regular fa-pen-to-square"></i>
+                            </a>
+                            <a asp-action="Delete" asp-controller="Admin" asp-route-id="@faq.TextElementId" class="col-1">
+                                <i class="fa-solid fa-trash-can text-danger"></i>
+                            </a>
+                        }
+                    </div>
                 }
-                </div>
             }
-        }
-    </div>   
-    <div class="col-lg" id="pic">
-        <img src="/pics/People.png" alt="happy people" class="photo"/>
-        @if(User.IsInRole("Admin"))
-        {
-            <a class="btn btn-primary m-5" asp-action="TextEdit" asp-controller="Admin">Add New FAQ</a>
-        }
+        </div>
+        
+        <div class="col-lg" id="pic">
+            @if(Model.Photo != null){
+                int startIndex = Model.Photo.FileName.IndexOf("/");
+                int endIndex = Model.Photo.FileName.IndexOf(".");
+                string name = Model.Photo.FileName.Substring(startIndex, endIndex - startIndex);
+                <img src="@Model.Photo.FileName" alt="@name" class="photo"/>
+                @if (User.IsInRole("Admin"))
+                {
+                    <a asp-action="EditPhoto" asp-controller="Admin" asp-route-position="0"><i class="fa-regular fa-pen-to-square"></i></a>
+                }
+            }
+            
+            @if (User.IsInRole("Admin"))
+            {
+                <a class="btn btn-primary m-5" asp-action="TextEdit" asp-controller="Admin">Add New FAQ</a>
+            }
+        </div>
     </div>
-</div>
+}
 
 

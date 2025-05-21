@@ -21,14 +21,12 @@ public class HomeController : Controller
     public async Task<IActionResult> Index()
     {
         HomeViewModel model = new HomeViewModel();
-        model.Hours = await _context.TextElements.SingleOrDefaultAsync(t => t.Location.ToLower().Contains("home"));
-        model.Map = await _context.Files.Where(
-            m => m.FileName.Contains("map") && m.FileName.Contains("landing")).FirstOrDefaultAsync();
-        model.Special = await _context.Files.Where(
-            m => m.FileName.Contains("special") && m.FileName.Contains("landing")).FirstOrDefaultAsync();
-        model.Photos = await _context.Files.Where(
-            m => !m.FileName.Contains("map") && !m.FileName.Contains("special") 
-                                             && m.FileName.Contains("landing")).ToListAsync();
+        model.Hours = await _context.TextElements.FirstOrDefaultAsync(t => t.Page.PageTitle.ToLower().Contains("home"));
+        Page currentPage = await _context.Pages.Where(p => p.PageTitle.ToLower().Contains("home"))
+            .Include(p => p.Files).FirstOrDefaultAsync();
+        model.Photos = currentPage.Files;
+        // model.Special = model.Photos.Find(f => f.FileName.ToLower().Contains("special"));
+        // model.Photos.Remove(model.Special);
         return View(model);
     }
 

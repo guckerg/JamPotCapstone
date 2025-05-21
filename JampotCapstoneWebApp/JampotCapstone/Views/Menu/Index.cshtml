@@ -1,9 +1,20 @@
-﻿@{
+﻿@model List<JampotCapstone.Models.File>
+@{
     ViewData["Title"] = "Menu";
 }
 <header class="text-center">
     <h1 class="display-3 title text-jampot-green">MENU</h1>
 </header>
-<div class="menu-container">
-    <img src="~/pics/Menu.png" width="90%" alt="Jampots menu"/>
-</div>
+@if(Model.Count == 1)
+{
+    var menu = Model[0];
+    <div class="menu-container">
+        <img src="@menu.FileName" width="90%" alt="Jampots menu"/>
+        @if (User.IsInRole("Admin"))
+        {
+            <a asp-controller="Admin" asp-action="EditPhoto" asp-route-id="@menu.FileID">
+                <i class="fa-regular fa-pen-to-square"></i>
+            </a>
+        }
+    </div>
+}

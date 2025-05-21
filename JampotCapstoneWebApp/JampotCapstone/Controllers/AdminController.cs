@@ -24,15 +24,18 @@ public class AdminController : Controller
     {
         AdminViewModel model = new AdminViewModel
         {
-            Textblocks = await _context.TextElements.OrderBy(t => t.Location).ToListAsync(),
+            Textblocks = await _context.TextElements.OrderBy(t => t.Page)
+                .Include(t => t.Page).ToListAsync(),
             Photos = await _context.Files.ToListAsync(),
-            Products = await _context.Products.ToListAsync()
+            Products = await _context.Products.ToListAsync(),
+            Pages = await _context.Pages.Where(p => p.Files.Count > 0).Include(p => p.Files).ToListAsync(),
         };
         return View(model);
     }
 
     public IActionResult TextEdit(int id = 0)
     {
+        ViewBag.Pages = _context.Pages.ToList();
         TextElement? model = id == 0 ? new TextElement() : _context.TextElements.Find(id);
         return View(model);
     }
@@ -44,6 +47,8 @@ public class AdminController : Controller
         {
             if (model.TextElementId == 0)
             {
+                int id = model.PageId;
+                model.Page = _context.Pages.Find(id);
                 _context.TextElements.Add(model);
             }
             else
@@ -68,6 +73,74 @@ public class AdminController : Controller
         return View(model);
     }
 
+    public IActionResult EditPhoto(int id)
+    {
+        EditViewModel model = new EditViewModel
+        {
+            Position = id,
+            Pages = _context.Pages.ToList(),
+        };
+        return View(model);
+    }
+
+    [HttpPost]
+    public async Task<IActionResult> EditPhoto(EditViewModel model)
+    {
+        Models.File? photo = await _context.Files.Where(f => f.FileName.ToLower().Contains(model.Key.ToLower()))
+            .Include(f => f.Pages)
+            .FirstOrDefaultAsync();
+        Page? currentPage = await _context.Pages.Include(p => p.Files)
+            .FirstOrDefaultAsync(p => p.PageId == model.Page);
+        if (currentPage.Files.Count > 0)
+        {
+            Models.File oldPhoto = currentPage.Files.Find(f => f.FileID == model.Position);
+            int index = currentPage.Files.IndexOf(oldPhoto);
+            currentPage.Files[index] = photo;
+        }
+        else
+        {
+            currentPage.Files.Add(photo);
+        }
+        _context.Pages.Update(currentPage);
+        if (await _context.SaveChangesAsync() > 0)
+        {
+            TempData["Message"] = "Photo successfully changed.";
+        }
+        else
+        {
+            TempData["Message"] = "There was a problem saving the changes. Please try again.";
+        }
+        return RedirectToAction("Index");
+    }
+
+    public IActionResult Add()
+    {
+        return View();
+    }
+
+    [HttpPost]
+    public async Task<IActionResult> Add(Models.File model)
+    {
+        if (ModelState.IsValid)
+        {
+            _context.Files.Add(model);
+            if (await _context.SaveChangesAsync() > 0)
+            {
+                TempData["Message"] = "File successfully added.";
+                return RedirectToAction("Index");
+            }
+            else
+            {
+                ModelState.AddModelError("", "There was a problem saving the file. Please try again.");
+            }
+        }
+        else
+        {
+            ModelState.AddModelError("", "There were data-entry errors. Please check the form.");
+        }
+        return View(model);
+    }
+
     public IActionResult DeleteText(int id)
     {
         TextElement? toDelete = _context.TextElements.Find(id);
@@ -86,7 +159,7 @@ public class AdminController : Controller
             TempData["context"] = "danger";
         }
 
-        return View("Index");
+        return RedirectToAction("Index");
     }
 
     public IActionResult ProductEdit(int id = 0)

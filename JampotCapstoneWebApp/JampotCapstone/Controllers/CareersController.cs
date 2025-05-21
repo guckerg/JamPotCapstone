@@ -35,7 +35,7 @@ namespace JampotCapstone.Controllers
             
             ViewBag.Text =
                 _context.TextElements
-                    .FirstOrDefault(t => t.Location.ToLower().Contains("careers"));
+                    .FirstOrDefault(t => t.Page.PageTitle.ToLower().Contains("careers"));
 
             return View(viewModel);
         }
