@@ -129,11 +129,13 @@ public class AdminController : Controller
         {
             if (viewModel.ProductId == 0)
             {
-                _context.Products.Add(viewModel);
+                var model = viewModel.Product;
+                _context.Products.Add(model);
             }
             else
             {
-                _context.Products.Update(viewModel);
+                var model = viewModel.Product;
+                _context.Products.Update(model);
             }
             if (_context.SaveChanges() > 0)
             {
@@ -147,8 +149,11 @@ public class AdminController : Controller
         }
         else
         {
+            viewModel.Tags = new SelectList(_context.ProductTags, "TagID", "Tag");
+            viewModel.Types = new SelectList(_context.ProductTypes, "TypeId", "Type");
             TempData["Message"] = "There were data-entry errors. Please check the form.";
             TempData["context"] = "danger";
+            return View("Index", viewModel);
         }
         return View(viewModel);
     }
