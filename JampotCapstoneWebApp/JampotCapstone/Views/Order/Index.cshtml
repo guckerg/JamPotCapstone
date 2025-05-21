@@ -1,5 +1,5 @@
 @using System.Globalization
-@model List<ProductType>
+@model List<Product>
 @{
     ViewBag.Title = "Order Page";
     Layout = "_Layout";
@@ -31,13 +31,30 @@
 <div class="row">
     @if (Model.Any())
     {
-        foreach (ProductType c in Model)
+        List<ProductType> categories = [];
+        foreach (Product p in Model)
         {
-            if (c.Products.Any())
+            foreach (ProductType c in p.ProductCategory)
             {
-                <h4 class="content text-jampot-yellow order-section">@string.Concat(Char.ToUpper(c.Type[0]), c.Type.Substring(1, c.Type.Length - 1))</h4>
-                foreach (Product p in c.Products)
+                if (!categories.Contains(c))
                 {
+                    categories.Add(c);
+                }
+            }
+        }
+
+        // categories = categories.OrderBy(c => c.Type);
+        foreach (ProductType c in categories)
+        {
+            bool hasProducts = false;
+            <h4 class="content text-jampot-yellow order-section">
+                @string.Concat(Char.ToUpper(c.Type[0]), c.Type.Substring(1, c.Type.Length - 1))
+            </h4>
+            foreach (Product p in Model)
+            {
+                if (p.ProductCategory.Contains(c))
+                {
+                    hasProducts = true;
                     <div class="col-lg-4 col-md-6 p-2">
                         <img src="@p.ProductPhoto.FileName" alt="@p.ProductName" class="photo rounded"/>
                         <div class="container banner text-dark content rounded-bottom">
@@ -51,7 +68,12 @@
                             </div>
                         </div>
                     </div>
-                }    
+                }
+            }
+
+            if (!hasProducts)
+            {
+                <div>There are no products in this category.</div>
             }
         }
     }
