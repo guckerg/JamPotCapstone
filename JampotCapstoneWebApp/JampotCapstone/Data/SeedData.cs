@@ -115,9 +115,8 @@ public class SeedData
                 ContentType = "image/png"
             };
             ctx.Files.Add(menu);
-
+            ctx.SaveChanges();
             #endregion
-
             #region products
 
             ProductType food = new ProductType
@@ -354,8 +353,8 @@ public class SeedData
                 }
             };
             ctx.Products.Add(p11);
-            #endregion
             ctx.SaveChanges();
+            #endregion
             #region pages
 
             Page home = new Page
@@ -408,6 +407,7 @@ public class SeedData
                 Files = [menu]
             };
             ctx.Pages.Add(menuPage);
+            ctx.SaveChanges();
             #endregion
             #region text
 
@@ -541,7 +541,6 @@ public class SeedData
             ctx.SaveChanges();
 
             #endregion
-
             #region jobs
 
             JobTitle lineCook = new JobTitle
@@ -560,10 +559,7 @@ public class SeedData
 
             ctx.SaveChanges();
             #endregion
-            ctx.SaveChanges();
 
-          
-            
             ctx.SaveChanges();
         }
     }
