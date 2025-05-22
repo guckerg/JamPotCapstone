@@ -41,16 +41,20 @@ async function processPayment(token) {
         });
         const data = await response.json();
         if (response.ok) {
-            alert('Payment processed successfully!');
+            //alert('Payment processed successfully!');
             const modalEl = document.getElementById('squarePaymentModal');
             const paymentModal = bootstrap.Modal.getOrCreateInstance(modalEl);
-            paymentModal.modal('hide');
+            paymentModal.hide();
 
-            //document.body.classList.remove('modal-open');
-            //const backdrop = document.querySelector('.modal-backdrop');
-            //if (backdrop) {
-            //    backdrop.parentNode.removeChild(backdrop);
-            //}
+            document.body.classList.remove('modal-open');
+            const backdrop = document.querySelector('.modal-backdrop');
+            if (backdrop) {
+                backdrop.parentNode.removeChild(backdrop);
+            }
+
+            const successModalEl = document.getElementById('paymentSuccessModal');
+            const successModal = new bootstrap.Modal(successModalEl);
+            successModal.show();
         } else {
             alert('Payment failed: ' + data.error);
         }
