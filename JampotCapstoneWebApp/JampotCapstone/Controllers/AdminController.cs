@@ -1,10 +1,12 @@
 using System.Net.Mime;
+using System.Reflection;
 using JampotCapstone.Data;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using JampotCapstone.Models;
 using JampotCapstone.Models.ViewModels;
 using Microsoft.EntityFrameworkCore;
+using File = JampotCapstone.Models.File;
 
 namespace JampotCapstone.Controllers;
 
@@ -70,12 +72,13 @@ public class AdminController : Controller
         return View(model);
     }
 
-    public IActionResult EditPhoto(int id)
+    public async Task<IActionResult> EditPhoto(int id, string pageTitle)
     {
         EditViewModel model = new EditViewModel
         {
-            Position = id,
-            Pages = _context.Pages.ToList(),
+            Photos = await _context.Files.Where(f => f.ContentType.ToLower().Contains("image")).ToListAsync(),
+            CurrentPage = pageTitle,
+            OldPhotoId = id
         };
         return View(model);
     }
@@ -83,7 +86,28 @@ public class AdminController : Controller
     [HttpPost]
     public async Task<IActionResult> EditPhoto(EditViewModel model)
     {
-        Models.File? photo = await _context.Files.Where(f => f.FileName.ToLower().Contains(model.Key.ToLower()))
+        Models.File? newPhoto = await _context.Files.Include(f => f.PagePosition)
+            .FirstOrDefaultAsync(f => f.FileID == model.NewPhotoId);
+        Models.File? oldPhoto = await _context.Files.Include(f => f.PagePosition)
+            .FirstOrDefaultAsync(f => f.FileID == model.OldPhotoId);
+        if (ReplacePhoto(oldPhoto, newPhoto, model.CurrentPage) > 0)
+        {
+            _context.Files.Update(oldPhoto);
+            _context.Files.Update(newPhoto);
+            if (await _context.SaveChangesAsync() > 0)
+            {
+                TempData["Message"] = "Photo successfully changed.";
+            }
+            else
+            {
+                TempData["Message"] = "There was a problem saving the changes. Please try again.";
+            }
+        }
+        else
+        {
+            TempData["Message"] = "Page not found. Please try again.";
+        }
+        /*Models.File? photo = await _context.Files.Where(f => f.FileName.ToLower().Contains(model.Key.ToLower()))
             .Include(f => f.Pages)
             .FirstOrDefaultAsync();
         Page? currentPage = await _context.Pages.Include(p => p.Files)
@@ -99,14 +123,7 @@ public class AdminController : Controller
             currentPage.Files.Add(photo);
         }
         _context.Pages.Update(currentPage);
-        if (await _context.SaveChangesAsync() > 0)
-        {
-            TempData["Message"] = "Photo successfully changed.";
-        }
-        else
-        {
-            TempData["Message"] = "There was a problem saving the changes. Please try again.";
-        }
+        */
         return RedirectToAction("Index");
     }
 
@@ -157,5 +174,27 @@ public class AdminController : Controller
         }
 
         return RedirectToAction("Index");
+    }
+
+    public int ReplacePhoto(File oldFile, File newFile, string propName)
+    {
+        int result = 0;
+        // get a list of the properties in the class
+        Type objType = newFile.PagePosition.GetType();
+        PropertyInfo[] properties = objType.GetProperties();
+
+        foreach (PropertyInfo prop in properties)
+        {
+            string propertyName = prop.Name;
+            if (propertyName == propName)
+            {
+                var swapValue = prop.GetValue(oldFile.PagePosition);
+                prop.SetValue(newFile.PagePosition, swapValue);
+                prop.SetValue(oldFile.PagePosition, -1);
+                result = 1;
+            }
+        }
+
+        return result;
     }
 }

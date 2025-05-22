@@ -8,4 +8,6 @@ public class File
 
     public List<Page> Pages { get; set; } =
         new List<Page>(); // To correlate a photo with the page it should be displayed on
+
+    public PagePosition PagePosition { get; set; } = new PagePosition();
 }

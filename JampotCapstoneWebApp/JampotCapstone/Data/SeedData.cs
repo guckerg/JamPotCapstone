@@ -40,7 +40,8 @@ public class SeedData
             {
                 FileID = 1,
                 FileName = "/pics/landing/JampotDrink.png",
-                ContentType = "image/png"
+                ContentType = "image/png",
+                PagePosition = new PagePosition{ Home = 1, About = 0 }
             };
             ctx.Files.Add(landing1);
 
@@ -48,7 +49,8 @@ public class SeedData
             {
                 FileID = 2,
                 FileName = "/pics/landing/jackfruit-wrap.png",
-                ContentType = "image/png"
+                ContentType = "image/png",
+                PagePosition = new PagePosition{ Home = 2, About = 1 }
             };
             ctx.Files.Add(landing2);
 
@@ -56,39 +58,35 @@ public class SeedData
             {
                 FileID = 3,
                 FileName = "/pics/ReggaeChiaPudding.png",
-                ContentType = "image/png"
+                ContentType = "image/png",
+                PagePosition = new PagePosition{ Home = 3 }
             };
             ctx.Files.Add(landing3);
 
             File landing4 = new File
             {
-                FileID = 4,
-                FileName = "/pics/landing/map.png",
-                ContentType = "image/png"
+                FileID = 5,
+                FileName = "/pics/landing/jackfruit-wrap-special.png",
+                ContentType = "image/png",
+                PagePosition = new PagePosition{ Home = 0 }
             };
             ctx.Files.Add(landing4);
 
             File landing5 = new File
             {
-                FileID = 5,
-                FileName = "/pics/landing/jackfruit-wrap-special.png",
-                ContentType = "image/png"
-            };
-            ctx.Files.Add(landing5);
-
-            File landing6 = new File
-            {
                 FileID = 6,
                 FileName = "/pics/landing/People.png",
-                ContentType = "image/png"
+                ContentType = "image/png",
+                PagePosition = new PagePosition{ Home = 4, About = 2, FAQs = 0 }
             };
-            ctx.Files.Add(landing6);
+            ctx.Files.Add(landing5);
 
             File placeholder = new File
             {
                 FileID = 7,
                 FileName = "/pics/landing/DesertBowl.png",
-                ContentType = "image/png"
+                ContentType = "image/png",
+                PagePosition = new PagePosition{ Catering = 0 }
             };
             ctx.Files.Add(placeholder);
 
@@ -96,7 +94,8 @@ public class SeedData
             {
                 FileID = 8,
                 FileName = "/pics/ElectrolyteRefresh.png",
-                ContentType = "image/png"
+                ContentType = "image/png",
+                PagePosition = new PagePosition{ Catering = 1 }
             };
             ctx.Files.Add(electrolyte);
 
@@ -104,7 +103,8 @@ public class SeedData
             {
                 FileID = 9,
                 FileName = "/pics/GardenWrap.png",
-                ContentType = "image/png"
+                ContentType = "image/png",
+                PagePosition = new PagePosition{ Catering = 2 }
             };
             ctx.Files.Add(garden);
 
@@ -112,7 +112,8 @@ public class SeedData
             {
                 FileID = 10,
                 FileName = "/pics/Menu.png",
-                ContentType = "image/png"
+                ContentType = "image/png",
+                PagePosition = new PagePosition{ Menu = 0 }
             };
             ctx.Files.Add(menu);
 
@@ -364,7 +365,7 @@ public class SeedData
             {
                 PageTitle = "Home",
                 Files = [
-                    landing5, landing1, landing2, landing6, landing3
+                    landing4, landing1, landing2, landing5, landing3
                 ]
             };
             ctx.Pages.Add(home);
@@ -373,7 +374,7 @@ public class SeedData
             {
                 PageTitle = "FAQ",
                 Files = [
-                    landing6
+                    landing5
                 ]
             };
             ctx.Pages.Add(ask);
@@ -381,7 +382,7 @@ public class SeedData
             Page aboutUs = new Page
             {
                 PageTitle = "About Us",
-                Files = [landing1, landing6, landing2]
+                Files = [landing1, landing5, landing2]
             };
             ctx.Pages.Add(aboutUs);
             

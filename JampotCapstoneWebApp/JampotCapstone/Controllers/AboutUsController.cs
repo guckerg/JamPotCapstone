@@ -22,6 +22,23 @@ namespace JampotCapstone.Controllers
 
         public async Task<IActionResult> Ask()
         {
+            Models.File? photo = await _context.Files.Include(f => f.PagePosition)
+                .SingleOrDefaultAsync(f => f.PagePosition.FAQs != -1);
+            if (photo == null)
+            {
+                photo = await _context.Files.FirstOrDefaultAsync(f => f.FileName.ToLower().Contains("people"));
+            }
+            ContentViewModel model = new ContentViewModel
+            {
+                Textblocks = await _context.TextElements.
+                    Where(t => t.Page.PageTitle.ToLower().Contains("faq")).ToListAsync(),
+                Photo = photo
+            };
+            return View(model);
+        }
+
+        /*public async Task<IActionResult> Ask()
+        {
             Page? currentPage = await _context.Pages.Where(p => p.PageTitle.ToLower() == "faq")
                 .Include(p => p.Files)
                 .FirstOrDefaultAsync();
@@ -42,7 +59,7 @@ namespace JampotCapstone.Controllers
             };
                 
             return View(model);
-        }
+        }*/
         
     }
 }
