@@ -18,7 +18,7 @@
                 event.preventDefault();
                 const result = await card.tokenize();
                 if (result.status === 'OK') {
-                    console.log('Payment token obtained:', result.token);
+                    //console.log('Payment token obtained:', result.token);
                     processPayment(result.token);
                 } else {
                     console.error('Tokenization error:', result);
@@ -32,16 +32,29 @@
 });
 
 async function processPayment(token) {
+    const cartSubtotal = parseInt(document.getElementById('cartSubtotal').value, 10) * 100; //unit conversion from dollars to cents for payment.
     try {
         const response = await fetch('/api/payment/process', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ token: token, amount: 1000 })
+            body: JSON.stringify({ token: token, amount: cartSubtotal })
         });
         const data = await response.json();
         if (response.ok) {
-            alert('Payment processed successfully!');
-            $('#squarePaymentModal').modal('hide');
+            //alert('Payment processed successfully!');
+            const modalEl = document.getElementById('squarePaymentModal');
+            const paymentModal = bootstrap.Modal.getOrCreateInstance(modalEl);
+            paymentModal.hide();
+
+            document.body.classList.remove('modal-open');
+            const backdrop = document.querySelector('.modal-backdrop');
+            if (backdrop) {
+                backdrop.parentNode.removeChild(backdrop);
+            }
+
+            const successModalEl = document.getElementById('paymentSuccessModal');
+            const successModal = new bootstrap.Modal(successModalEl);
+            successModal.show();
         } else {
             alert('Payment failed: ' + data.error);
         }
