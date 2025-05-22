@@ -44,13 +44,13 @@ async function processPayment(token) {
             alert('Payment processed successfully!');
             const modalEl = document.getElementById('squarePaymentModal');
             const paymentModal = bootstrap.Modal.getOrCreateInstance(modalEl);
-            paymentModal.hide();
+            paymentModal.modal('hide');
 
-            document.body.classList.remove('modal-open');
-            const backdrop = document.querySelector('.modal-backdrop');
-            if (backdrop) {
-                backdrop.parentNode.removeChild(backdrop);
-            }
+            //document.body.classList.remove('modal-open');
+            //const backdrop = document.querySelector('.modal-backdrop');
+            //if (backdrop) {
+            //    backdrop.parentNode.removeChild(backdrop);
+            //}
         } else {
             alert('Payment failed: ' + data.error);
         }
