@@ -40,7 +40,7 @@ public class AdminController : Controller
 
     public async Task<IActionResult> Edit(int id = 0)
     {
-        ViewBag.Pages = _pageRepo.GetAllPagesAsync();
+        ViewBag.Pages = await _pageRepo.GetAllPagesAsync();
         TextElement? model = id == 0 ? new TextElement() // if an existing textblock was not sent to the controller, 
             : await _textRepo.GetTextElementByIdAsync(id);   // create a new one
         return View(model);
