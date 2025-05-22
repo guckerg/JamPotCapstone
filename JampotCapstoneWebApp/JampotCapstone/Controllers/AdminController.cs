@@ -80,6 +80,26 @@ public class AdminController : Controller
         return View(model);
     }
 
+    public async Task<IActionResult> DeleteText(int id)
+    {
+        TextElement? toDelete = await _textRepo.GetTextElementByIdAsync(id);
+        if (toDelete != null)
+        {
+            if (await _textRepo.DeleteTextElementAsync(toDelete) > 0)
+            {
+                TempData["Message"] = "Text block successfully deleted.";
+                TempData["context"] = "success";
+            }
+        }
+        else
+        {
+            TempData["Message"] = "That text block was not found. Please try again.";
+            TempData["context"] = "danger";
+        }
+
+        return RedirectToAction("Index");
+    }
+
     public async Task<IActionResult> EditPhoto(int id)
     {
         EditViewModel model = new EditViewModel
@@ -123,13 +143,13 @@ public class AdminController : Controller
         return RedirectToAction("Index");
     }
 
-    public IActionResult Add()
+    public IActionResult AddPhoto()
     {
         return View();
     }
 
     [HttpPost]
-    public async Task<IActionResult> Add(File model)
+    public async Task<IActionResult> AddPhoto(File model)
     {
         if (ModelState.IsValid)
         {
@@ -150,38 +170,17 @@ public class AdminController : Controller
         return View(model);
     }
 
-    public async Task<IActionResult> DeleteText(int id)
+    public async Task<IActionResult> ProductEdit(int id = 0)
     {
-        TextElement? toDelete = await _textRepo.GetTextElementByIdAsync(id);
-        if (toDelete != null)
-        {
-            if (await _textRepo.DeleteTextElementAsync(toDelete) > 0)
-            {
-                TempData["Message"] = "Text block successfully deleted.";
-                TempData["context"] = "success";
-            }
-        }
-        else
-        {
-            TempData["Message"] = "That text block was not found. Please try again.";
-            TempData["context"] = "danger";
-        }
-
-        return RedirectToAction("Index");
-    }
-
-    public IActionResult ProductEdit(int id = 0)
-    {
-        // Create a list of tag and type objects 
-        var tags = _context.ProductTags.ToList();
-        var types = _context.ProductTypes.ToList();
+        // Create a list of tag and type objects for the drop down in the view
+        var tags = await _productRepo.GetAllProductTagsAsync();
+        var types = await _productRepo.GetAllProductTypesAsync();
+        // Create a list of all the products in the database
+        var products = await _productRepo.GetAllProductsAsync();
 
         Product? model = id == 0
             ? new Product()
-            : _context.Products
-                .Include(p => p.ProductCategory)
-                .Include(p => p.Tags)
-                .FirstOrDefault(p => p.ProductId == id);
+            : await _productRepo.GetProductByIdAsync(id);
 
         if (model == null)
         {
@@ -196,6 +195,9 @@ public class AdminController : Controller
             ProductName = model.ProductName,
             ProductPrice = model.ProductPrice,
             ProductIngredients = model.ProductIngredients,
+            SelectedTagId = model.Tags?.FirstOrDefault()?.TagID ?? 0, //Get the currently selected tag
+            SelectedTypeId = model.ProductCategory?.FirstOrDefault()?.TypeId ?? 0, //Get the currently selected type
+            // Populate drop downs
             Tags = new SelectList(tags, "TagID", "Tag", model.Tags?.FirstOrDefault()?.TagID),
             Types = new SelectList(types, "TypeId", "Type", model.ProductCategory?.FirstOrDefault()?.TypeId)
         };
@@ -204,34 +206,55 @@ public class AdminController : Controller
     }
 
     [HttpPost]
-    public IActionResult ProductEdit(ProductEditViewModel viewModel)
+    public async Task<IActionResult> ProductEdit(ProductEditViewModel viewModel)
     {
-        if (ModelState.IsValid)
+        var productToAdd = new Product
+        {
+            ProductId = viewModel.ProductId,
+            ProductName = viewModel.ProductName,
+            ProductPrice = viewModel.ProductPrice,
+            ProductIngredients = viewModel.ProductIngredients,
+            ProductPhoto = viewModel.PhotoUpload, //TODO: upload a picture
+            ProductCategory = new List<ProductType>
+            {
+                new ProductType { TypeId = viewModel.SelectedTypeId }
+            },
+            Tags = new List<ProductTag>
+            {
+                new ProductTag { TagID = viewModel.SelectedTagId }
+            },
+        };
+
+        if (!ModelState.IsValid) // First check if there's an error
+        {
+            TempData["Message"] = "Changes could not be saved. Please try again.";
+            TempData["context"] = "danger";
+            return RedirectToAction("Index");
+        }
+
+        if (ModelState.IsValid) //Save data if the modelState is valid
         {
             if (viewModel.ProductId == 0)
             {
-                var model = viewModel.Product;
-                _context.Products.Add(model);
+                await _productRepo.AddProductAsync(productToAdd);
+                TempData["Message"] = "Element successfully added.";
+                TempData["context"] = "success";
             }
             else
             {
-                var model = viewModel.Product;
-                _context.Products.Update(model);
-            }
-            if (_context.SaveChanges() > 0)
-            {
+                await _productRepo.UpdateProductAsync(productToAdd);
                 TempData["Message"] = "Element successfully updated.";
-                return RedirectToAction("Index");
-            }
-            else
-            {
-                TempData["Message"] = "Changes could not be saved. Please try again.";
+                TempData["context"] = "success";
             }
         }
         else
         {
-            viewModel.Tags = new SelectList(_context.ProductTags, "TagID", "Tag");
-            viewModel.Types = new SelectList(_context.ProductTypes, "TypeId", "Type");
+            // Create a list of tag and type objects for the drop down in the view
+            var tags = await _productRepo.GetAllProductTagsAsync();
+            var types = await _productRepo.GetAllProductTypesAsync();
+            // Repopulate drop downs on error
+            viewModel.Tags = new SelectList(tags, "TagID", "Tag", viewModel.SelectedTagId);
+            viewModel.Types = new SelectList(types, "TypeId", "Type", viewModel.SelectedTypeId);
             TempData["Message"] = "There were data-entry errors. Please check the form.";
             TempData["context"] = "danger";
             return View("Index", viewModel);
@@ -239,17 +262,15 @@ public class AdminController : Controller
         return View(viewModel);
     }
 
-    public IActionResult DeleteProduct(int id)
+    public async Task<IActionResult> DeleteProduct(int id)
     {
-        Product? toDelete = _context.Products.Find(id);
+        // find the product to delete by the id passed through
+        Product? toDelete = await _productRepo.GetProductByIdAsync(id);
         if (toDelete != null)
         {
-            _context.Products.Remove(toDelete);
-            if (_context.SaveChanges() > 0)
-            {
-                TempData["Message"] = "Product successfully deleted.";
-                TempData["context"] = "success";
-            }
+            await _productRepo.DeleteProductAsync(toDelete);
+            TempData["Message"] = "Product successfully deleted.";
+            TempData["context"] = "success";
         }
         else
         {
@@ -257,6 +278,6 @@ public class AdminController : Controller
             TempData["context"] = "danger";
         }
 
-        return View("Index");
+        return RedirectToAction("Index");
     }
 }

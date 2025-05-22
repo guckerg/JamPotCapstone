@@ -13,6 +13,18 @@ public class ProductRepository : IProductRepository
         _context = ctx;
     }
     
+    public async Task<List<ProductTag>> GetAllProductTagsAsync()
+    {
+        List<ProductTag> tags = await _context.ProductTags.ToListAsync();
+        return tags;
+        // Return a list of all product tags for drop down list
+    }
+    public async Task<List<ProductType>> GetAllProductTypesAsync()
+    {
+        List<ProductType> types = await _context.ProductTypes.ToListAsync();
+        return types;
+        // Return a list of all product categories for drop down list
+    }
     public async Task<List<Product>> GetAllProductsAsync()
     {
         List<Product> products = await _context.Products // get a list of products
