@@ -1,46 +1,45 @@
-﻿using JampotCapstone.Data;
+﻿using System.Net;
+using JampotCapstone.Data;
+using JampotCapstone.Data.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 using JampotCapstone.Models;
 using JampotCapstone.Models.ViewModels;
-using Microsoft.EntityFrameworkCore;
+using File = JampotCapstone.Models.File;
 
 namespace JampotCapstone.Controllers
 {
     public class AboutUsController : Controller
     {
-        private ApplicationDbContext _context;
+        private ITextElementRepository _repo;
+        private IPhotoRepository _photoRepo;
 
-        public AboutUsController(ApplicationDbContext ctx)
+        public AboutUsController(ITextElementRepository r, IPhotoRepository p)
         {
-            _context = ctx;
+            _repo = r;
+            _photoRepo = p;
         }
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
-            TextElement? model = _context.TextElements.FirstOrDefault(t => t.Page.PageTitle.ToLower().Contains("about"));
+            TextElement? model = await _repo.GetTextElementByPageAsync("about");
             return View(model);
         }
 
         public async Task<IActionResult> Ask()
         {
-            Page? currentPage = await _context.Pages.Where(p => p.PageTitle.ToLower() == "faq")
-                .Include(p => p.Files)
-                .FirstOrDefaultAsync();
-            Models.File photo;
-            if (currentPage.Files.Count == 0)
+            // get a list of the photos associated with this page
+            File? photo = await _photoRepo.GetPhotoByPageAsync("faq");
+            ContentViewModel model = new ContentViewModel
             {
-                photo = await _context.Files.FirstOrDefaultAsync(f => f.FileName.ToLower().Contains("people")); // default image
+                Textblocks = await _repo.GetTextElementsByPageAsync("faq")
+            };
+            if (photo == null) // if there are no photos currently associated with the page
+            {
+                model.Photo = await _photoRepo.GetFileByNameAsync("people"); // load a default image
             }
             else
             {
-                photo = currentPage.Files.FirstOrDefault();                
+                model.Photo = photo;
             }
-            ContentViewModel model = new ContentViewModel
-            {
-                Textblocks = await _context.TextElements.
-                    Where(t => t.Page.PageTitle.ToLower().Contains("faq")).ToListAsync(),
-                Photo = photo
-            };
-                
             return View(model);
         }
         
