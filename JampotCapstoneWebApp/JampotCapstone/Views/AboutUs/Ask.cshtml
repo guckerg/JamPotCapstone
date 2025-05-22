@@ -53,7 +53,7 @@
                     <form asp-action="EditPhoto" asp-controller="Admin" method="get">
                         <input type="hidden" name="id" value="@Model.Photo.FileID"/>
                         <input type="hidden" name="pageTitle" value="@ViewBag.Title"/>
-                        <button type="submit"><i class="fa-regular fa-pen-to-square"></i></button>
+                        <button type="submit" class="btn btn-link"><i class="fa-regular fa-pen-to-square"></i></button>
                     </form>
                 }
             }

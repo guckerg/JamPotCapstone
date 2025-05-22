@@ -14,9 +14,16 @@ namespace JampotCapstone.Controllers
         {
             _context = ctx;
         }
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
-            TextElement? model = _context.TextElements.FirstOrDefault(t => t.Page.PageTitle.ToLower().Contains("about"));
+            AboutUsViewModel model = new AboutUsViewModel
+            {
+                Textblock = _context.TextElements
+                    .FirstOrDefault(t => t.Page.PageTitle.ToLower().Contains("about")),
+                Photos = await _context.Files.Include(f => f.PagePosition)
+                    .Where(f => f.PagePosition.About != -1).OrderBy(f => f.PagePosition.About)
+                    .ToListAsync()
+            };
             return View(model);
         }
 
