@@ -1,11 +1,21 @@
-﻿document.addEventListener('DOMContentLoaded', async () => {
+﻿async function getSquareConfig() {
+    const response = await fetch('/api/config/square');
+    if (!response.ok) {
+        throw new Error('Failed to load Square configuration');
+    }
+    return response.json();
+}
+
+document.addEventListener('DOMContentLoaded', async () => {
     if (!window.Square) {
         console.error('Square SDK failed to load.');
         return;
     }
 
+    const config = await getSquareConfig();
     const appId = 'sandbox-sq0idb-WOtifQSKNybOUxarQkzTEg';
     const locationId = 'LMZKPRF20WXFP';
+    console.log("first test:", appId, locationId);
 
     try {
         const payments = window.Square.payments(appId, locationId);
