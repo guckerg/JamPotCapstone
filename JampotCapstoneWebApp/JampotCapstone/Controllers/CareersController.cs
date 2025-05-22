@@ -1,4 +1,5 @@
 ﻿using JampotCapstone.Data;
+using JampotCapstone.Data.Interfaces;
 using JampotCapstone.Models;
 using JampotCapstone.Models.ViewModels;
 using Microsoft.AspNetCore.Authorization;
@@ -14,14 +15,16 @@ namespace JampotCapstone.Controllers
     {
         IApplicationRepository repo;
         private ApplicationDbContext _context;
+        private ITextElementRepository _textRepo;
 
-        public CareersController(IApplicationRepository r, ApplicationDbContext c)
+        public CareersController(IApplicationRepository r, ApplicationDbContext c, ITextElementRepository t)
         {
             repo = r;
             _context = c;
+            _textRepo = t;
         }
 
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
             //create a list of jobtitle objects currently available
             var positions = _context.JobTitles.Select(j => new { j.JobTitleID, j.JobTitleName }).ToList();
@@ -34,8 +37,7 @@ namespace JampotCapstone.Controllers
             };
             
             ViewBag.Text =
-                _context.TextElements
-                    .FirstOrDefault(t => t.Page.PageTitle.ToLower().Contains("careers"));
+                await _textRepo.GetTextElementByPageAsync("careers");
 
             return View(viewModel);
         }

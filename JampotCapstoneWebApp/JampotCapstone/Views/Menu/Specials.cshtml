@@ -9,12 +9,12 @@
 <h2 class="text-jampot-green fw-bold">Specials</h2>
 <hr class="yellowLine"/>
 <div class="row">
-    @if (Model != null && Model.Specials.Products.Count > 0)
+    @if (Model != null && Model.Specials.Count > 0)
     {
-        foreach (Product p in Model.Specials.Products)
+        foreach (Product p in Model.Specials)
         {
-            JampotCapstone.Models.File photo = null;
-            foreach (var f in Model.Promotions)
+            File photo = null;
+            foreach (File f in Model.Promotions)
             {
                 int startIndex = p.ProductPhoto.FileName.LastIndexOf('/');
                 int length = p.ProductPhoto.FileName.IndexOf('.') - startIndex;

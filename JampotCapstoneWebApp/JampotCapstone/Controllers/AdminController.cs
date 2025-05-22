@@ -1,10 +1,12 @@
 using System.Net.Mime;
 using System.Reflection;
 using JampotCapstone.Data;
+using JampotCapstone.Data.Interfaces;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using JampotCapstone.Models;
 using JampotCapstone.Models.ViewModels;
+using File = JampotCapstone.Models.File;
 using Microsoft.EntityFrameworkCore;
 using File = JampotCapstone.Models.File;
 
@@ -13,28 +15,36 @@ namespace JampotCapstone.Controllers;
 [Authorize(Roles = "Admin")]
 public class AdminController : Controller
 {
-    private readonly ApplicationDbContext _context;
+    private readonly ITextElementRepository _textRepo;
+    private readonly IPhotoRepository _photoRepo;
+    private readonly IPageRepository _pageRepo;
+    private readonly IProductRepository _productRepo;
 
-    public AdminController(ApplicationDbContext ctx)
+    public AdminController(ITextElementRepository t, IPhotoRepository ph, IPageRepository p, IProductRepository r)
     {
-        _context = ctx;
+        _textRepo = t;
+        _photoRepo = ph;
+        _pageRepo = p;
+        _productRepo = r;
     }
     
     public async Task<IActionResult> Index()
     {
         AdminViewModel model = new AdminViewModel
         {
-            Textblocks = await _context.TextElements.OrderBy(t => t.Page)
-                .Include(t => t.Page).ToListAsync(),
-            Photos = await _context.Files.ToListAsync(),
-            Products = await _context.Products.ToListAsync(),
-            Pages = await _context.Pages.Where(p => p.Files.Count > 0).Include(p => p.Files).ToListAsync(),
+            Textblocks = await _textRepo.GetAllTextElementsAsync(),
+            Photos = await _photoRepo.GetAllPhotosAsync(),
+            Products = await _productRepo.GetAllProductsAsync(),
+            Pages = await _pageRepo.GetNonEmptyPagesAsync()
         };
         return View(model);
     }
 
     public async Task<IActionResult> Edit(int id = 0)
     {
+        ViewBag.Pages = await _pageRepo.GetAllPagesAsync();
+        TextElement? model = id == 0 ? new TextElement() // if an existing textblock was not sent to the controller, 
+            : await _textRepo.GetTextElementByIdAsync(id);   // create a new one
         // ViewBag.Pages = _context.Pages.ToList();
         TextElement? model = id == 0 ? new TextElement() : await _context.TextElements
             .Include(t => t.PagePosition)
@@ -43,20 +53,25 @@ public class AdminController : Controller
     }
 
     [HttpPost]
-    public IActionResult Edit(TextElement model)
+    public async Task<IActionResult> Edit(TextElement model)
     {
         if (ModelState.IsValid)
         {
+            int result = 0;
+            if (model.TextElementId == 0) // id does not exist in the database, hence it is a new textblock
             if (model.TextElementId == 0) // new textblock, hence FAQ page
             {
                 model.PagePosition.FAQs = _context.TextElements
                     .Count(t => t.PagePosition.FAQs != -1);
                 _context.TextElements.Add(model);
             } else
+                model.Page = await _pageRepo.GetPageByNameAsync("faq"); // creation of a new textblock requires that it be on the faq page
+                result = await _textRepo.StoreTextElementAsync(model);
+            } else // updating an existing record
             {
-                _context.TextElements.Update(model);
+                result = await _textRepo.UpdateTextElementAsync(model);
             }
-            if (_context.SaveChanges() > 0)
+            if (result > 0)
             {
                 TempData["Message"] = "Element successfully updated.";
                 return RedirectToAction("Index");
@@ -81,6 +96,8 @@ public class AdminController : Controller
             Photos = await _context.Files.Where(f => f.ContentType.ToLower().Contains("image")).ToListAsync(),
             CurrentPage = pageTitle,
             OldPhotoId = id
+            Position = id,
+            Pages = await _pageRepo.GetAllPagesAsync(),
         };
         return View(model);
     }
@@ -135,12 +152,11 @@ public class AdminController : Controller
     }
 
     [HttpPost]
-    public async Task<IActionResult> Add(Models.File model)
+    public async Task<IActionResult> Add(File model)
     {
         if (ModelState.IsValid)
         {
-            _context.Files.Add(model);
-            if (await _context.SaveChangesAsync() > 0)
+            if (await _photoRepo.AddFileAsync(model) > 0)
             {
                 TempData["Message"] = "File successfully added.";
                 return RedirectToAction("Index");
@@ -157,13 +173,12 @@ public class AdminController : Controller
         return View(model);
     }
 
-    public IActionResult Delete(int id)
+    public async Task<IActionResult> Delete(int id)
     {
-        TextElement? toDelete = _context.TextElements.Find(id);
+        TextElement? toDelete = await _textRepo.GetTextElementByIdAsync(id);
         if (toDelete != null)
         {
-            _context.TextElements.Remove(toDelete);
-            if (_context.SaveChanges() > 0)
+            if (await _textRepo.DeleteTextElementAsync(toDelete) > 0)
             {
                 TempData["Message"] = "Text block successfully deleted.";
                 TempData["context"] = "success";
