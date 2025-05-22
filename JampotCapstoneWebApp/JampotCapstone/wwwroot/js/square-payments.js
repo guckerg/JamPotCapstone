@@ -1,4 +1,4 @@
-﻿async function getSquareConfig() {
+async function getSquareConfig() {
     const response = await fetch('/api/config/square');
     if (!response.ok) {
         throw new Error('Failed to load Square configuration');
@@ -13,9 +13,8 @@ document.addEventListener('DOMContentLoaded', async () => {
     }
 
     const config = await getSquareConfig();
-    const appId = 'sandbox-sq0idb-WOtifQSKNybOUxarQkzTEg';
-    const locationId = 'LMZKPRF20WXFP';
-    console.log("first test:", appId, locationId);
+    const appId = config.applicationId;
+    const locationId = config.locationId;
 
     try {
         const payments = window.Square.payments(appId, locationId);
@@ -42,16 +41,28 @@ document.addEventListener('DOMContentLoaded', async () => {
 });
 
 async function processPayment(token) {
+    const cartSubtotal = parseInt(document.getElementById('cartSubtotal').value, 10) * 100; //unit conversion from dollars to cents for payment.
     try {
         const response = await fetch('/api/payment/process', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ token: token, amount: 1000 })
+            body: JSON.stringify({ token: token, amount: cartSubtotal })
         });
         const data = await response.json();
         if (response.ok) {
-            alert('Payment processed successfully!');
-            $('#squarePaymentModal').modal('hide');
+            const modalEl = document.getElementById('squarePaymentModal');
+            const paymentModal = bootstrap.Modal.getOrCreateInstance(modalEl);
+            paymentModal.hide();
+
+            document.body.classList.remove('modal-open');
+            const backdrop = document.querySelector('.modal-backdrop');
+            if (backdrop) {
+                backdrop.parentNode.removeChild(backdrop);
+            }
+
+            const successModalEl = document.getElementById('paymentSuccessModal');
+            const successModal = new bootstrap.Modal(successModalEl);
+            successModal.show();
         } else {
             alert('Payment failed: ' + data.error);
         }
