@@ -22,7 +22,7 @@
                         <div class="p-5">
                             <form asp-action="EditPhoto" asp-controller="Admin" method="get">
                                 <input type="hidden" name="id" value="@photo.FileID"/>
-                                <input type="hidden" name="@ViewData["Title"]"/>
+                                <input type="hidden" name="pageTitle" value="@ViewData["Title"]"/>
                                 <button type="submit" class="btn btn-link">
                                     <i class="fa-regular fa-pen-to-square"></i>
                                 </button>

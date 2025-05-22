@@ -53,7 +53,13 @@
                         }
                         @if (User.IsInRole("Admin"))
                         {
-                            <a asp-action="Edit" asp-controller="Admin" asp-route-id="@col.TextElementId"><i class="fa-regular fa-pen-to-square"></i></a>
+                            <form asp-controller="Admin" asp-action="Edit" method="get">
+                                <input type="hidden" name="id" value="@col.TextElementId"/>
+                                <input type="hidden" name="pageTitle" value="@ViewData["Title"]"/>
+                                <button type="submit" class="btn btn-link">
+                                    <i class="fa-regular fa-pen-to-square"></i>
+                                </button>
+                            </form>
                         }
                     </p>
                 </div>

@@ -33,10 +33,12 @@ public class AdminController : Controller
         return View(model);
     }
 
-    public IActionResult Edit(int id = 0)
+    public async Task<IActionResult> Edit(int id = 0)
     {
-        ViewBag.Pages = _context.Pages.ToList();
-        TextElement? model = id == 0 ? new TextElement() : _context.TextElements.Find(id);
+        // ViewBag.Pages = _context.Pages.ToList();
+        TextElement? model = id == 0 ? new TextElement() : await _context.TextElements
+            .Include(t => t.PagePosition)
+            .FirstOrDefaultAsync(t => t.TextElementId == id);
         return View(model);
     }
 
@@ -45,10 +47,10 @@ public class AdminController : Controller
     {
         if (ModelState.IsValid)
         {
-            if (model.TextElementId == 0)
+            if (model.TextElementId == 0) // new textblock, hence FAQ page
             {
-                int id = model.PageId;
-                model.Page = _context.Pages.Find(id);
+                model.PagePosition.FAQs = _context.TextElements
+                    .Count(t => t.PagePosition.FAQs != -1);
                 _context.TextElements.Add(model);
             } else
             {
@@ -176,20 +178,24 @@ public class AdminController : Controller
         return RedirectToAction("Index");
     }
 
-    public int ReplacePhoto(File oldFile, File newFile, string propName)
+    public int ReplacePhoto(File oldFile, File newFile, string pageTitle)
     {
         int result = 0;
         // get a list of the properties in the class
         Type objType = newFile.PagePosition.GetType();
         PropertyInfo[] properties = objType.GetProperties();
-
+        // iterate over the properties in the class
         foreach (PropertyInfo prop in properties)
         {
             string propertyName = prop.Name;
-            if (propertyName == propName)
+            // if the property name is the same as the provided page title
+            if (pageTitle.ToLower().Contains(propertyName.ToLower())) 
             {
+                // get the position of the old photo on the page
                 var swapValue = prop.GetValue(oldFile.PagePosition);
+                // put the new photo at that position
                 prop.SetValue(newFile.PagePosition, swapValue);
+                // remove the old photo from the page
                 prop.SetValue(oldFile.PagePosition, -1);
                 result = 1;
             }

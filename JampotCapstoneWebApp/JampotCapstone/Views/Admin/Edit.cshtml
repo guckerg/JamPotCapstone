@@ -21,15 +21,9 @@
         </div>
     </div>
     <div class="row mb-3">
-        <label asp-for="PageId" class="col-sm-2 col-form-label">Name of Page</label>
+        <label asp-for="PagePosition" class="col-sm-2 col-form-label">Name of Page</label>
         <div class="col-sm-10">
-            <select asp-for="PageId">
-                <option value="@Model.PageId">@Model.Page.PageTitle</option>
-                @foreach (Page p in ViewBag.Pages)
-                {
-                    <option value="@p.PageId">@p.PageTitle</option>
-                }
-            </select>
+            <input type="hidden" asp-for="PagePosition" value="@Model.PagePosition"/>
         </div>
     </div>
     <button type="submit" class="btn btn-primary col-2">Save Changes</button>

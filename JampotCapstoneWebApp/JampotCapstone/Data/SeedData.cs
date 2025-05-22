@@ -428,7 +428,11 @@ public class SeedData
                 Name = "FLAVORS",
                 Content =
                     "At Jam Pot, we bring the vibrant flavors and warm hospitality of Jamaica to the heart of Hawaii. Whether you're planning a family luau, corporate gathering, or an island celebration, our catering services are designed to add a touch of sunshine and Caribbean flair to any event. Our signature Jerk Chicken Wrap is sure to delight your taste buds, perfectly complemented by the refreshing tropical notes of our Lycheehoo! special. From savory dishes to invigorating beverages, every bite and sip is crafted with love and the freshest ingredients.",
-                Page = catering
+                Page = catering,
+                PagePosition = new PagePosition
+                {
+                    Catering = 0
+                }
             };
             ctx.TextElements.Add(catering1);
 
@@ -437,7 +441,11 @@ public class SeedData
                 Name = "OPTIONS",
                 Content =
                     "No event is too big or small—our team will work closely with you to create a menu tailored to your needs. We specialize in offering a variety of wholesome and flavorful options, including wraps, bowls, patties, and salads. Every dish is made fresh, showcasing the authentic tastes of Jamaica while embracing the island spirit of Hawaii. With our commitment to quality and attention to detail, Jam Pot takes the stress out of catering so you can focus on making memories.",
-                Page = catering
+                Page = catering,
+                PagePosition = new PagePosition
+                {
+                    Catering = 1
+                }
             };
             ctx.TextElements.Add(catering2);
 
@@ -446,7 +454,11 @@ public class SeedData
                 Name = "WHY JAMPOT?",
                 Content =
                     "Let us help you make your next event unforgettable. Contact Jam Pot today to learn more about our catering packages, pricing, and availability. Together, we'll bring the essence of Jamaica and the aloha spirit to your celebration, making it truly special.",
-                Page = catering
+                Page = catering,
+                PagePosition = new PagePosition
+                {
+                    Catering = 2
+                }
             };
             ctx.TextElements.Add(catering3);
 
