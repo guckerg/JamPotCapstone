@@ -100,9 +100,7 @@ public class ProductRepository : IProductRepository
 
     public async Task<int> UpdateProductAsync(Product product)
     {
-        _context.Products.Update(product);
-        _context.Entry(product).Collection(p => p.Tags).IsModified = true;
-        _context.Entry(product).Collection(p => p.ProductCategory).IsModified = true;
+        _context.Update(product);
         return await _context.SaveChangesAsync();
     }
 

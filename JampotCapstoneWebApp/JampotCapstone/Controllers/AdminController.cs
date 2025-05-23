@@ -272,21 +272,20 @@ public class AdminController : Controller
             return NotFound();
         }
 
-        // Attempt to save the image 
+        // Attempt to save a new photo
         File? uploadedImage = null;
-        if (viewModel.PhotoUpload != null) // Only try to save if a file was provided
+        if (viewModel.PhotoUpload != null)
         {
             uploadedImage = await SaveProductImageAsync(viewModel.PhotoUpload);
             if (uploadedImage == null)
             {
-                // If SaveProductImageAsync returned null, it means validation failed
-                TempData["Message"] = "Invalid image file. Only JPG, JPEG, PNG, or WebP images up to 5MB are allowed.";
-                TempData["context"] = "danger";
+                ModelState.AddModelError("PhotoUpload", "Invalid image file. Only JPG, JPEG, PNG, or WebP images up to 5MB are allowed.");
             }
         }
+
         if (!ModelState.IsValid)
         {
-            // Repopulate dropdowns on error
+            // Repopulate dropdown and checkbox on error
             var tags = await _productRepo.GetAllProductTagsAsync();
             var types = await _productRepo.GetAllProductTypesAsync();
             viewModel.Types = new SelectList(types, "TypeId", "Type", viewModel.SelectedTypeId);
@@ -294,7 +293,7 @@ public class AdminController : Controller
             {
                 Value = tag.TagID.ToString(),
                 Text = tag.Tag,
-                Selected = viewModel.SelectedTagIds != null && viewModel.SelectedTagIds.Contains(tag.TagID) // Ensure SelectedTagIds is not null
+                Selected = viewModel.SelectedTagIds != null && viewModel.SelectedTagIds.Contains(tag.TagID)
             }).ToList();
 
             TempData["Message"] = "There were data-entry errors. Please check the form.";
@@ -302,29 +301,94 @@ public class AdminController : Controller
             return View(viewModel);
         }
 
-        var productToSave = new Product
-        {
-            ProductId = viewModel.ProductId,
-            ProductName = viewModel.ProductName,
-            ProductPrice = viewModel.ProductPrice,
-            ProductIngredients = viewModel.ProductIngredients,
-            ProductPhoto = uploadedImage ?? (viewModel.ProductId > 0 ? (await _productRepo.GetProductByIdAsync(viewModel.ProductId))?.ProductPhoto ?? new File() : new File()),
-            ProductCategory = new List<ProductType>
-            {
-                await _productRepo.GetProductTypeByIdAsync(viewModel.SelectedTypeId)
-            },
-            Tags = await _productRepo.GetTagsByIdsAsync(viewModel.SelectedTagIds ?? new List<int>()),
-        };
+        Product productToUpdate;
 
-        if (viewModel.ProductId == 0)
+        if (viewModel.ProductId == 0) // This is a new product
         {
-            await _productRepo.AddProductAsync(productToSave);
+            productToUpdate = new Product();
             TempData["Message"] = "Element successfully added.";
+        }
+        else // This is an existing product
+        {
+            // Load the existing product including its current relationships
+            productToUpdate = await _productRepo.GetProductByIdAsync(viewModel.ProductId);
+
+            if (productToUpdate == null)
+            {
+                TempData["Message"] = "Product not found for update.";
+                TempData["context"] = "danger";
+                return NotFound();
+            }
+            TempData["Message"] = "Element successfully updated.";
+        }
+
+        // Update scalar properties
+        productToUpdate.ProductName = viewModel.ProductName;
+        productToUpdate.ProductPrice = viewModel.ProductPrice;
+        productToUpdate.ProductIngredients = viewModel.ProductIngredients;
+
+        // Handle Product Photo
+        if (uploadedImage != null)
+        {
+            productToUpdate.ProductPhoto = uploadedImage;
+        }
+        else if (viewModel.ProductId > 0 && viewModel.PhotoUpload == null) // If editing and no new photo uploaded, retain old one
+        {
+            // If it's an existing product and no new photo was uploaded,
+            // we don't need to do anything with ProductPhoto, as it's already loaded.
+            // If you were removing the photo, you'd set productToUpdate.ProductPhoto = new File(); or null;
+        }
+        else if (viewModel.ProductId == 0 && uploadedImage == null) // If new product and no photo
+        {
+            productToUpdate.ProductPhoto = new File();
+        }
+
+        // Clear existing categories and add the new one
+        productToUpdate.ProductCategory.Clear();
+        var selectedProductType = await _productRepo.GetProductTypeByIdAsync(viewModel.SelectedTypeId);
+        if (selectedProductType != null)
+        {
+            productToUpdate.ProductCategory.Add(selectedProductType);
         }
         else
         {
-            await _productRepo.UpdateProductAsync(productToSave);
-            TempData["Message"] = "Element successfully updated.";
+            ModelState.AddModelError("SelectedTypeId", "Invalid product type selected.");
+            // Repopulate dropdowns, checkboxes, and return view if this happens
+            var tags = await _productRepo.GetAllProductTagsAsync();
+            var types = await _productRepo.GetAllProductTypesAsync();
+            viewModel.Types = new SelectList(types, "TypeId", "Type", viewModel.SelectedTypeId);
+            viewModel.Tags = tags.Select(tag => new SelectListItem
+            {
+                Value = tag.TagID.ToString(),
+                Text = tag.Tag,
+                Selected = viewModel.SelectedTagIds != null && viewModel.SelectedTagIds.Contains(tag.TagID)
+            }).ToList();
+            TempData["Message"] = "Invalid product type. Please check the form.";
+            TempData["context"] = "danger";
+            return View(viewModel);
+        }
+
+        // Handle Product Tags (Many-to-many)
+        // First, clear all existing tags for this product
+        productToUpdate.Tags.Clear();
+
+        // Then, add the newly selected tags
+        if (viewModel.SelectedTagIds != null && viewModel.SelectedTagIds.Any())
+        {
+            var selectedTags = await _productRepo.GetTagsByIdsAsync(viewModel.SelectedTagIds);
+            foreach (var tag in selectedTags)
+            {
+                productToUpdate.Tags.Add(tag);
+            }
+        }
+
+        if (viewModel.ProductId == 0)
+        {
+            await _productRepo.AddProductAsync(productToUpdate);
+        }
+        else
+        {
+            await _productRepo.UpdateProductAsync(productToUpdate);
         }
 
         TempData["context"] = "success";
@@ -333,8 +397,9 @@ public class AdminController : Controller
 
     public async Task<IActionResult> DeleteProduct(int id)
     {
-        // find the product to delete by the id passed through
-        Product? toDelete = await _productRepo.GetProductByIdAsync(id);
+        // find the product to delete by the id passed through
+        Product? toDelete = await _productRepo.GetProductByIdAsync(id);
+
         if (toDelete != null)
         {
             await _productRepo.DeleteProductAsync(toDelete);
