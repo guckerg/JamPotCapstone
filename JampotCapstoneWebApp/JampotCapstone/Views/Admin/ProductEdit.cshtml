@@ -26,11 +26,10 @@
             <textarea class="form-control" asp-for="ProductIngredients" rows="10">@Model.ProductIngredients</textarea>
         </div>
     </div>
-    @*TODO*@
     <div class="row mb-3">
         <label asp-for="PhotoUpload" class="col-sm-2 col-form-label">Product Photo</label>
         <div class="col-sm-10">
-            <input type="file" class="form-control" asp-for="PhotoUpload" name="PhotoUpload" value="@Model.PhotoUpload">
+            <input type="file" class="form-control" asp-for="PhotoUpload" name="PhotoUpload" accept=".png, .jpg, .jpeg, .webp">
         </div>
     </div>
     <div class="row mb-3">

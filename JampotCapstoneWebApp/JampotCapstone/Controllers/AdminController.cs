@@ -215,8 +215,38 @@ public class AdminController : Controller
     private async Task<File?> SaveProductImageAsync(IFormFile? photoUpload)
     {
         if (photoUpload == null || photoUpload.Length == 0)
-            return null;
+            return null; // No file uploaded or empty file, no validation needed
 
+        // Define allowed image extensions and MIME types
+        var allowedExtensions = new[] { ".jpg", ".jpeg", ".png", ".webp" };
+        var allowedMimeTypes = new[] { "image/jpeg", "image/png", "image/webp" }; // Use MIME types for stronger validation
+        // MIME stands for Multipurpose Internet Mail Extensions
+
+        var fileExtension = Path.GetExtension(photoUpload.FileName).ToLowerInvariant();
+        var mimeType = photoUpload.ContentType.ToLowerInvariant();
+
+        // Validate file extension
+        if (!allowedExtensions.Contains(fileExtension))
+        {
+            // You might log this or return null with a specific error code
+            // For now, we'll return null to indicate failure
+            return null;
+        }
+
+        // Validate MIME type (more robust)
+        if (!allowedMimeTypes.Contains(mimeType))
+        {
+            return null; // Invalid MIME type
+        }
+
+        // Optional: Add file size limit validation (e.g., 5 MB)
+        const long maxFileSize = 5 * 1024 * 1024; // 5 MB
+        if (photoUpload.Length > maxFileSize)
+        {
+            return null; // File too large
+        }
+
+        // If all validations pass, proceed with saving the file
         string productPhotosFolder = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/productPhotos");
         Directory.CreateDirectory(productPhotosFolder);
 
@@ -242,6 +272,18 @@ public class AdminController : Controller
             return NotFound();
         }
 
+        // Attempt to save the image 
+        File? uploadedImage = null;
+        if (viewModel.PhotoUpload != null) // Only try to save if a file was provided
+        {
+            uploadedImage = await SaveProductImageAsync(viewModel.PhotoUpload);
+            if (uploadedImage == null)
+            {
+                // If SaveProductImageAsync returned null, it means validation failed
+                TempData["Message"] = "Invalid image file. Only JPG, JPEG, PNG, or WebP images up to 5MB are allowed.";
+                TempData["context"] = "danger";
+            }
+        }
         if (!ModelState.IsValid)
         {
             // Repopulate dropdowns on error
@@ -252,7 +294,7 @@ public class AdminController : Controller
             {
                 Value = tag.TagID.ToString(),
                 Text = tag.Tag,
-                Selected = viewModel.SelectedTagIds.Contains(tag.TagID)
+                Selected = viewModel.SelectedTagIds != null && viewModel.SelectedTagIds.Contains(tag.TagID) // Ensure SelectedTagIds is not null
             }).ToList();
 
             TempData["Message"] = "There were data-entry errors. Please check the form.";
@@ -260,21 +302,18 @@ public class AdminController : Controller
             return View(viewModel);
         }
 
-        // Handle file upload
-        var uploadedImage = await SaveProductImageAsync(viewModel.PhotoUpload);
-
         var productToSave = new Product
         {
             ProductId = viewModel.ProductId,
             ProductName = viewModel.ProductName,
             ProductPrice = viewModel.ProductPrice,
             ProductIngredients = viewModel.ProductIngredients,
-            ProductPhoto = uploadedImage ?? new File(), // default if no photo
+            ProductPhoto = uploadedImage ?? (viewModel.ProductId > 0 ? (await _productRepo.GetProductByIdAsync(viewModel.ProductId))?.ProductPhoto ?? new File() : new File()),
             ProductCategory = new List<ProductType>
             {
                 await _productRepo.GetProductTypeByIdAsync(viewModel.SelectedTypeId)
             },
-            Tags = await _productRepo.GetTagsByIdsAsync(viewModel.SelectedTagIds),
+            Tags = await _productRepo.GetTagsByIdsAsync(viewModel.SelectedTagIds ?? new List<int>()),
         };
 
         if (viewModel.ProductId == 0)
