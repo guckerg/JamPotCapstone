@@ -1,12 +1,44 @@
 using JampotCapstone.Data.Interfaces;
 using JampotCapstone.Models;
+using Microsoft.EntityFrameworkCore;
 
 namespace JampotUnitTests;
 
 public class FakeProductRepository : IProductRepository
 {
     private readonly List<Product> _products = [];
-    
+
+    public async Task<List<ProductTag>> GetAllProductTagsAsync()
+    {
+        // Flatten all tags from all products, select distinct tags, and convert to list
+        List<ProductTag> tags = _products
+                                .SelectMany(p => p.Tags)
+                                .GroupBy(t => t.Tag) // Group by tag string to get distinct tags
+                                .Select(g => g.First()) // Select the first tag from each group
+                                .ToList();
+        return await Task.FromResult(tags); // Wrap in Task.FromResult for async signature
+        // Return a list of all product tags for drop down list
+    }
+    public async Task<List<ProductType>> GetAllProductTypesAsync()
+    {
+        // Flatten all product types from all products, select distinct types, and convert to list
+        List<ProductType> types = _products
+                                  .SelectMany(p => p.ProductCategory)
+                                  .GroupBy(pt => pt.Type) // Group by type string to get distinct types
+                                  .Select(g => g.First()) // Select the first type from each group
+                                  .ToList();
+        return await Task.FromResult(types); // Wrap in Task.FromResult for async signature
+        // Return a list of all product categories for drop down list
+    }
+
+    public Task<List<ProductTag>> GetTagsByIdsAsync(List<int> tagIds)
+    {
+        throw new NotImplementedException();
+    }
+    public Task<ProductType> GetProductTypeByIdAsync(int typeId)
+    {
+        throw new NotImplementedException();
+    }
     public async Task<List<Product>> GetAllProductsAsync()
     {
         return _products;

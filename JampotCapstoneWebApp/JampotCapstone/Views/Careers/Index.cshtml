@@ -20,7 +20,7 @@
 
                         if (User.IsInRole("Admin"))
                         {
-                            <a asp-action="Edit" asp-controller="Admin" asp-route-id="@ViewBag.Text.TextElementId"><i class="fa-regular fa-pen-to-square"></i></a>
+                            <a asp-action="TextEdit" asp-controller="Admin" asp-route-id="@ViewBag.Text.TextElementId"><i class="fa-regular fa-pen-to-square"></i></a>
                         }
                     }
                 </p>

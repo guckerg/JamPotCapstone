@@ -1,0 +1,62 @@
+﻿@model ProductEditViewModel
+
+@{
+    ViewBag.Title = "Edit Product";
+}
+
+<h2>Edit Product</h2>
+<span class="text-danger">@TempData["Message"]</span>
+<form method="post" enctype="multipart/form-data" asp-action="ProductEdit">
+    <input type="hidden" asp-for="ProductId" />
+    <div class="row mb-3">
+        <label asp-for="ProductName" class="col-sm-2 col-form-label">Product Name</label>
+        <div class="col-sm-10">
+            <input type="text" class="form-control" asp-for="ProductName" value="@Model.ProductName">
+        </div>
+    </div>
+    <div class="row mb-3">
+        <label asp-for="ProductPrice" class="col-sm-2 col-form-label">Product Price</label>
+        <div class="col-sm-10">
+            <input type="text" class="form-control" asp-for="ProductPrice" value="@Model.ProductPrice">
+        </div>
+    </div>
+    <div class="row mb-3">
+        <label asp-for="ProductIngredients" class="col-sm-2 col-form-label">Product Ingredients</label>
+        <div class="col-sm-10">
+            <textarea class="form-control" asp-for="ProductIngredients" rows="10">@Model.ProductIngredients</textarea>
+        </div>
+    </div>
+    <div class="row mb-3">
+        <label asp-for="PhotoUpload" class="col-sm-2 col-form-label">Product Photo</label>
+        <div class="col-sm-10">
+            <input type="file" class="form-control" asp-for="PhotoUpload" name="PhotoUpload" accept=".png, .jpg, .jpeg, .webp">
+        </div>
+    </div>
+    <div class="row mb-3">
+        <label class="col-sm-2 col-form-label">Tags</label>
+        <div class="col-sm-10">
+            @foreach (var tag in Model.Tags)
+            {
+                <div class="form-check form-check-inline">
+                    <input type="checkbox" class="form-check-input"
+                           name="SelectedTagIds"
+                           id="tag-@tag.Value"
+                           value="@tag.Value"
+                    @(tag.Selected ? "checked" : "")>
+                    <label class="form-check-label" for="tag-@tag.Value">@tag.Text</label>
+                </div>
+            }
+            <span asp-validation-for="SelectedTagIds" class="text-danger"></span>
+        </div>
+    </div>
+    <div class="row mb-3">
+        <label asp-for="Types" class="col-sm-2 col-form-label">Types</label>
+        <div class="col-sm-10">
+            <select asp-for="SelectedTypeId" asp-items="Model.Types">
+                <option value="">-- Select a Category--</option>
+            </select>
+        </div>
+    </div>
+    <button type="submit" class="btn btn-primary col-2">Save Changes</button>
+    <a asp-action="Index" class="btn btn-danger col-2">Cancel</a>
+</form>
