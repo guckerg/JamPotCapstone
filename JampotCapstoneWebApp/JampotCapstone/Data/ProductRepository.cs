@@ -15,16 +15,26 @@ public class ProductRepository : IProductRepository
     
     public async Task<List<ProductTag>> GetAllProductTagsAsync()
     {
-        List<ProductTag> tags = await _context.ProductTags.ToListAsync();
-        return tags;
+        return await _context.ProductTags.ToListAsync();
         // Return a list of all product tags for drop down list
     }
     public async Task<List<ProductType>> GetAllProductTypesAsync()
     {
-        List<ProductType> types = await _context.ProductTypes.ToListAsync();
-        return types;
+        return await _context.ProductTypes.ToListAsync();
         // Return a list of all product categories for drop down list
     }
+    public async Task<List<ProductTag>> GetTagsByIdsAsync(List<int> tagIds) 
+        // used for finding if a product has multiple tags assigned to it
+    {
+        return await _context.ProductTags
+            .Where(t => tagIds.Contains(t.TagID))
+            .ToListAsync();
+    }
+    public async Task<ProductType> GetProductTypeByIdAsync(int typeId) //used to avoid duplicate type ids
+    {
+        return await _context.ProductTypes.FindAsync(typeId);
+    }
+
     public async Task<List<Product>> GetAllProductsAsync()
     {
         List<Product> products = await _context.Products // get a list of products
@@ -91,6 +101,8 @@ public class ProductRepository : IProductRepository
     public async Task<int> UpdateProductAsync(Product product)
     {
         _context.Products.Update(product);
+        _context.Entry(product).Collection(p => p.Tags).IsModified = true;
+        _context.Entry(product).Collection(p => p.ProductCategory).IsModified = true;
         return await _context.SaveChangesAsync();
     }
 

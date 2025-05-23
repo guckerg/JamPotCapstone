@@ -12,14 +12,13 @@ namespace JampotCapstone.Models.ViewModels
         [Required]
         [Range(0.01, 9999.99)]
         public decimal ProductPrice { get; set; }
+        [Required]
         [StringLength(255)]
         public string ProductIngredients { get; set; } = "";
-        [Required]
-        public int SelectedTagId { get; set; }
-        [Required]
+        public List<int>? SelectedTagIds { get; set; }
         public int SelectedTypeId { get; set; }
-        public SelectList Tags { get; set; } = new SelectList(Enumerable.Empty<string>(), "TagID", "Tag");
+        public List<SelectListItem> Tags { get; set; } = new List<SelectListItem>();
         public SelectList Types { get; set; } = new SelectList(Enumerable.Empty<string>(), "TypeId", "Type");
-        public File? PhotoUpload { get; set; } // optional photo upload
+        public IFormFile? PhotoUpload { get; set; } // optional photo upload
     }
 }

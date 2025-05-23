@@ -9,6 +9,7 @@ using File = JampotCapstone.Models.File;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.CodeAnalysis.Elfie.Diagnostics;
+using Microsoft.AspNetCore.Hosting;
 
 namespace JampotCapstone.Controllers;
 
@@ -42,7 +43,7 @@ public class AdminController : Controller
 
     public async Task<IActionResult> TextEdit(int id = 0)
     {
-        ViewBag.Pages = _pageRepo.GetAllPagesAsync();
+        ViewBag.Pages = await _pageRepo.GetAllPagesAsync();
         TextElement? model = id == 0 ? new TextElement() // if an existing textblock was not sent to the controller, 
             : await _textRepo.GetTextElementByIdAsync(id);   // create a new one
         return View(model);
@@ -195,71 +196,100 @@ public class AdminController : Controller
             ProductName = model.ProductName,
             ProductPrice = model.ProductPrice,
             ProductIngredients = model.ProductIngredients,
-            SelectedTagId = model.Tags?.FirstOrDefault()?.TagID ?? 0, //Get the currently selected tag
+            //PhotoUpload = model.ProductPhoto.FilePat, handle image casting TODO
             SelectedTypeId = model.ProductCategory?.FirstOrDefault()?.TypeId ?? 0, //Get the currently selected type
-            // Populate drop downs
-            Tags = new SelectList(tags, "TagID", "Tag", model.Tags?.FirstOrDefault()?.TagID),
-            Types = new SelectList(types, "TypeId", "Type", model.ProductCategory?.FirstOrDefault()?.TypeId)
+            // Populate drop down
+            Types = new SelectList(types, "TypeId", "Type", model.ProductCategory?.FirstOrDefault()?.TypeId),
+            SelectedTagIds = model.Tags.Select(t => t.TagID).ToList(), //Currently selected tags
+            Tags = tags.Select(tag => new SelectListItem
+            {
+                Value = tag.TagID.ToString(),
+                Text = tag.Tag,
+                Selected = model.Tags.Any(t => t.TagID == tag.TagID)
+            }).ToList(),
         };
 
         return View(viewModel);
     }
 
-    [HttpPost]
-    public async Task<IActionResult> ProductEdit(ProductEditViewModel viewModel)
+    private async Task<File?> SaveProductImageAsync(IFormFile? photoUpload)
     {
-        var productToAdd = new Product
+        if (photoUpload == null || photoUpload.Length == 0)
+            return null;
+
+        string productPhotosFolder = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/productPhotos");
+        Directory.CreateDirectory(productPhotosFolder);
+
+        string uniqueFileName = Guid.NewGuid() + "_" + Path.GetFileName(photoUpload.FileName);
+        string filePath = Path.Combine(productPhotosFolder, uniqueFileName);
+
+        using (var stream = new FileStream(filePath, FileMode.Create))
+        {
+            await photoUpload.CopyToAsync(stream);
+        }
+
+        return new File { FileName = "/productPhotos/" + uniqueFileName };
+    }
+
+    [HttpPost]
+    [ValidateAntiForgeryToken]
+    public async Task<IActionResult> ProductEdit(int id, ProductEditViewModel viewModel)
+    {
+        if (id != viewModel.ProductId)
+        {
+            TempData["Message"] = "The product was not found.";
+            TempData["context"] = "danger";
+            return NotFound();
+        }
+
+        if (!ModelState.IsValid)
+        {
+            // Repopulate dropdowns on error
+            var tags = await _productRepo.GetAllProductTagsAsync();
+            var types = await _productRepo.GetAllProductTypesAsync();
+            viewModel.Types = new SelectList(types, "TypeId", "Type", viewModel.SelectedTypeId);
+            viewModel.Tags = tags.Select(tag => new SelectListItem
+            {
+                Value = tag.TagID.ToString(),
+                Text = tag.Tag,
+                Selected = viewModel.SelectedTagIds.Contains(tag.TagID)
+            }).ToList();
+
+            TempData["Message"] = "There were data-entry errors. Please check the form.";
+            TempData["context"] = "danger";
+            return View(viewModel);
+        }
+
+        // Handle file upload
+        var uploadedImage = await SaveProductImageAsync(viewModel.PhotoUpload);
+
+        var productToSave = new Product
         {
             ProductId = viewModel.ProductId,
             ProductName = viewModel.ProductName,
             ProductPrice = viewModel.ProductPrice,
             ProductIngredients = viewModel.ProductIngredients,
-            ProductPhoto = viewModel.PhotoUpload, //TODO: upload a picture
+            ProductPhoto = uploadedImage ?? new File(), // default if no photo
             ProductCategory = new List<ProductType>
             {
-                new ProductType { TypeId = viewModel.SelectedTypeId }
+                await _productRepo.GetProductTypeByIdAsync(viewModel.SelectedTypeId)
             },
-            Tags = new List<ProductTag>
-            {
-                new ProductTag { TagID = viewModel.SelectedTagId }
-            },
+            Tags = await _productRepo.GetTagsByIdsAsync(viewModel.SelectedTagIds),
         };
 
-        if (!ModelState.IsValid) // First check if there's an error
+        if (viewModel.ProductId == 0)
         {
-            TempData["Message"] = "Changes could not be saved. Please try again.";
-            TempData["context"] = "danger";
-            return RedirectToAction("Index");
-        }
-
-        if (ModelState.IsValid) //Save data if the modelState is valid
-        {
-            if (viewModel.ProductId == 0)
-            {
-                await _productRepo.AddProductAsync(productToAdd);
-                TempData["Message"] = "Element successfully added.";
-                TempData["context"] = "success";
-            }
-            else
-            {
-                await _productRepo.UpdateProductAsync(productToAdd);
-                TempData["Message"] = "Element successfully updated.";
-                TempData["context"] = "success";
-            }
+            await _productRepo.AddProductAsync(productToSave);
+            TempData["Message"] = "Element successfully added.";
         }
         else
         {
-            // Create a list of tag and type objects for the drop down in the view
-            var tags = await _productRepo.GetAllProductTagsAsync();
-            var types = await _productRepo.GetAllProductTypesAsync();
-            // Repopulate drop downs on error
-            viewModel.Tags = new SelectList(tags, "TagID", "Tag", viewModel.SelectedTagId);
-            viewModel.Types = new SelectList(types, "TypeId", "Type", viewModel.SelectedTypeId);
-            TempData["Message"] = "There were data-entry errors. Please check the form.";
-            TempData["context"] = "danger";
-            return View("Index", viewModel);
+            await _productRepo.UpdateProductAsync(productToSave);
+            TempData["Message"] = "Element successfully updated.";
         }
-        return View(viewModel);
+
+        TempData["context"] = "success";
+        return RedirectToAction("Index");
     }
 
     public async Task<IActionResult> DeleteProduct(int id)

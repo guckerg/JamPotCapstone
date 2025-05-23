@@ -30,15 +30,24 @@
     <div class="row mb-3">
         <label asp-for="PhotoUpload" class="col-sm-2 col-form-label">Product Photo</label>
         <div class="col-sm-10">
-            <input type="file" class="form-control" asp-for="PhotoUpload" value="@Model.PhotoUpload">
+            <input type="file" class="form-control" asp-for="PhotoUpload" name="PhotoUpload" value="@Model.PhotoUpload">
         </div>
-    </div> 
+    </div>
     <div class="row mb-3">
-        <label asp-for="Tags" class="col-sm-2 col-form-label">Tags</label>
+        <label class="col-sm-2 col-form-label">Tags</label>
         <div class="col-sm-10">
-            <select asp-for="SelectedTagId" asp-items="Model.Tags">
-                <option value="">-- Select a Tag--</option>
-            </select>
+            @foreach (var tag in Model.Tags)
+            {
+                <div class="form-check form-check-inline">
+                    <input type="checkbox" class="form-check-input"
+                           name="SelectedTagIds"
+                           id="tag-@tag.Value"
+                           value="@tag.Value"
+                    @(tag.Selected ? "checked" : "")>
+                    <label class="form-check-label" for="tag-@tag.Value">@tag.Text</label>
+                </div>
+            }
+            <span asp-validation-for="SelectedTagIds" class="text-danger"></span>
         </div>
     </div>
     <div class="row mb-3">
