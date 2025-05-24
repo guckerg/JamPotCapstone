@@ -8,7 +8,6 @@ using JampotCapstone.Models;
 using JampotCapstone.Models.ViewModels;
 using File = JampotCapstone.Models.File;
 using Microsoft.EntityFrameworkCore;
-using File = JampotCapstone.Models.File;
 
 namespace JampotCapstone.Controllers;
 
@@ -19,13 +18,15 @@ public class AdminController : Controller
     private readonly IPhotoRepository _photoRepo;
     private readonly IPageRepository _pageRepo;
     private readonly IProductRepository _productRepo;
+    private readonly IPagePositionRepository _pagePositionRepo;
 
-    public AdminController(ITextElementRepository t, IPhotoRepository ph, IPageRepository p, IProductRepository r)
+    public AdminController(ITextElementRepository t, IPhotoRepository ph, IPageRepository p, IProductRepository r, IPagePositionRepository pp)
     {
         _textRepo = t;
         _photoRepo = ph;
         _pageRepo = p;
         _productRepo = r;
+        _pagePositionRepo = pp;
     }
     
     public async Task<IActionResult> Index()
@@ -46,9 +47,6 @@ public class AdminController : Controller
         TextElement? model = id == 0 ? new TextElement() // if an existing textblock was not sent to the controller, 
             : await _textRepo.GetTextElementByIdAsync(id);   // create a new one
         // ViewBag.Pages = _context.Pages.ToList();
-        TextElement? model = id == 0 ? new TextElement() : await _context.TextElements
-            .Include(t => t.PagePosition)
-            .FirstOrDefaultAsync(t => t.TextElementId == id);
         return View(model);
     }
 
@@ -59,12 +57,7 @@ public class AdminController : Controller
         {
             int result = 0;
             if (model.TextElementId == 0) // id does not exist in the database, hence it is a new textblock
-            if (model.TextElementId == 0) // new textblock, hence FAQ page
             {
-                model.PagePosition.FAQs = _context.TextElements
-                    .Count(t => t.PagePosition.FAQs != -1);
-                _context.TextElements.Add(model);
-            } else
                 model.Page = await _pageRepo.GetPageByNameAsync("faq"); // creation of a new textblock requires that it be on the faq page
                 result = await _textRepo.StoreTextElementAsync(model);
             } else // updating an existing record
@@ -93,11 +86,9 @@ public class AdminController : Controller
     {
         EditViewModel model = new EditViewModel
         {
-            Photos = await _context.Files.Where(f => f.ContentType.ToLower().Contains("image")).ToListAsync(),
+            Photos = await _photoRepo.GetAllPhotosAsync(),
             CurrentPage = pageTitle,
             OldPhotoId = id
-            Position = id,
-            Pages = await _pageRepo.GetAllPagesAsync(),
         };
         return View(model);
     }
@@ -105,26 +96,17 @@ public class AdminController : Controller
     [HttpPost]
     public async Task<IActionResult> EditPhoto(EditViewModel model)
     {
-        Models.File? newPhoto = await _context.Files.Include(f => f.PagePosition)
-            .FirstOrDefaultAsync(f => f.FileID == model.NewPhotoId);
-        Models.File? oldPhoto = await _context.Files.Include(f => f.PagePosition)
-            .FirstOrDefaultAsync(f => f.FileID == model.OldPhotoId);
-        if (ReplacePhoto(oldPhoto, newPhoto, model.CurrentPage) > 0)
+        int pageId = _pageRepo.GetPageByNameAsync(model.CurrentPage).Result.PageId;
+        PagePosition? oldInstance = await _pagePositionRepo.GetPagePosition(pageId, model.OldPhotoId);
+        oldInstance.FileId = model.NewPhotoId;
+        
+        if (await _pagePositionRepo.UpdatePagePosition(oldInstance) > 0)
         {
-            _context.Files.Update(oldPhoto);
-            _context.Files.Update(newPhoto);
-            if (await _context.SaveChangesAsync() > 0)
-            {
-                TempData["Message"] = "Photo successfully changed.";
-            }
-            else
-            {
-                TempData["Message"] = "There was a problem saving the changes. Please try again.";
-            }
+            TempData["Message"] = "Photo successfully changed.";
         }
         else
         {
-            TempData["Message"] = "Page not found. Please try again.";
+            TempData["Message"] = "There was a problem saving the changes. Please try again.";
         }
         /*Models.File? photo = await _context.Files.Where(f => f.FileName.ToLower().Contains(model.Key.ToLower()))
             .Include(f => f.Pages)
@@ -191,31 +173,5 @@ public class AdminController : Controller
         }
 
         return RedirectToAction("Index");
-    }
-
-    public int ReplacePhoto(File oldFile, File newFile, string pageTitle)
-    {
-        int result = 0;
-        // get a list of the properties in the class
-        Type objType = newFile.PagePosition.GetType();
-        PropertyInfo[] properties = objType.GetProperties();
-        // iterate over the properties in the class
-        foreach (PropertyInfo prop in properties)
-        {
-            string propertyName = prop.Name;
-            // if the property name is the same as the provided page title
-            if (pageTitle.ToLower().Contains(propertyName.ToLower())) 
-            {
-                // get the position of the old photo on the page
-                var swapValue = prop.GetValue(oldFile.PagePosition);
-                // put the new photo at that position
-                prop.SetValue(newFile.PagePosition, swapValue);
-                // remove the old photo from the page
-                prop.SetValue(oldFile.PagePosition, -1);
-                result = 1;
-            }
-        }
-
-        return result;
     }
 }

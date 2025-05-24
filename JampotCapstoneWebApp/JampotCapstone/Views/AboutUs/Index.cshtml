@@ -9,10 +9,10 @@
     <div class="slideshow-container">
         @if(Model.Photos.Count > 0)
         {
-            foreach (JampotCapstone.Models.File photo in Model.Photos)
+            foreach (File photo in Model.Photos)
             {
                 var filepath = photo.FileName;
-                var sequence = photo.PagePosition.About + 1;
+                var sequence = photo.Pages.Find(p => p.PageId == Model.PageId).Position + 1;
                 <div class="slide fade">
                     <div class="numberText">@sequence / @Model.Photos.Count</div>
                     <img src="@filepath" alt="@photo.GetFileName()"/>

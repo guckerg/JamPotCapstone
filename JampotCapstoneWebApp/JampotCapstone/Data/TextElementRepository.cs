@@ -22,15 +22,18 @@ public class TextElementRepository : ITextElementRepository
 
     public async Task<List<TextElement>> GetTextElementsByPageAsync(string page)
     {
+        int pageId = _context.Pages.FirstOrDefaultAsync(p => p.PageTitle.ToLower().Contains(page.ToLower())).Result.PageId;
         List<TextElement> model = await _context.TextElements
-            .Where(t => t.Page.PageTitle.ToLower().Contains(page))
+            .Where(t => t.PageId == pageId)
             .ToListAsync();
         return model;
     }
 
     public async Task<TextElement> GetTextElementByPageAsync(string page)
     {
-        TextElement model = await _context.TextElements.FirstOrDefaultAsync(t => t.Page.PageTitle.ToLower().Contains(page));
+        int pageId = _context.Pages.FirstOrDefaultAsync(p => p.PageTitle.ToLower().Contains(page.ToLower())).Result.PageId;
+        TextElement model = await _context.TextElements
+            .FirstOrDefaultAsync(t => t.PageId == pageId);
         return model;
     }
 

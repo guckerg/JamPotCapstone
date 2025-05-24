@@ -3,6 +3,7 @@ using JampotCapstone.Data.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 using JampotCapstone.Models;
 using JampotCapstone.Models.ViewModels;
+using SQLitePCL;
 using File = JampotCapstone.Models.File;
 
 namespace JampotCapstone.Controllers
@@ -11,37 +12,41 @@ namespace JampotCapstone.Controllers
     {
         private ITextElementRepository _repo;
         private IPhotoRepository _photoRepo;
+        private IPageRepository _pageRepo;
 
-        public AboutUsController(ITextElementRepository r, IPhotoRepository p)
+        public AboutUsController(ITextElementRepository r, IPhotoRepository ph, IPageRepository p)
         {
             _repo = r;
-            _photoRepo = p;
+            _photoRepo = ph;
+            _pageRepo = p;
         }
         public async Task<IActionResult> Index()
         {
-            AboutUsViewModel model = new AboutUsViewModel
+            // FOR TESTING
+            AboutUsViewModel model = new AboutUsViewModel();
+            var page = await _pageRepo.GetPageByNameAsync("about us");
+            model.PageId = page.PageId;
+            model.Textblock = await _repo.GetTextElementByPageAsync("about");
+            model.Photos = await _photoRepo.GetPhotosByPageAsync("about");
+            /*AboutUsViewModel model = new AboutUsViewModel
             {
-                Textblock = _context.TextElements
-                    .FirstOrDefault(t => t.Page.PageTitle.ToLower().Contains("about")),
-                Photos = await _context.Files.Include(f => f.PagePosition)
-                    .Where(f => f.PagePosition.About != -1).OrderBy(f => f.PagePosition.About)
-                    .ToListAsync()
-            };
+                Textblock = await _repo.GetTextElementByPageAsync("about"),
+                Photos = await _photoRepo.GetPhotosByPageAsync("about"),
+                PageId = _pageRepo.GetPageByNameAsync("about").Result.PageId
+            };*/
             return View(model);
         }
 
         public async Task<IActionResult> Ask()
         {
-            Models.File? photo = await _context.Files.Include(f => f.PagePosition)
-                .SingleOrDefaultAsync(f => f.PagePosition.FAQs != -1);
+            File? photo = await _photoRepo.GetPhotoByPageAsync("faq");
             if (photo == null)
             {
-                photo = await _context.Files.FirstOrDefaultAsync(f => f.FileName.ToLower().Contains("people"));
+                photo = await _photoRepo.GetFileByNameAsync("people");
             }
             ContentViewModel model = new ContentViewModel
             {
-                Textblocks = await _context.TextElements.
-                    Where(t => t.Page.PageTitle.ToLower().Contains("faq")).ToListAsync(),
+                Textblocks = await _repo.GetTextElementsByPageAsync("faq"),
                 Photo = photo
             };
             return View(model);

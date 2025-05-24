@@ -8,6 +8,7 @@
 <span class="text-danger">@TempData["Message"]</span>
 <form method="post" asp-action="Edit">
     <input type="hidden" asp-for="TextElementId"/>
+    <input type="hidden" asp-for="PageId"/>
     <div class="row mb-3">
         <label asp-for="Name" class="col-sm-2 col-form-label">Name</label>
         <div class="col-sm-10">
@@ -20,12 +21,12 @@
             <textarea class="form-control" asp-for="Content" rows="10">@Model.Content</textarea>
         </div>
     </div>
-    <div class="row mb-3">
+    @*<div class="row mb-3">
         <label asp-for="PagePosition" class="col-sm-2 col-form-label">Name of Page</label>
         <div class="col-sm-10">
             <input type="hidden" asp-for="PagePosition" value="@Model.PagePosition"/>
         </div>
-    </div>
+    </div>*@
     <button type="submit" class="btn btn-primary col-2">Save Changes</button>
     <a asp-action="Index" class="btn btn-danger col-2">Cancel</a>
 </form>

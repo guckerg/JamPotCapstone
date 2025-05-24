@@ -41,7 +41,6 @@ public class SeedData
                 FileID = 1,
                 FileName = "/pics/landing/JampotDrink.png",
                 ContentType = "image/png",
-                PagePosition = new PagePosition{ Home = 1, About = 0 }
             };
             ctx.Files.Add(landing1);
 
@@ -50,7 +49,6 @@ public class SeedData
                 FileID = 2,
                 FileName = "/pics/landing/jackfruit-wrap.png",
                 ContentType = "image/png",
-                PagePosition = new PagePosition{ Home = 2, About = 1 }
             };
             ctx.Files.Add(landing2);
 
@@ -59,66 +57,59 @@ public class SeedData
                 FileID = 3,
                 FileName = "/pics/ReggaeChiaPudding.png",
                 ContentType = "image/png",
-                PagePosition = new PagePosition{ Home = 3 }
             };
             ctx.Files.Add(landing3);
 
             File landing4 = new File
             {
-                FileID = 5,
+                FileID = 4,
                 FileName = "/pics/landing/jackfruit-wrap-special.png",
                 ContentType = "image/png",
-                PagePosition = new PagePosition{ Home = 0 }
             };
             ctx.Files.Add(landing4);
 
             File landing5 = new File
             {
-                FileID = 6,
+                FileID = 5,
                 FileName = "/pics/landing/People.png",
                 ContentType = "image/png",
-                PagePosition = new PagePosition{ Home = 4, About = 2, FAQs = 0 }
             };
             ctx.Files.Add(landing5);
 
             File placeholder = new File
             {
-                FileID = 7,
+                FileID = 6,
                 FileName = "/pics/landing/DesertBowl.png",
                 ContentType = "image/png",
-                PagePosition = new PagePosition{ Catering = 0 }
             };
             ctx.Files.Add(placeholder);
 
             File electrolyte = new File
             {
-                FileID = 8,
+                FileID = 7,
                 FileName = "/pics/ElectrolyteRefresh.png",
-                ContentType = "image/png",
-                PagePosition = new PagePosition{ Catering = 1 }
+                ContentType = "image/png"
             };
             ctx.Files.Add(electrolyte);
 
             File garden = new File
             {
-                FileID = 9,
+                FileID = 8,
                 FileName = "/pics/GardenWrap.png",
-                ContentType = "image/png",
-                PagePosition = new PagePosition{ Catering = 2 }
+                ContentType = "image/png"
             };
             ctx.Files.Add(garden);
 
             File menu = new File
             {
-                FileID = 10,
+                FileID = 9,
                 FileName = "/pics/Menu.png",
-                ContentType = "image/png",
-                PagePosition = new PagePosition{ Menu = 0 }
+                ContentType = "image/png"
             };
             ctx.Files.Add(menu);
 
             #endregion
-
+            
             ctx.SaveChanges();
 
             #region products
@@ -358,60 +349,63 @@ public class SeedData
             };
             ctx.Products.Add(p11);
             #endregion
+            
             ctx.SaveChanges();
+            
             #region pages
 
             Page home = new Page
             {
+                PageId = 1,
                 PageTitle = "Home",
-                Files = [
-                    landing4, landing1, landing2, landing5, landing3
-                ]
             };
             ctx.Pages.Add(home);
             
             Page ask = new Page
             {
+                PageId = 2,
                 PageTitle = "FAQ",
-                Files = [
-                    landing5
-                ]
             };
             ctx.Pages.Add(ask);
 
             Page aboutUs = new Page
             {
+                PageId = 3,
                 PageTitle = "About Us",
-                Files = [landing1, landing5, landing2]
             };
             ctx.Pages.Add(aboutUs);
             
             Page contact = new Page
             {
+                PageId = 4,
                 PageTitle = "Contact Us",
             };
             ctx.Pages.Add(contact);
 
             Page catering = new Page
             {
+                PageId = 5,
                 PageTitle = "Catering",
-                Files = [placeholder, electrolyte, garden]
             };
             ctx.Pages.Add(catering);
             
             Page careersPage = new Page
             {
+                PageId = 6,
                 PageTitle = "Careers"
             };
             ctx.Pages.Add(careersPage);
 
             Page menuPage = new Page
             {
+                PageId = 7,
                 PageTitle = "Menu",
-                Files = [menu]
             };
             ctx.Pages.Add(menuPage);
             #endregion
+            
+            ctx.SaveChanges();
+            
             #region text
 
             TextElement hours = new TextElement
@@ -429,10 +423,6 @@ public class SeedData
                 Content =
                     "At Jam Pot, we bring the vibrant flavors and warm hospitality of Jamaica to the heart of Hawaii. Whether you're planning a family luau, corporate gathering, or an island celebration, our catering services are designed to add a touch of sunshine and Caribbean flair to any event. Our signature Jerk Chicken Wrap is sure to delight your taste buds, perfectly complemented by the refreshing tropical notes of our Lycheehoo! special. From savory dishes to invigorating beverages, every bite and sip is crafted with love and the freshest ingredients.",
                 Page = catering,
-                PagePosition = new PagePosition
-                {
-                    Catering = 0
-                }
             };
             ctx.TextElements.Add(catering1);
 
@@ -442,10 +432,6 @@ public class SeedData
                 Content =
                     "No event is too big or small—our team will work closely with you to create a menu tailored to your needs. We specialize in offering a variety of wholesome and flavorful options, including wraps, bowls, patties, and salads. Every dish is made fresh, showcasing the authentic tastes of Jamaica while embracing the island spirit of Hawaii. With our commitment to quality and attention to detail, Jam Pot takes the stress out of catering so you can focus on making memories.",
                 Page = catering,
-                PagePosition = new PagePosition
-                {
-                    Catering = 1
-                }
             };
             ctx.TextElements.Add(catering2);
 
@@ -455,10 +441,6 @@ public class SeedData
                 Content =
                     "Let us help you make your next event unforgettable. Contact Jam Pot today to learn more about our catering packages, pricing, and availability. Together, we'll bring the essence of Jamaica and the aloha spirit to your celebration, making it truly special.",
                 Page = catering,
-                PagePosition = new PagePosition
-                {
-                    Catering = 2
-                }
             };
             ctx.TextElements.Add(catering3);
 
@@ -552,10 +534,10 @@ public class SeedData
                 Page = ask
             };
             ctx.TextElements.Add(faq6);
-            
-            ctx.SaveChanges();
 
             #endregion
+            
+            ctx.SaveChanges();
 
             #region jobs
 
@@ -574,9 +556,127 @@ public class SeedData
             ctx.JobTitles.Add(dishwasher);
 
             #endregion
+            
             ctx.SaveChanges();
 
-          
+            #region pageposition
+
+            PagePosition landingDrink = new PagePosition
+            {
+                PagePositionId = 1,
+                FileId = 1,
+                PageId = 1,
+                Position = 1
+            };
+            ctx.Add(landingDrink);
+
+            PagePosition aboutDrink = new PagePosition
+            {
+                PagePositionId = 2,
+                FileId = 1,
+                PageId = 3,
+                Position = 0
+            };
+            ctx.Add(aboutDrink);
+            
+            PagePosition landingWrap = new PagePosition
+            {
+                PagePositionId = 3,
+                FileId = 2,
+                PageId = 1,
+                Position = 2
+            };
+            ctx.Add(landingWrap);
+            PagePosition aboutWrap = new PagePosition
+            {
+                PagePositionId = 4,
+                FileId = 2,
+                PageId = 3,
+                Position = 1
+            };
+            ctx.Add(aboutWrap);
+            
+            PagePosition landingDessert = new PagePosition
+            {
+                PagePositionId = 5,
+                FileId = 3,
+                PageId = 1,
+                Position = 3
+            };
+            ctx.Add(landingDessert);
+
+            PagePosition landingPeople = new PagePosition
+            {
+                PagePositionId = 6,
+                FileId = 5,
+                PageId = 1,
+                Position = 4
+            };
+            ctx.Add(landingPeople);
+
+            PagePosition aboutPeople = new PagePosition
+            {
+                PagePositionId = 7,
+                FileId = 5,
+                PageId = 3,
+                Position = 2
+            };
+            ctx.Add(aboutPeople);
+            
+            PagePosition faqPeople = new PagePosition
+            {
+                PagePositionId = 8,
+                FileId = 5,
+                PageId = 2,
+                Position = 0
+            };
+            ctx.Add(faqPeople);
+            
+            PagePosition landingSpecial = new PagePosition
+            {
+                PagePositionId = 9,
+                FileId = 4,
+                PageId = 1,
+                Position = 0
+            };
+            ctx.Add(landingSpecial);
+            
+            PagePosition cateringDessert = new PagePosition
+            {
+                PagePositionId = 10,
+                FileId = 6,
+                PageId = 5,
+                Position = 0
+            };
+            ctx.Add(cateringDessert);
+            
+            PagePosition cateringDrink = new PagePosition
+            {
+                PagePositionId = 11,
+                FileId = 7,
+                PageId = 5,
+                Position = 1
+            };
+            ctx.Add(cateringDrink);
+            
+            PagePosition cateringWrap = new PagePosition
+            {
+                PagePositionId = 12,
+                FileId = 8,
+                PageId = 5,
+                Position = 2
+            };
+            ctx.Add(cateringWrap);
+            
+            PagePosition menuInstance = new PagePosition
+            {
+                PagePositionId = 13,
+                FileId = 9,
+                PageId = 7,
+                Position = 0
+            };
+            ctx.Add(menuInstance);
+            #endregion
             
             ctx.SaveChanges();
         }

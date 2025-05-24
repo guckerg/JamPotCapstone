@@ -19,4 +19,6 @@ public class ApplicationDbContext : IdentityDbContext<AppUser>
     public DbSet<Application> Applications { get; set; }
     public DbSet<JobTitle> JobTitles { get; set; }
     public DbSet<Page> Pages { get; set; }
+    
+    public DbSet<PagePosition> PagePositions { get; set; }
 }

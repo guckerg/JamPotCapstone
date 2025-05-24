@@ -20,11 +20,8 @@ namespace JampotCapstone.Controllers
         public async Task<IActionResult> Index()
         { 
             CateringViewModel model = new CateringViewModel();
-            model.Textblocks = await _context.TextElements
-                .Where(t => t.PagePosition.Catering != -1)
-                .OrderBy(t => t.PagePosition.Catering).ToListAsync();
-            model.Photos = await _context.Files.Include(f => f.PagePosition)
-                .Where(f => f.PagePosition.Catering != -1).OrderBy(f => f.PagePosition.Catering).ToListAsync();
+            model.Textblocks = await _repo.GetTextElementsByPageAsync("catering");
+            model.Photos = await _photoRepo.GetPhotosByPageAsync("catering");
             /*Page currentPage = _context.Pages.Where(p => p.PageTitle.ToLower().Contains("catering"))
                 .Include(p => p.Files).FirstOrDefault();*/
             return View(model);
