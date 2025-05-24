@@ -22,8 +22,6 @@ namespace JampotCapstone.Controllers
             CateringViewModel model = new CateringViewModel();
             model.Textblocks = await _repo.GetTextElementsByPageAsync("catering");
             model.Photos = await _photoRepo.GetPhotosByPageAsync("catering");
-            /*Page currentPage = _context.Pages.Where(p => p.PageTitle.ToLower().Contains("catering"))
-                .Include(p => p.Files).FirstOrDefault();*/
             return View(model);
         }
     }

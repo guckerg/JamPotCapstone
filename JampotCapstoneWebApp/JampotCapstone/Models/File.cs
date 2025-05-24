@@ -8,9 +8,7 @@ public class File
     public string FileName { get; set; } = ""; //To store the original file name
 
     public List<PagePosition> Pages { get; set; } =
-        new List<PagePosition>(); // To correlate a photo with the page it should be displayed on
-
-    // public PagePosition PagePosition { get; set; } = new PagePosition();
+        []; // To correlate a photo with the page it should be displayed on
     
     // get the filename out of the file path for user-friendly display
     public string GetFileName()

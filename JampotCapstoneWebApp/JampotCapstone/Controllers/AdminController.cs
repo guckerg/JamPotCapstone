@@ -43,10 +43,8 @@ public class AdminController : Controller
 
     public async Task<IActionResult> Edit(int id = 0)
     {
-        ViewBag.Pages = await _pageRepo.GetAllPagesAsync();
         TextElement? model = id == 0 ? new TextElement() // if an existing textblock was not sent to the controller, 
             : await _textRepo.GetTextElementByIdAsync(id);   // create a new one
-        // ViewBag.Pages = _context.Pages.ToList();
         return View(model);
     }
 
@@ -108,23 +106,6 @@ public class AdminController : Controller
         {
             TempData["Message"] = "There was a problem saving the changes. Please try again.";
         }
-        /*Models.File? photo = await _context.Files.Where(f => f.FileName.ToLower().Contains(model.Key.ToLower()))
-            .Include(f => f.Pages)
-            .FirstOrDefaultAsync();
-        Page? currentPage = await _context.Pages.Include(p => p.Files)
-            .FirstOrDefaultAsync(p => p.PageId == model.Page);
-        if (currentPage.Files.Count > 0)
-        {
-            Models.File oldPhoto = currentPage.Files.Find(f => f.FileID == model.Position);
-            int index = currentPage.Files.IndexOf(oldPhoto);
-            currentPage.Files[index] = photo;
-        }
-        else
-        {
-            currentPage.Files.Add(photo);
-        }
-        _context.Pages.Update(currentPage);
-        */
         return RedirectToAction("Index");
     }
 

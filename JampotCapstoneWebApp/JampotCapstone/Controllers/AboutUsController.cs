@@ -22,18 +22,10 @@ namespace JampotCapstone.Controllers
         }
         public async Task<IActionResult> Index()
         {
-            // FOR TESTING
             AboutUsViewModel model = new AboutUsViewModel();
-            var page = await _pageRepo.GetPageByNameAsync("about us");
-            model.PageId = page.PageId;
+            model.PageId = _pageRepo.GetPageByNameAsync("about us").Result.PageId;
             model.Textblock = await _repo.GetTextElementByPageAsync("about");
             model.Photos = await _photoRepo.GetPhotosByPageAsync("about");
-            /*AboutUsViewModel model = new AboutUsViewModel
-            {
-                Textblock = await _repo.GetTextElementByPageAsync("about"),
-                Photos = await _photoRepo.GetPhotosByPageAsync("about"),
-                PageId = _pageRepo.GetPageByNameAsync("about").Result.PageId
-            };*/
             return View(model);
         }
 
@@ -51,30 +43,6 @@ namespace JampotCapstone.Controllers
             };
             return View(model);
         }
-
-        /*public async Task<IActionResult> Ask()
-        {
-            Page? currentPage = await _context.Pages.Where(p => p.PageTitle.ToLower() == "faq")
-                .Include(p => p.Files)
-                .FirstOrDefaultAsync();
-            Models.File photo;
-            if (currentPage.Files.Count == 0)
-            {
-                photo = await _context.Files.FirstOrDefaultAsync(f => f.FileName.ToLower().Contains("people")); // default image
-            }
-            else
-            {
-                photo = currentPage.Files.FirstOrDefault();                
-            }
-            ContentViewModel model = new ContentViewModel
-            {
-                Textblocks = await _context.TextElements.
-                    Where(t => t.Page.PageTitle.ToLower().Contains("faq")).ToListAsync(),
-                Photo = photo
-            };
-                
-            return View(model);
-        }*/
         
     }
 }
