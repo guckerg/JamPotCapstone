@@ -16,10 +16,10 @@
                 <div class="slide fade">
                     <div class="numberText">@sequence / @Model.Photos.Count</div>
                     <img src="@filepath" alt="@photo.GetFileName()"/>
-                    <div class="capText">Caption @sequence</div>
-                    @if (User.IsInRole("Admin"))
-                    {
-                        <div class="p-5">
+                    <div class="capText">
+                        Caption @sequence
+                        @if (User.IsInRole("Admin"))
+                        {
                             <form asp-action="EditPhoto" asp-controller="Admin" method="get">
                                 <input type="hidden" name="id" value="@photo.FileID"/>
                                 <input type="hidden" name="pageTitle" value="@ViewData["Title"]"/>
@@ -27,8 +27,8 @@
                                     <i class="fa-regular fa-pen-to-square"></i>
                                 </button>
                             </form>
-                        </div>
-                    }
+                        }
+                    </div>
                 </div>
             }
         }

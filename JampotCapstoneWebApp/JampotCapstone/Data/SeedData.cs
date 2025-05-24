@@ -165,11 +165,7 @@ public class SeedData
                 ProductName = "Garden Wrap",
                 ProductIngredients = "Spinach Tortilla, Lettuce, Carrot, Purple Cabbage, Tomato, Cucumber, Bell Pepper, Alfalfa Sprouts, Roasted Red Pepper Hummus",
                 ProductPrice = 14,
-                ProductPhoto = new File
-                {
-                    FileName = "/pics/GardenWrap.png",
-                    ContentType = "image/png"
-                },
+                ProductPhoto = garden,
                 ProductCategory = new List<ProductType>()
                 {
                     food
@@ -227,11 +223,7 @@ public class SeedData
                 ProductName = "Electrolyte Refresh",
                 ProductIngredients = "Cucumber, Honeydew, Pineapple, Mint, Watermelon, Lime",
                 ProductPrice = 10,
-                ProductPhoto = new File
-                {
-                    FileName = "/pics/ElectrolyteRefresh.png",
-                    ContentType = "image/png"
-                },
+                ProductPhoto = electrolyte,
                 ProductCategory = new List<ProductType>()
                 {
                     drink

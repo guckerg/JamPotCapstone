@@ -6,13 +6,14 @@
 <h2>Change Photo</h2>
 <form method="post" asp-action="EditPhoto">
     <div class="row p-2">
-        <label asp-for="Photos" class="col-form-label col-md-3 mb-3">Page</label>
+        <label asp-for="Photos" class="col-form-label col-md-3 mb-3">New Photo</label>
         <div class="col-md-3">
             <select asp-for="NewPhotoId" class="form-select">
-                <option value="">select a page</option>
+                <option value="">select a photo</option>
                 @foreach (File f in Model.Photos)
                 {
-                    <option value="@f.FileID">@f.FileName</option>
+                    string filename = f.GetFileName();
+                    <option value="@f.FileID">@filename</option>
                 }
             </select>
         </div>

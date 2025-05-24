@@ -13,10 +13,10 @@ public class File
     // get the filename out of the file path for user-friendly display
     public string GetFileName()
     {
-        int startIndex = FileName.LastIndexOf("/");
+        int startIndex = FileName.LastIndexOf("/") + 1;
         if (startIndex == -1)
         {
-            startIndex = FileName.LastIndexOf("\\");
+            startIndex = FileName.LastIndexOf("\\") + 1;
         }
         int endIndex = FileName.LastIndexOf(".");
         string fileName = FileName.Substring(startIndex, endIndex - startIndex);
