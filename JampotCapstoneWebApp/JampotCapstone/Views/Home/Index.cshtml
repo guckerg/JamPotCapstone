@@ -34,15 +34,16 @@
                 }
             </div>
             <div class="row">
-                @{
-                    JampotCapstone.Models.File special = 
-                        Model.Photos.Find(p => p.FileName.ToLower().Contains("special"));
-                    int specialStartIndex = special.FileName.LastIndexOf("/");
-                    int specialEndIndex = special.FileName.IndexOf(".");
-                    string specialName = special.FileName.Substring(specialStartIndex, specialEndIndex - specialStartIndex);
-                }
-                @if (special != null)
+                
+                @*@if (special != null)
                 {
+                    @{
+                        File special = 
+                            Model.Photos.Find(p => p.FileName.ToLower().Contains("special"));
+                        int specialStartIndex = special.FileName.LastIndexOf("/");
+                        int specialEndIndex = special.FileName.IndexOf(".");
+                        string specialName = special.FileName.Substring(specialStartIndex, specialEndIndex - specialStartIndex);
+                    }
                     <img class="landing-special" src="@special.FileName" alt="@specialName"/>
                     @if (User.IsInRole("Admin"))
                     {
@@ -56,7 +57,7 @@
                     <p>
                         No special found.
                     </p>
-                }
+                }*@
                 
             </div>
         </div>
@@ -65,23 +66,22 @@
     <div class="row">
         @if (Model.Photos.Count > 0)
         {
-            foreach (JampotCapstone.Models.File photo in Model.Photos)
+            foreach (File photo in Model.Photos)
             {
-                if (!photo.FileName.Contains("special"))
-                {
-                    int startIndex = photo.FileName.IndexOf("/");
-                    int endIndex = photo.FileName.IndexOf(".");
-                    string filename = photo.FileName.Substring(startIndex, endIndex - startIndex);
-                    <div class="col-sm-12 col-md-6">
-                        <img class="p-3 w-100" src="@photo.FileName" alt="@filename"/>
+                    string filename = photo.GetFileName();
+                    <div class="col-md-6">
+                        <img class="img-fluid landing-img" src="@photo.FileName" alt="@filename"/>
                         @if (User.IsInRole("Admin"))
                         {
-                            <a asp-action="EditPhoto" asp-controller="Admin" asp-route-id="@photo.FileID">
-                                <i class="fa-regular fa-pen-to-square"></i>
-                            </a>
+                            <form asp-controller="Admin" asp-action="EditPhoto" method="get">
+                                <input type="hidden" name="id" value="@photo.FileID"/>
+                                <input type="hidden" name="pageTitle" value="@ViewData["Title"]"/>
+                                <button type="submit" class="btn btn-link">
+                                    <i class="fa-regular fa-pen-to-square"></i>
+                                </button>
+                            </form>
                         }
                     </div>
-                }
             }
         }
     </div>

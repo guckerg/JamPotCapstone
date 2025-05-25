@@ -19,6 +19,7 @@ builder.Services.AddTransient<ITextElementRepository, TextElementRepository>();
 builder.Services.AddTransient<IPhotoRepository, PhotoRepository>();
 builder.Services.AddTransient<IPageRepository, PageRepository>();
 builder.Services.AddTransient<IProductRepository, ProductRepository>();
+builder.Services.AddTransient<IPagePositionRepository, PagePositionRepository>();
 
 builder.Services.AddDefaultIdentity<AppUser>(options => options.SignIn.RequireConfirmedAccount = true)
     .AddRoles<IdentityRole>()

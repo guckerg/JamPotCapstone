@@ -8,6 +8,7 @@
 <span class="text-danger">@TempData["Message"]</span>
 <form method="post" asp-action="Edit">
     <input type="hidden" asp-for="TextElementId"/>
+    <input type="hidden" asp-for="PageId"/>
     <div class="row mb-3">
         <label asp-for="Name" class="col-sm-2 col-form-label">Name</label>
         <div class="col-sm-10">
@@ -18,18 +19,6 @@
         <label asp-for="Content" class="col-sm-2 col-form-label">Content</label>
         <div class="col-sm-10">
             <textarea class="form-control" asp-for="Content" rows="10">@Model.Content</textarea>
-        </div>
-    </div>
-    <div class="row mb-3">
-        <label asp-for="PageId" class="col-sm-2 col-form-label">Name of Page</label>
-        <div class="col-sm-10">
-            <select asp-for="PageId">
-                <option value="@Model.PageId">@Model.Page.PageTitle</option>
-                @foreach (Page p in ViewBag.Pages)
-                {
-                    <option value="@p.PageId">@p.PageTitle</option>
-                }
-            </select>
         </div>
     </div>
     <button type="submit" class="btn btn-primary col-2">Save Changes</button>
