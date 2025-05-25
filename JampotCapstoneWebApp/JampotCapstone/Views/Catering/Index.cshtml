@@ -45,7 +45,7 @@
                         }
                         @if (User.IsInRole("Admin"))
                         {
-                            <form asp-controller="Admin" asp-action="Edit" method="get">
+                            <form asp-controller="Admin" asp-action="TextEdit" method="get">
                                 <input type="hidden" name="id" value="@col.TextElementId"/>
                                 <input type="hidden" name="pageTitle" value="@ViewData["Title"]"/>
                                 <button type="submit" class="btn btn-link">

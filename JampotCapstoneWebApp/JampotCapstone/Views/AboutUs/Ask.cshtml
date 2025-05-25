@@ -30,10 +30,10 @@
                         </details>
                         @if (User.IsInRole("Admin"))
                         {
-                            <a asp-action="Edit" asp-controller="Admin" asp-route-id="@faq.TextElementId" class="col-1">
+                            <a asp-action="TextEdit" asp-controller="Admin" asp-route-id="@faq.TextElementId" class="col-1">
                                 <i class="fa-regular fa-pen-to-square"></i>
                             </a>
-                            <a asp-action="Delete" asp-controller="Admin" asp-route-id="@faq.TextElementId" class="col-1">
+                            <a asp-action="DeleteText" asp-controller="Admin" asp-route-id="@faq.TextElementId" class="col-1">
                                 <i class="fa-solid fa-trash-can text-danger"></i>
                             </a>
                         }
@@ -60,7 +60,7 @@
             
             @if (User.IsInRole("Admin"))
             {
-                <a class="btn btn-primary m-5" asp-action="Edit" asp-controller="Admin">Add New FAQ</a>
+                <a class="btn btn-primary m-5" asp-action="TextEdit" asp-controller="Admin">Add New FAQ</a>
             }
         </div>
     </div>

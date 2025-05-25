@@ -108,10 +108,8 @@ public class SeedData
             };
             ctx.Files.Add(menu);
 
-            #endregion
-            
             ctx.SaveChanges();
-
+            #endregion
             #region products
 
             ProductType food = new ProductType
@@ -340,10 +338,8 @@ public class SeedData
                 }
             };
             ctx.Products.Add(p11);
-            #endregion
-            
             ctx.SaveChanges();
-            
+            #endregion
             #region pages
 
             Page home = new Page
@@ -394,10 +390,8 @@ public class SeedData
                 PageTitle = "Menu",
             };
             ctx.Pages.Add(menuPage);
-            #endregion
-            
             ctx.SaveChanges();
-            
+            #endregion                   
             #region text
 
             TextElement hours = new TextElement
@@ -527,10 +521,10 @@ public class SeedData
             };
             ctx.TextElements.Add(faq6);
 
-            #endregion
             
             ctx.SaveChanges();
 
+            #endregion
             #region jobs
 
             JobTitle lineCook = new JobTitle
@@ -547,10 +541,8 @@ public class SeedData
             };
             ctx.JobTitles.Add(dishwasher);
 
-            #endregion
-            
             ctx.SaveChanges();
-
+            #endregion
             #region pageposition
 
             PagePosition landingDrink = new PagePosition
@@ -668,8 +660,8 @@ public class SeedData
                 Position = 0
             };
             ctx.Add(menuInstance);
+            ctx.SaveChanges();
             #endregion
-            
             ctx.SaveChanges();
         }
     }

@@ -24,4 +24,8 @@
         <PackageReference Include="Square" Version="41.1.0" />
     </ItemGroup>
 
+    <ItemGroup>
+      <Folder Include="wwwroot\productPhotos\" />
+    </ItemGroup>
+
 </Project>

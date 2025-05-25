@@ -8,6 +8,9 @@ using JampotCapstone.Models;
 using JampotCapstone.Models.ViewModels;
 using File = JampotCapstone.Models.File;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.CodeAnalysis.Elfie.Diagnostics;
+using Microsoft.AspNetCore.Hosting;
 
 namespace JampotCapstone.Controllers;
 
@@ -28,7 +31,7 @@ public class AdminController : Controller
         _productRepo = r;
         _pagePositionRepo = pp;
     }
-    
+
     public async Task<IActionResult> Index()
     {
         AdminViewModel model = new AdminViewModel
@@ -41,7 +44,7 @@ public class AdminController : Controller
         return View(model);
     }
 
-    public async Task<IActionResult> Edit(int id = 0)
+    public async Task<IActionResult> TextEdit(int id = 0)
     {
         TextElement? model = id == 0 ? new TextElement() // if an existing textblock was not sent to the controller, 
             : await _textRepo.GetTextElementByIdAsync(id);   // create a new one
@@ -49,7 +52,7 @@ public class AdminController : Controller
     }
 
     [HttpPost]
-    public async Task<IActionResult> Edit(TextElement model)
+    public async Task<IActionResult> TextEdit(TextElement model)
     {
         if (ModelState.IsValid)
         {
@@ -80,6 +83,25 @@ public class AdminController : Controller
         return View(model);
     }
 
+    public async Task<IActionResult> DeleteText(int id)
+    {
+        TextElement? toDelete = await _textRepo.GetTextElementByIdAsync(id);
+        if (toDelete != null)
+        {
+            if (await _textRepo.DeleteTextElementAsync(toDelete) > 0)
+            {
+                TempData["Message"] = "Text block successfully deleted.";
+                TempData["context"] = "success";
+            }
+        }
+        else
+        {
+            TempData["Message"] = "That text block was not found. Please try again.";
+            TempData["context"] = "danger";
+        }
+
+        return RedirectToAction("Index");
+    }
     public async Task<IActionResult> EditPhoto(int id, string pageTitle)
     {
         EditViewModel model = new EditViewModel
@@ -97,7 +119,7 @@ public class AdminController : Controller
         int pageId = _pageRepo.GetPageByNameAsync(model.CurrentPage).Result.PageId;
         PagePosition? oldInstance = await _pagePositionRepo.GetPagePosition(pageId, model.OldPhotoId);
         oldInstance.FileId = model.NewPhotoId;
-        
+
         if (await _pagePositionRepo.UpdatePagePosition(oldInstance) > 0)
         {
             TempData["Message"] = "Photo successfully changed.";
@@ -109,13 +131,13 @@ public class AdminController : Controller
         return RedirectToAction("Index");
     }
 
-    public IActionResult Add()
+    public IActionResult AddPhoto()
     {
         return View();
     }
 
     [HttpPost]
-    public async Task<IActionResult> Add(File model)
+    public async Task<IActionResult> AddPhoto(File model)
     {
         if (ModelState.IsValid)
         {
@@ -136,20 +158,245 @@ public class AdminController : Controller
         return View(model);
     }
 
-    public async Task<IActionResult> Delete(int id)
+    public async Task<IActionResult> ProductEdit(int id = 0)
     {
-        TextElement? toDelete = await _textRepo.GetTextElementByIdAsync(id);
-        if (toDelete != null)
+        // Create a list of tag and type objects for the drop down in the view
+        var tags = await _productRepo.GetAllProductTagsAsync();
+        var types = await _productRepo.GetAllProductTypesAsync();
+        // Create a list of all the products in the database
+        var products = await _productRepo.GetAllProductsAsync();
+
+        Product? model = id == 0
+            ? new Product()
+            : await _productRepo.GetProductByIdAsync(id);
+
+        if (model == null)
         {
-            if (await _textRepo.DeleteTextElementAsync(toDelete) > 0)
+            TempData["Message"] = "Product not found.";
+            return RedirectToAction("Index");
+        }
+
+        // Populate the view model from the product
+        var viewModel = new ProductEditViewModel
+        {
+            ProductId = model.ProductId,
+            ProductName = model.ProductName,
+            ProductPrice = model.ProductPrice,
+            ProductIngredients = model.ProductIngredients,
+            //PhotoUpload = model.ProductPhoto.FilePat, handle image casting TODO
+            SelectedTypeId = model.ProductCategory?.FirstOrDefault()?.TypeId ?? 0, //Get the currently selected type
+            // Populate drop down
+            Types = new SelectList(types, "TypeId", "Type", model.ProductCategory?.FirstOrDefault()?.TypeId),
+            SelectedTagIds = model.Tags.Select(t => t.TagID).ToList(), //Currently selected tags
+            Tags = tags.Select(tag => new SelectListItem
             {
-                TempData["Message"] = "Text block successfully deleted.";
-                TempData["context"] = "success";
+                Value = tag.TagID.ToString(),
+                Text = tag.Tag,
+                Selected = model.Tags.Any(t => t.TagID == tag.TagID)
+            }).ToList(),
+        };
+
+        return View(viewModel);
+    }
+
+    private async Task<File?> SaveProductImageAsync(IFormFile? photoUpload)
+    {
+        if (photoUpload == null || photoUpload.Length == 0)
+            return null; // No file uploaded or empty file, no validation needed
+
+        // Define allowed image extensions and MIME types
+        var allowedExtensions = new[] { ".jpg", ".jpeg", ".png", ".webp" };
+        var allowedMimeTypes = new[] { "image/jpeg", "image/png", "image/webp" }; // Use MIME types for stronger validation
+        // MIME stands for Multipurpose Internet Mail Extensions
+
+        var fileExtension = Path.GetExtension(photoUpload.FileName).ToLowerInvariant();
+        var mimeType = photoUpload.ContentType.ToLowerInvariant();
+
+        // Validate file extension
+        if (!allowedExtensions.Contains(fileExtension))
+        {
+            TempData["Message"] = "Invalid file extension.";
+            TempData["context"] = "danger";
+            return null;
+        }
+
+        // Validate MIME type (more robust)
+        if (!allowedMimeTypes.Contains(mimeType))
+        {
+            return null; // Invalid MIME type
+        }
+
+        const long maxFileSize = 10 * 1024 * 1024; // 10 MB
+        if (photoUpload.Length > maxFileSize)
+        {
+            TempData["Message"] = "The file size is too large.";
+            TempData["context"] = "danger";
+            return null; // File too large
+        }
+
+        // If all validations pass, proceed with saving the file
+        string productPhotosFolder = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/productPhotos");
+        Directory.CreateDirectory(productPhotosFolder);
+
+        string uniqueFileName = Guid.NewGuid() + "_" + Path.GetFileName(photoUpload.FileName);
+        string filePath = Path.Combine(productPhotosFolder, uniqueFileName);
+
+        using (var stream = new FileStream(filePath, FileMode.Create))
+        {
+            await photoUpload.CopyToAsync(stream);
+        }
+
+        return new File { FileName = "/productPhotos/" + uniqueFileName };
+    }
+
+    [HttpPost]
+    [ValidateAntiForgeryToken]
+    public async Task<IActionResult> ProductEdit(int id, ProductEditViewModel viewModel)
+    {
+        if (id != viewModel.ProductId)
+        {
+            TempData["Message"] = "The product was not found.";
+            TempData["context"] = "danger";
+            return NotFound();
+        }
+
+        // Attempt to save a new photo
+        File? uploadedImage = null;
+        if (viewModel.PhotoUpload != null)
+        {
+            uploadedImage = await SaveProductImageAsync(viewModel.PhotoUpload);
+            if (uploadedImage == null)
+            {
+                ModelState.AddModelError("PhotoUpload", "Invalid image file. Only JPG, JPEG, PNG, or WebP images up to 5MB are allowed.");
             }
+        }
+
+        if (!ModelState.IsValid)
+        {
+            // Repopulate dropdown and checkbox on error
+            var tags = await _productRepo.GetAllProductTagsAsync();
+            var types = await _productRepo.GetAllProductTypesAsync();
+            viewModel.Types = new SelectList(types, "TypeId", "Type", viewModel.SelectedTypeId);
+            viewModel.Tags = tags.Select(tag => new SelectListItem
+            {
+                Value = tag.TagID.ToString(),
+                Text = tag.Tag,
+                Selected = viewModel.SelectedTagIds != null && viewModel.SelectedTagIds.Contains(tag.TagID)
+            }).ToList();
+
+            TempData["Message"] = "There were data-entry errors. Please check the form.";
+            TempData["context"] = "danger";
+            return View(viewModel);
+        }
+
+        Product productToUpdate;
+
+        if (viewModel.ProductId == 0) // This is a new product
+        {
+            productToUpdate = new Product();
+            TempData["Message"] = "Element successfully added.";
+        }
+        else // This is an existing product
+        {
+            // Load the existing product including its current relationships
+            productToUpdate = await _productRepo.GetProductByIdAsync(viewModel.ProductId);
+
+            if (productToUpdate == null)
+            {
+                TempData["Message"] = "Product not found for update.";
+                TempData["context"] = "danger";
+                return NotFound();
+            }
+            TempData["Message"] = "Element successfully updated.";
+        }
+
+        // Update scalar properties
+        productToUpdate.ProductName = viewModel.ProductName;
+        productToUpdate.ProductPrice = viewModel.ProductPrice;
+        productToUpdate.ProductIngredients = viewModel.ProductIngredients;
+
+        // Handle Product Photo
+        if (uploadedImage != null)
+        {
+            productToUpdate.ProductPhoto = uploadedImage;
+        }
+        else if (viewModel.ProductId > 0 && viewModel.PhotoUpload == null) // If editing and no new photo uploaded, retain old one
+        {
+            // If it's an existing product and no new photo was uploaded,
+            // we don't need to do anything with ProductPhoto, as it's already loaded.
+            // If you were removing the photo, you'd set productToUpdate.ProductPhoto = new File(); or null;
+        }
+        else if (viewModel.ProductId == 0 && uploadedImage == null) // If new product and no photo
+        {
+            productToUpdate.ProductPhoto = new File();
+        }
+
+        // Clear existing categories and add the new one
+        productToUpdate.ProductCategory.Clear();
+        var selectedProductType = await _productRepo.GetProductTypeByIdAsync(viewModel.SelectedTypeId);
+        if (selectedProductType != null)
+        {
+            productToUpdate.ProductCategory.Add(selectedProductType);
         }
         else
         {
-            TempData["Message"] = "That text block was not found. Please try again.";
+            ModelState.AddModelError("SelectedTypeId", "Invalid product type selected.");
+            // Repopulate dropdowns, checkboxes, and return view if this happens
+            var tags = await _productRepo.GetAllProductTagsAsync();
+            var types = await _productRepo.GetAllProductTypesAsync();
+            viewModel.Types = new SelectList(types, "TypeId", "Type", viewModel.SelectedTypeId);
+            viewModel.Tags = tags.Select(tag => new SelectListItem
+            {
+                Value = tag.TagID.ToString(),
+                Text = tag.Tag,
+                Selected = viewModel.SelectedTagIds != null && viewModel.SelectedTagIds.Contains(tag.TagID)
+            }).ToList();
+            TempData["Message"] = "Invalid product type. Please check the form.";
+            TempData["context"] = "danger";
+            return View(viewModel);
+        }
+
+        // Handle Product Tags (Many-to-many)
+        // First, clear all existing tags for this product
+        productToUpdate.Tags.Clear();
+
+        // Then, add the newly selected tags
+        if (viewModel.SelectedTagIds != null && viewModel.SelectedTagIds.Any())
+        {
+            var selectedTags = await _productRepo.GetTagsByIdsAsync(viewModel.SelectedTagIds);
+            foreach (var tag in selectedTags)
+            {
+                productToUpdate.Tags.Add(tag);
+            }
+        }
+
+        if (viewModel.ProductId == 0)
+        {
+            await _productRepo.AddProductAsync(productToUpdate);
+        }
+        else
+        {
+            await _productRepo.UpdateProductAsync(productToUpdate);
+        }
+
+        TempData["context"] = "success";
+        return RedirectToAction("Index");
+    }
+
+    public async Task<IActionResult> DeleteProduct(int id)
+    {
+        // find the product to delete by the id passed through
+        Product? toDelete = await _productRepo.GetProductByIdAsync(id);
+
+        if (toDelete != null)
+        {
+            await _productRepo.DeleteProductAsync(toDelete);
+            TempData["Message"] = "Product successfully deleted.";
+            TempData["context"] = "success";
+        }
+        else
+        {
+            TempData["Message"] = "The product was not found. Please try again.";
             TempData["context"] = "danger";
         }
 
