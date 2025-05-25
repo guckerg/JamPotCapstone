@@ -1,11 +1,20 @@
-﻿document.addEventListener('DOMContentLoaded', async () => {
+async function getSquareConfig() {
+    const response = await fetch('/api/config/square');
+    if (!response.ok) {
+        throw new Error('Failed to load Square configuration');
+    }
+    return response.json();
+}
+
+document.addEventListener('DOMContentLoaded', async () => {
     if (!window.Square) {
         console.error('Square SDK failed to load.');
         return;
     }
 
-    const appId = 'sandbox-sq0idb-WOtifQSKNybOUxarQkzTEg';
-    const locationId = 'LMZKPRF20WXFP';
+    const config = await getSquareConfig();
+    const appId = config.applicationId;
+    const locationId = config.locationId;
 
     try {
         const payments = window.Square.payments(appId, locationId);
@@ -18,7 +27,7 @@
                 event.preventDefault();
                 const result = await card.tokenize();
                 if (result.status === 'OK') {
-                    //console.log('Payment token obtained:', result.token);
+                    console.log('Payment token obtained:', result.token);
                     processPayment(result.token);
                 } else {
                     console.error('Tokenization error:', result);
@@ -33,15 +42,20 @@
 
 async function processPayment(token) {
     const cartSubtotal = parseInt(document.getElementById('cartSubtotal').value, 10) * 100; //unit conversion from dollars to cents for payment.
+    const customerPhone = document.getElementById('customerPhone').value;
+    console.log("cart total and loyalty number:", cartSubtotal, customerPhone);
     try {
         const response = await fetch('/api/payment/process', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ token: token, amount: cartSubtotal })
+            body: JSON.stringify({
+                token: token,
+                amount: cartSubtotal,
+                phone: customerPhone,
+            })
         });
         const data = await response.json();
         if (response.ok) {
-            //alert('Payment processed successfully!');
             const modalEl = document.getElementById('squarePaymentModal');
             const paymentModal = bootstrap.Modal.getOrCreateInstance(modalEl);
             paymentModal.hide();
