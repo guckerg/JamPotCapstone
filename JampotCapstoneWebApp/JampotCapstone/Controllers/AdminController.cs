@@ -83,6 +83,25 @@ public class AdminController : Controller
         return View(model);
     }
 
+    public async Task<IActionResult> DeleteText(int id)
+    {
+        TextElement? toDelete = await _textRepo.GetTextElementByIdAsync(id);
+        if (toDelete != null)
+        {
+            if (await _textRepo.DeleteTextElementAsync(toDelete) > 0)
+            {
+                TempData["Message"] = "Text block successfully deleted.";
+                TempData["context"] = "success";
+            }
+        }
+        else
+        {
+            TempData["Message"] = "That text block was not found. Please try again.";
+            TempData["context"] = "danger";
+        }
+
+        return RedirectToAction("Index");
+    }
     public async Task<IActionResult> EditPhoto(int id, string pageTitle)
     {
         EditViewModel model = new EditViewModel
@@ -100,7 +119,7 @@ public class AdminController : Controller
         int pageId = _pageRepo.GetPageByNameAsync(model.CurrentPage).Result.PageId;
         PagePosition? oldInstance = await _pagePositionRepo.GetPagePosition(pageId, model.OldPhotoId);
         oldInstance.FileId = model.NewPhotoId;
-        
+
         if (await _pagePositionRepo.UpdatePagePosition(oldInstance) > 0)
         {
             TempData["Message"] = "Photo successfully changed.";

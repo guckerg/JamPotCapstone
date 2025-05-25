@@ -391,10 +391,7 @@ public class SeedData
             };
             ctx.Pages.Add(menuPage);
             ctx.SaveChanges();
-            #endregion
-            
-            ctx.SaveChanges();
-            
+            #endregion                   
             #region text
 
             TextElement hours = new TextElement
@@ -546,7 +543,6 @@ public class SeedData
 
             ctx.SaveChanges();
             #endregion
-
             #region pageposition
 
             PagePosition landingDrink = new PagePosition
@@ -664,8 +660,8 @@ public class SeedData
                 Position = 0
             };
             ctx.Add(menuInstance);
+            ctx.SaveChanges();
             #endregion
-            
             ctx.SaveChanges();
         }
     }
