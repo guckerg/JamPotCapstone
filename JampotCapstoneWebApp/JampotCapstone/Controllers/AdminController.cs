@@ -228,8 +228,8 @@ public class AdminController : Controller
         // Validate file extension
         if (!allowedExtensions.Contains(fileExtension))
         {
-            // You might log this or return null with a specific error code
-            // For now, we'll return null to indicate failure
+            TempData["Message"] = "Invalid file extension.";
+            TempData["context"] = "danger";
             return null;
         }
 
@@ -239,10 +239,11 @@ public class AdminController : Controller
             return null; // Invalid MIME type
         }
 
-        // Optional: Add file size limit validation (e.g., 5 MB)
-        const long maxFileSize = 5 * 1024 * 1024; // 5 MB
+        const long maxFileSize = 10 * 1024 * 1024; // 10 MB
         if (photoUpload.Length > maxFileSize)
         {
+            TempData["Message"] = "The file size is too large.";
+            TempData["context"] = "danger";
             return null; // File too large
         }
 
