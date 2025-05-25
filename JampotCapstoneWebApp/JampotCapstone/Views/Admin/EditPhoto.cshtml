@@ -5,25 +5,21 @@
 
 <h2>Change Photo</h2>
 <form method="post" asp-action="EditPhoto">
-    <div class="row mb-3">
-        <label asp-for="Key" class="col-sm-2 col-form-label">File Name</label>
-        <div class="col-sm-10">
-            <input type="text" class="form-control" asp-for="Key">
-        </div>
-    </div>
     <div class="row p-2">
-        <label asp-for="Page" class="col-form-label col-md-3 mb-3">Page</label>
+        <label asp-for="Photos" class="col-form-label col-md-3 mb-3">New Photo</label>
         <div class="col-md-3">
-            <select asp-for="Page" class="form-select">
-                <option value="">select a page</option>
-                @foreach (Page p in Model.Pages)
+            <select asp-for="NewPhotoId" class="form-select">
+                <option value="">select a photo</option>
+                @foreach (File f in Model.Photos)
                 {
-                    <option value="@p.PageId">@p.PageTitle</option>
+                    string filename = f.GetFileName();
+                    <option value="@f.FileID">@filename</option>
                 }
             </select>
         </div>
     </div>
-    <input type="hidden" asp-for="Position" value="@Model.Position"/>
+    <input type="hidden" asp-for="CurrentPage" value="@Model.CurrentPage"/>
+    <input type="hidden" asp-for="OldPhotoId" value="@Model.OldPhotoId"/>
     <button type="submit" class="btn btn-primary col-2">Save Changes</button>
     <a asp-action="Index" class="btn btn-danger col-2">Cancel</a>
 </form>

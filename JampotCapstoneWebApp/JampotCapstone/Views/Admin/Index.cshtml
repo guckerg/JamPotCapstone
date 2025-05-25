@@ -64,14 +64,14 @@
             foreach (Page p in Model.Pages)
             {
                 string title = p.PageTitle;
+                int pageId = p.PageId;
                 <h4 class="text-jampot-green">@title</h4>
                 foreach (var photo in Model.Photos)
                 {
-                    if (photo.Pages.Find(p => p.PageTitle == title) != null)
+                    // if current photo (inner loop) contains the current page (outer loop)
+                    if (photo.Pages.Find(p => p.PageId == pageId) != null)
                     {
-                        int startIndex = photo.FileName.LastIndexOf("/");
-                        int endIndex = photo.FileName.IndexOf(".");
-                        string filename = photo.FileName.Substring(startIndex, endIndex - startIndex);
+                        string filename = photo.GetFileName();
                         <img src="@photo.FileName" alt="@filename" width="200px"/>
                     }
                 }

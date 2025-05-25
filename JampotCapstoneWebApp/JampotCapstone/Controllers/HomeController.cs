@@ -20,10 +20,11 @@ public class HomeController : Controller
 
     public async Task<IActionResult> Index()
     {
+        var photos = await _photoRepo.GetPhotosByPageAsync("home");
         HomeViewModel model = new HomeViewModel
         {
             Hours = await _repo.GetTextElementByPageAsync("home"),
-            Photos = await _photoRepo.GetPhotosByPageAsync("home")
+            Photos = photos
         };
         return View(model);
     }

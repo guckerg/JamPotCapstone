@@ -35,7 +35,7 @@ public class PageRepository : IPageRepository
     public async Task<Page> GetPageByNameAsync(string name)
     {
         Page? page = await _context.Pages
-            .FirstOrDefaultAsync(p => p.PageTitle.ToLower().Contains(name.ToLower()));
+            .FirstOrDefaultAsync(p => name.ToLower().Contains(p.PageTitle.ToLower()));
         return page;
     }
 

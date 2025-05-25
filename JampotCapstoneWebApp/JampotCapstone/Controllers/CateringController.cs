@@ -18,12 +18,10 @@ namespace JampotCapstone.Controllers
             _photoRepo = p;
         }
         public async Task<IActionResult> Index()
-        {
-            CateringViewModel model = new CateringViewModel
-            {
-                Textblocks = await _repo.GetTextElementsByPageAsync("catering"),
-                Photos = await _photoRepo.GetPhotosByPageAsync("catering")
-            };
+        { 
+            CateringViewModel model = new CateringViewModel();
+            model.Textblocks = await _repo.GetTextElementsByPageAsync("catering");
+            model.Photos = await _photoRepo.GetPhotosByPageAsync("catering");
             return View(model);
         }
     }
