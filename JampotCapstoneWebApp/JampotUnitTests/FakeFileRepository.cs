@@ -7,6 +7,7 @@ namespace JampotUnitTests;
 public class FakeFileRepository : IPhotoRepository
 {
     private List<File> _files = new List<File>();
+    private List<Page> _pages = new List<Page>();
 
     public async Task<List<File>> GetAllPhotosAsync()
     {
@@ -25,20 +26,20 @@ public class FakeFileRepository : IPhotoRepository
 
     public async Task<List<File>> GetPhotosByPageAsync(string page)
     {
+        int pageId = _pages.Find(p => p.PageTitle.ToLower().Contains(page.ToLower())).PageId;
         List<File> model = _files
             .Where(f => f.Pages
-                .Any(p => p.PageTitle.ToLower()
-                    .Contains(page)))
+                .Any(p => p.PagePositionId == pageId))
             .ToList();
         return model;
     }
 
     public async Task<File> GetPhotoByPageAsync(string page)
     {
+        int pageId = _pages.Find(p => p.PageTitle.ToLower().Contains(page.ToLower())).PageId;
         File? model = _files
             .Find(f => f.Pages
-                .Any(p => p.PageTitle.ToLower()
-                    .Contains(page)));
+                .Any(p => p.PagePositionId == pageId));
         return model;
     }
 

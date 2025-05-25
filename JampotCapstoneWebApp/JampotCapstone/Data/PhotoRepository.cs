@@ -1,3 +1,4 @@
+using System.Reflection;
 using JampotCapstone.Data.Interfaces;
 using Microsoft.EntityFrameworkCore;
 using File = JampotCapstone.Models.File;
@@ -38,18 +39,22 @@ public class PhotoRepository : IPhotoRepository
 
     public async Task<List<File>> GetPhotosByPageAsync(string page)
     {
+        int pageId = _context.Pages.FirstOrDefaultAsync(p => p.PageTitle.ToLower().Contains(page)).Result.PageId;
         List<File> photos = await _context.Files
-            .Where(f => f.Pages
-                .Any(p => p.PageTitle.ToLower().Contains(page)))
+            .Include(f => f.Pages)
+            .Where(f => f.Pages.Any(p => p.PageId == pageId))
+            .OrderBy(f => f.Pages.FirstOrDefault(p => p.PageId == pageId).Position)
             .ToListAsync();
         return photos;
     }
 
+    
+
     public async Task<File> GetPhotoByPageAsync(string page)
     {
-        File photo = await _context.Files.Include(f => f.Pages)
-            .FirstOrDefaultAsync(f => f.Pages
-                .Any(p => p.PageTitle.ToLower().Contains(page.ToLower())));
+        int pageId = _context.Pages.FirstOrDefaultAsync(p => p.PageTitle == page).Result.PageId;
+        File? photo = await _context.Files.Include(f => f.Pages)
+            .FirstOrDefaultAsync(f => f.Pages.Any(p => p.PageId == pageId));
         return photo;
     }
 

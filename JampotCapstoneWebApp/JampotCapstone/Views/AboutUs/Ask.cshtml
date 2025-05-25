@@ -50,7 +50,11 @@
                 <img src="@Model.Photo.FileName" alt="@name" class="photo"/>
                 @if (User.IsInRole("Admin"))
                 {
-                    <a asp-action="EditPhoto" asp-controller="Admin" asp-route-position="0"><i class="fa-regular fa-pen-to-square"></i></a>
+                    <form asp-action="EditPhoto" asp-controller="Admin" method="get">
+                        <input type="hidden" name="id" value="@Model.Photo.FileID"/>
+                        <input type="hidden" name="pageTitle" value="@ViewBag.Title"/>
+                        <button type="submit" class="btn btn-link"><i class="fa-regular fa-pen-to-square"></i></button>
+                    </form>
                 }
             }
             

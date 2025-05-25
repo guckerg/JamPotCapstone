@@ -12,28 +12,22 @@
         <div class="row">
             @if (Model.Photos.Count > 0)
             {
-                foreach(JampotCapstone.Models.File photo in Model.Photos)
+                foreach(File photo in Model.Photos)
                 {
-                    int startIndex = photo.FileName.IndexOf("/");
-                    int endIndex = photo.FileName.IndexOf(".");
-                    string filename = photo.FileName.Substring(startIndex, endIndex - startIndex);
+                    string filename = photo.GetFileName();
                     <div class="col-md">
                         <img src="@photo.FileName" class="img-fluid responsiveSquare" alt="@filename">
                         @if (User.IsInRole("Admin"))
                         {
-                            <a asp-controller="Admin" asp-action="EditPhoto" asp-route-id="@photo.FileID">
-                                <i class="fa-regular fa-pen-to-square"></i>
-                            </a>
+                            <form asp-action="EditPhoto" asp-controller="Admin" method="get">
+                                <input type="hidden" name="id" value="@photo.FileID"/>
+                                <input type="hidden" name="pageTitle" value="@ViewData["Title"]"/>
+                                <button type="submit" class="btn btn-link"><i class="fa-regular fa-pen-to-square"></i></button>
+                            </form>
                         }
                     </div>
                 }
             }
-            @*<div class="col-md">
-                <img src="/pics/ElectrolyteRefresh.png" class="img-fluid responsiveSquare" alt="Electrolyte Refresh Drink">
-            </div>
-            <div class="col-md">
-                <img src="/pics/GardenWrap.png" class="img-fluid responsiveSquare" alt="Vegan Garden Wrap">
-            </div>*@
         </div>
         <!--Text elements with features and catering details-->
         <div class="row">
@@ -51,7 +45,13 @@
                         }
                         @if (User.IsInRole("Admin"))
                         {
-                            <a asp-action="TextEdit" asp-controller="Admin" asp-route-id="@col.TextElementId"><i class="fa-regular fa-pen-to-square"></i></a>
+                            <form asp-controller="Admin" asp-action="TextEdit" method="get">
+                                <input type="hidden" name="id" value="@col.TextElementId"/>
+                                <input type="hidden" name="pageTitle" value="@ViewData["Title"]"/>
+                                <button type="submit" class="btn btn-link">
+                                    <i class="fa-regular fa-pen-to-square"></i>
+                                </button>
+                            </form>
                         }
                     </p>
                 </div>

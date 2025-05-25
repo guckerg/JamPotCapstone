@@ -1,3 +1,4 @@
+using System.Reflection;
 namespace JampotCapstone.Models;
 
 public class File
@@ -6,6 +7,19 @@ public class File
     public string ContentType { get; set; } = ""; //(e.g., application/pdf)
     public string FileName { get; set; } = ""; //To store the original file name
 
-    public List<Page> Pages { get; set; } =
-        new List<Page>(); // To correlate a photo with the page it should be displayed on
+    public List<PagePosition> Pages { get; set; } =
+        []; // To correlate a photo with the page it should be displayed on
+    
+    // get the filename out of the file path for user-friendly display
+    public string GetFileName()
+    {
+        int startIndex = FileName.LastIndexOf("/") + 1;
+        if (startIndex == -1)
+        {
+            startIndex = FileName.LastIndexOf("\\") + 1;
+        }
+        int endIndex = FileName.LastIndexOf(".");
+        string fileName = FileName.Substring(startIndex, endIndex - startIndex);
+        return fileName;
+    }
 }
