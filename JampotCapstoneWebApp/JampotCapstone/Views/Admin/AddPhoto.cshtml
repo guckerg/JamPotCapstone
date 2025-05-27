@@ -2,15 +2,17 @@
     ViewBag.Title = "Add New Photo";
 }
 
-<h2>Add New Photo</h2>
+<h2 class="title text-jampot-green p-5">ADD NEW PHOTO</h2>
 <div asp-validation-summary="ModelOnly" class="text-danger"></div>
 <form enctype="multipart/form-data" method="post" asp-action="AddPhoto">
     <div class="row mb-3">
-        <label for="file" class="col-sm-2 col-form-label">New File</label>
-        <div class="col-sm-10">
+        <label for="file" class="col-sm-2 col-form-label text-jampot-yellow">New File</label>
+        <div class="col-sm-4">
             <input type="file" class="form-control" name="newFile" id="file" />
         </div>
     </div>
-    <button type="submit" class="btn btn-primary col-2">Save Changes</button>
-    <a asp-action="Index" class="btn btn-danger col-2">Cancel</a>
+    <div class="pt-5">
+        <button type="submit" class="btn btn-primary col-2">Save Changes</button>
+        <a asp-action="Index" class="btn btn-danger col-2">Cancel</a>
+    </div>
 </form>
