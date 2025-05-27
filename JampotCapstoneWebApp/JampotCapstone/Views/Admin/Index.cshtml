@@ -65,15 +65,27 @@
             {
                 string title = p.PageTitle;
                 int pageId = p.PageId;
-                <h4 class="text-jampot-green">@title</h4>
-                foreach (var photo in Model.Photos)
+                List<File> photosOnPage = Model.Photos.Where(f => f.Pages
+                    .Any(p => p.PageId == pageId)).ToList();
+                if (photosOnPage.Count > 0)
                 {
-                    // if current photo (inner loop) contains the current page (outer loop)
-                    if (photo.Pages.Find(p => p.PageId == pageId) != null)
+                    <h4 class="text-jampot-green">@title</h4>
+                    foreach (var photo in photosOnPage)
                     {
                         string filename = photo.GetFileName();
                         <img src="@photo.FileName" alt="@filename" width="200px"/>
                     }
+                }
+            }
+
+            var misc = Model.Photos.Where(f => f.Pages.Count == 0).ToList();
+            if(misc.Count > 0)
+            {
+                <h4 class="text-jampot-green">Unaffiliated</h4>
+                foreach (File f in misc)
+                {
+                    string filename = f.GetFileName();
+                    <img src="@f.FileName" alt="@filename" width="200px"/>
                 }
             }
         }

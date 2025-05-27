@@ -139,24 +139,36 @@ public class AdminController : Controller
     [HttpPost]
     public async Task<IActionResult> AddPhoto(IFormFile newFile)
     {
-        /*if (ModelState.IsValid)
+        File newPhoto;
+        // check that a file was sent to the controller
+        if (newFile != null)
         {
-            if (await _photoRepo.AddFileAsync(model) > 0)
+            newPhoto = await SaveProductImageAsync(newFile, "pics");
+            if (newPhoto == null)
             {
-                TempData["Message"] = "File successfully added.";
-                return RedirectToAction("Index");
+                TempData["Message"] = "Invalid image file. Only JPG, JPEG, PNG, " +
+                                      "or WebP images up to 10MB are allowed.";
+                return View(newFile);
+            }
+
+            newPhoto.ContentType = newFile.ContentType.ToLowerInvariant();
+            
+
+            if (await _photoRepo.AddFileAsync(newPhoto) > 0)
+            {
+                TempData["Message"] = "Photo successfully added.";
             }
             else
             {
-                ModelState.AddModelError("", "There was a problem saving the file. Please try again.");
+                TempData["Message"] = "There was a problem saving the file. Please try again.";
             }
+            
         }
         else
         {
-            ModelState.AddModelError("", "There were data-entry errors. Please check the form.");
+            TempData["Message"] = "File could not be uploaded. Please try again.";
         }
-        return View(model);*/
-        return View();
+        return RedirectToAction("Index");
     }
 
     public async Task<IActionResult> ProductEdit(int id = 0)
@@ -200,7 +212,7 @@ public class AdminController : Controller
         return View(viewModel);
     }
 
-    private async Task<File?> SaveProductImageAsync(IFormFile? photoUpload)
+    private async Task<File?> SaveProductImageAsync(IFormFile? photoUpload, string photoFolder)
     {
         if (photoUpload == null || photoUpload.Length == 0)
             return null; // No file uploaded or empty file, no validation needed
@@ -236,7 +248,7 @@ public class AdminController : Controller
         }
 
         // If all validations pass, proceed with saving the file
-        string productPhotosFolder = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/productPhotos");
+        string productPhotosFolder = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/" + photoFolder);
         Directory.CreateDirectory(productPhotosFolder);
 
         string uniqueFileName = Guid.NewGuid() + "_" + Path.GetFileName(photoUpload.FileName);
@@ -247,7 +259,7 @@ public class AdminController : Controller
             await photoUpload.CopyToAsync(stream);
         }
 
-        return new File { FileName = "/productPhotos/" + uniqueFileName };
+        return new File { FileName = "/" + photoFolder + "/" + uniqueFileName };
     }
 
     [HttpPost]
@@ -265,7 +277,7 @@ public class AdminController : Controller
         File? uploadedImage = null;
         if (viewModel.PhotoUpload != null)
         {
-            uploadedImage = await SaveProductImageAsync(viewModel.PhotoUpload);
+            uploadedImage = await SaveProductImageAsync(viewModel.PhotoUpload, "productPhotos");
             if (uploadedImage == null)
             {
                 ModelState.AddModelError("PhotoUpload", "Invalid image file. Only JPG, JPEG, PNG, or WebP images up to 5MB are allowed.");
