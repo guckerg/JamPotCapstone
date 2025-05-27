@@ -35,7 +35,7 @@ namespace JampotCapstone.Controllers
                         SourceId = request.Token,  // your token from tokenization
                         IdempotencyKey = Guid.NewGuid().ToString(),
                         AmountMoney = new Money { Amount = request.Amount, Currency = Currency.Usd },
-                        Autocomplete = true,
+                        Autocomplete = true, //this completes the transaction without needing to involve seperate API calls
                         LocationId = _configuration["Square:LocationId"]
                     }
                 );
