@@ -43,6 +43,10 @@ document.addEventListener('DOMContentLoaded', async () => {
 async function processPayment(token) {
     //unit conversion from dollars to cents for payment.
     const cartSubtotal = parseInt(document.getElementById('cartSubtotal').value, 10) * 100;
+
+    //phone necessary for loyalties
+    const customerPhone = document.getElementById('customerPhone').value;
+
     console.log("cart total and loyalty number:", cartSubtotal, customerPhone);
     try {
         const response = await fetch('/api/payment/process', {
@@ -51,6 +55,7 @@ async function processPayment(token) {
             body: JSON.stringify({
                 token: token,
                 amount: cartSubtotal,
+                //phone: customerPhone,
             })
         });
         const data = await response.json();

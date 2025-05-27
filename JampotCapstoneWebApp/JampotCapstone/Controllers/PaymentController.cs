@@ -29,19 +29,24 @@ namespace JampotCapstone.Controllers
             );
 
             try {
+
+                //create the payment request and complete the transaction when Autocomplete == true.
                 var response = await client.Payments.CreateAsync(
                     new CreatePaymentRequest
                     {
-                        SourceId = request.Token,  // your token from tokenization
+                        SourceId = request.Token,
                         IdempotencyKey = Guid.NewGuid().ToString(),
                         AmountMoney = new Money { Amount = request.Amount, Currency = Currency.Usd },
-                        Autocomplete = true, //this completes the transaction without needing to involve seperate API calls
+                        Autocomplete = true,
                         LocationId = _configuration["Square:LocationId"]
                     }
                 );
 
+                //if payment went well, update loyalties and display success
                 if (response.Payment != null)
                 {
+                    //Call LoyaltyAPI here
+
                     return Ok(new
                     {
                         success = true,
