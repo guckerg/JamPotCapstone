@@ -36,10 +36,6 @@ namespace JampotCapstone.Controllers
         [HttpPost]
         public IActionResult AddToCart([FromBody] AddToCartRequest request)
         {
-            // Store a message in TempData for the next request
-            TempData["AddToCartMessage"] = "Item added to your cart!";
-            TempData["NotificationType"] = "success";
-
             var itemToAdd = _context.Products
                 .Include(p => p.ProductPhoto)
                 .SingleOrDefault(p => p.ProductId == request.ProductId);
@@ -52,6 +48,8 @@ namespace JampotCapstone.Controllers
             var cartItems = HttpContext.Session.GetObjectFromJson<List<OrderItem>>(CartSessionKey) ?? new List<OrderItem>();
 
             int newQuantity = 0;
+            string message = "Item added to cart!"; // Default message
+            string notificationType = "success"; // Default type
 
             var existingCartItem = cartItems.FirstOrDefault(item => item.ProductId == request.ProductId);
             if (existingCartItem != null)
@@ -74,7 +72,7 @@ namespace JampotCapstone.Controllers
             var totalCartQuantity = cartItems.Sum(i => i.Quantity);
             var totalCartPrice = cartItems.Sum(i => i.Product.ProductPrice * i.Quantity);    
 
-            return Json(new { success = true, totalCartQuantity, newQuantity, totalCartPrice});
+            return Json(new { success = true, totalCartQuantity, newQuantity, totalCartPrice, message, notificationType});
         }
 
         //class to let the method pass a Json object as an id
