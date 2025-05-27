@@ -78,12 +78,7 @@
     }
 </div>
 <div id="notification" class="notification">
-    @if (TempData["AddToCartMessage"] != null)
-    {
-        <div class="alert alert-@TempData["NotificationType"]" id="cart-notification">
-            @TempData["AddToCartMessage"]
-        </div>
-    }
+    <div id="cart-notification" class="alert" style="display: none;"></div>
 </div>
 
 <!--Script for increasing cart badge number, as well as not reloading the page when the users adds an item to the cart-->
@@ -121,8 +116,8 @@
                 .then(response => response.json())
                 .then(data => {
                     if (data.success){
-                         // Check if there's a notification
-                         const notification = document.getElementById('cart-notification');
+                        // Check if there's a notification
+                        const notification = document.getElementById('cart-notification');
 
                           if (notification) {
                             // Clear the previous fade-out timeout
@@ -130,6 +125,9 @@
                                 clearTimeout(fadeOutTimeout);
                             }
 
+                            // Set the message and class based on the AJAX response
+                            notification.textContent = data.message;
+                            notification.className = `alert alert-${data.notificationType}`; // Update class
                             // Show the notification
                             notification.style.display = 'block';
                             notification.style.opacity = '1';
