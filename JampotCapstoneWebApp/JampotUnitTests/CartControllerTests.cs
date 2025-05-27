@@ -1,10 +1,14 @@
-﻿namespace JampotUnitTests;
+﻿using JampotCapstone.Models.ViewModels;
+using Microsoft.AspNetCore.Mvc;
+
+namespace JampotUnitTests;
 
 public class CartControllerTests
 {
     private readonly string _cartSessionKey = "CartItems";
 
     // Method to set up an in-memory DbContext
+    // in-memory is for sessions
     private ApplicationDbContext CreateInMemoryDbContext()
     {
         var options = new DbContextOptionsBuilder<ApplicationDbContext>()
@@ -66,15 +70,71 @@ public class CartControllerTests
     [Fact]
     public void AddToCart_Success()
     {
-        // Arange
+        // Arrange
+        var context = CreateInMemoryDbContext();
+        SeedProducts(context);
+
+        var mockSession = new TestSession(); //Simulate sessions
+        var cartItems = new List<OrderItem> 
+        {
+            new OrderItem { ProductId = 1, Quantity = 2, Product = context.Products.Find(1) },
+            new OrderItem { ProductId = 2, Quantity = 1, }
+        };
+        mockSession.SetObjectAsJson(_cartSessionKey, cartItems);
+
+        var mockHttpContext = new DefaultHttpContext { Session = mockSession };
+        var controllerContext = new ControllerContext { HttpContext = mockHttpContext };
+
+        var controller = new CartController(context)
+        {
+            ControllerContext = controllerContext
+        };
+
         // Act
+        var result = controller.Index() as ViewResult;
+
         // Assert
+        Assert.NotNull(result);
+        // make sure viewModel gets populated
+        var viewModel = result.Model as CartViewModel;
+        Assert.NotNull(viewModel);
     }
 
     [Fact]
     public void AddToCart_Failure()
     {
-        // Arange
+        // Arrange
+        // Act
+        // Assert
+    }
+
+    [Fact]
+    public void UpdateCart_Success()
+    {
+        // Arrange
+        // Act
+        // Assert
+    }
+
+    [Fact]
+    public void UpdateCart_Faliure()
+    {
+        // Arrange
+        // Act
+        // Assert
+    }
+
+    [Fact]
+    public void GetCartQuantity_Success()
+    {
+        // Arrange
+        // Act
+        // Assert
+    }
+    [Fact]
+    public void GetCartQuantity_Failure()
+    {
+        // Arrange
         // Act
         // Assert
     }
