@@ -137,9 +137,9 @@ public class AdminController : Controller
     }
 
     [HttpPost]
-    public async Task<IActionResult> AddPhoto(File model)
+    public async Task<IActionResult> AddPhoto(IFormFile newFile)
     {
-        if (ModelState.IsValid)
+        /*if (ModelState.IsValid)
         {
             if (await _photoRepo.AddFileAsync(model) > 0)
             {
@@ -155,7 +155,8 @@ public class AdminController : Controller
         {
             ModelState.AddModelError("", "There were data-entry errors. Please check the form.");
         }
-        return View(model);
+        return View(model);*/
+        return View();
     }
 
     public async Task<IActionResult> ProductEdit(int id = 0)
@@ -385,8 +386,8 @@ public class AdminController : Controller
 
     public async Task<IActionResult> DeleteProduct(int id)
     {
-        // find the product to delete by the id passed through
-        Product? toDelete = await _productRepo.GetProductByIdAsync(id);
+        // find the product to delete by the id passed through
+        Product? toDelete = await _productRepo.GetProductByIdAsync(id);
 
         if (toDelete != null)
         {
