@@ -171,6 +171,42 @@ public class AdminController : Controller
         return RedirectToAction("Index");
     }
 
+    public async Task<IActionResult> DeletePhoto(int id)
+    {
+        File photoToDelete = await _photoRepo.GetFileByIdAsync(id);
+        if (photoToDelete == null)
+        {
+            TempData["Message"] = "File not found. Please try again.";
+            TempData["context"] = "danger";
+        }
+        else
+        {
+            if (await _photoRepo.DeleteFileAsync(photoToDelete) > 0)
+            {
+                // proceed with local deletion
+                string path = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot" + photoToDelete.FileName);
+                FileInfo fileToDelete = new FileInfo(path); // source: https://www.c-sharpcorner.com/UploadFile/9f0ae2/delete-files-from-folder-in-Asp-Net/
+                if (fileToDelete.Exists)
+                {
+                    fileToDelete.Delete();
+                    TempData["Message"] = "Photo successfully deleted.";
+                    TempData["context"] = "success";
+                }
+                else
+                {
+                    TempData["Message"] = "A local instance of the file could not be found.";
+                    TempData["context"] = "danger";
+                }
+            }
+            else
+            {
+                TempData["Message"] = "There was a problem deleting the file entry.";
+                TempData["context"] = "danger";
+            }
+        }
+        return RedirectToAction("Index");
+    }
+
     public async Task<IActionResult> ProductEdit(int id = 0)
     {
         // Create a list of tag and type objects for the drop down in the view

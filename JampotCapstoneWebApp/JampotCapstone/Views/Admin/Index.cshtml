@@ -70,11 +70,21 @@
                 if (photosOnPage.Count > 0)
                 {
                     <h4 class="text-jampot-green">@title</h4>
-                    foreach (var photo in photosOnPage)
+                    <div class="row">
+                    @foreach (var photo in photosOnPage)
                     {
                         string filename = photo.GetFileName();
-                        <img src="@photo.FileName" alt="@filename" width="200px"/>
-                    }
+                        <div class="col">
+                            <a class="btn btn-link col-6" asp-action="EditPhoto" asp-route-id="@photo.FileID">
+                                <i class="fa-regular fa-pen-to-square"></i>
+                            </a>
+                            <a class="btn btn-link text-danger col-5" asp-action="DeletePhoto" asp-route-id="@photo.FileID">
+                                <i class="fa-solid fa-trash-can"></i>
+                            </a>
+                        <img src="@photo.FileName" alt="@filename" style="max-width: 500px" class="w-100"/>
+                        </div>
+                        }
+                    </div>
                 }
             }
 
@@ -82,11 +92,21 @@
             if(misc.Count > 0)
             {
                 <h4 class="text-jampot-green">Unaffiliated</h4>
-                foreach (File f in misc)
+                <div class="row">
+                @foreach (File f in misc)
                 {
                     string filename = f.GetFileName();
-                    <img src="@f.FileName" alt="@filename" width="200px"/>
-                }
+                    <div class="col">
+                        <a class="btn btn-link col-5" asp-action="EditPhoto" asp-route-id="@f.FileID">
+                            <i class="fa-regular fa-pen-to-square"></i>
+                        </a>
+                        <a class="btn btn-link text-danger col-6" asp-action="DeletePhoto" asp-route-id="@f.FileID">
+                            <i class="fa-solid fa-trash-can"></i>
+                        </a><br/>
+                        <img src="@f.FileName" alt="@filename" class="w-100"/>
+                    </div>
+                    }
+                </div>
             }
         }
         <h3 class="text-jampot-yellow text-center content">Products</h3>
