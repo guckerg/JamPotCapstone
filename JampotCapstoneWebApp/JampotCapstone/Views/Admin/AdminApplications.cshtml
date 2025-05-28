@@ -1,0 +1,42 @@
+﻿@model AdminApplicationsViewModel
+@{
+    ViewBag.Title = "Admin Management";
+}
+
+@if(Model != null) {
+    <hr class="yellowLine"/>
+    <div>
+        <h3 class="text-jampot-yellow text-center content">Applications</h3>
+        @if(Model.Applications.Count > 0)
+        {
+            <table class="table table-striped table-bordered table-dark">
+                <thead>
+                    <tr>
+                        <th>Applicant Name</th>
+                        <th>Phone Number</th>
+                        <th>Position</th>
+                        <th>Resume</th>
+                        <th>Delete</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach(Application application in Model.Applications)
+                    {
+                        <tr>
+                            <td>@application.Name</td>
+                            <td>@application.PhoneNumber</td>
+                            <td>@application.JobTitleID</td>
+                            <td>@application.ResumeFileID</td>
+                            <td>
+                                <a asp-action="DeleteApplication" asp-controller="Admin" asp-route-id="@application.ApplicationID">
+                                    <i class="fa-solid fa-trash-can text-danger"></i>
+                                </a>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+            
+        }
+    </div>
+}

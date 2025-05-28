@@ -22,14 +22,17 @@ public class AdminController : Controller
     private readonly IPageRepository _pageRepo;
     private readonly IProductRepository _productRepo;
     private readonly IPagePositionRepository _pagePositionRepo;
+    private readonly IApplicationRepository _applicationRepo;
 
-    public AdminController(ITextElementRepository t, IPhotoRepository ph, IPageRepository p, IProductRepository r, IPagePositionRepository pp)
+    public AdminController(ITextElementRepository t, IPhotoRepository ph, IPageRepository p, IProductRepository r, 
+        IApplicationRepository ar, IPagePositionRepository pp)
     {
         _textRepo = t;
         _photoRepo = ph;
         _pageRepo = p;
         _productRepo = r;
         _pagePositionRepo = pp;
+        _applicationRepo = ar;
     }
 
     public async Task<IActionResult> Index()
@@ -401,5 +404,14 @@ public class AdminController : Controller
         }
 
         return RedirectToAction("Index");
+    }
+
+    public async Task<IActionResult> AdminApplications()
+    {
+        AdminApplicationsViewModel viewModel = new AdminApplicationsViewModel
+        {
+            Applications = await _applicationRepo.GetAllApplicationsAsync(),
+        };
+        return View(viewModel);
     }
 }

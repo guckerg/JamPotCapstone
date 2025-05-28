@@ -20,6 +20,12 @@ namespace JampotCapstone.Data
             return _context.Applications.Include(application => application.Name);
         }
 
+        public async Task<List<Application>> GetAllApplicationsAsync()
+        {
+            List<Application> applications = await _context.Applications.ToListAsync();
+            return applications;
+        }
+
         public async Task<Application> GetApplicationByIdAsync(int id)
         {
             var application = await _context.Applications.Include(application => application.Name)
@@ -38,13 +44,6 @@ namespace JampotCapstone.Data
             _context.Applications.Add(model);
             await _context.SaveChangesAsync();
         }
-
-        //Uncomment when there is a use for updating user's applications
-        //public async Task UpdateApplicationAsync(Application model)
-        //{
-        //    _context.Applications.Update(model);
-        //    await _context.SaveChangesAsync();
-        //}
 
         public int DeleteApplication(int ApplicationID)
         {
