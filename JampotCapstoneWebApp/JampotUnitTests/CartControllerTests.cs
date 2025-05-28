@@ -21,45 +21,33 @@ public class CartControllerTests
     // Helper method to seed data for products
     private void SeedProducts(ApplicationDbContext context)
     {
-        // 1. Create ProductPhoto instances
-        var photo1 = new File { FileID = 1, FileName = "burger.jpg" };
-        var photo2 = new File { FileID = 2, FileName = "fries.jpg" };
+        // Create ProductPhoto instances
+        var photo1 = new File { FileID = 1, FileName = "Juice.png" };
+        var photo2 = new File { FileID = 2, FileName = "Wrap.png" };
 
-        // 2. Create ProductType instances
-        var foodType = new ProductType { TypeId = 1, Type = "food" };
-        var drinkType = new ProductType { TypeId = 2, Type = "drink" };
-
-        // 3. Create ProductTag instances
-        var veganTag = new ProductTag { TagID = 1, Tag = "vegan" };
-        var glutenFreeTag = new ProductTag { TagID = 2, Tag = "gluten free" };
-
-        // Add related entities to their respective DbSets first
-        context.Files.AddRange(photo1, photo2);
-        context.ProductTypes.AddRange(foodType, drinkType);
-        context.ProductTags.AddRange(veganTag, glutenFreeTag);
-        context.SaveChanges(); // Save changes to assign Ids
-
-        // 4. Create Product instances and associate them
+        // Create Product instances and associate them
         var product1 = new Product
         {
             ProductId = 1,
-            ProductName = "Classic Burger",
-            ProductPrice = 12.50m,
-            ProductIngredients = "Beef patty, lettuce, tomato, cheese",
+            ProductName = "Classic Juice",
+            ProductPrice = 10.00m,
+            ProductIngredients = "Apple juice, grape, pineapple",
             ProductPhoto = photo1, 
-            ProductCategory = new List<ProductType> { foodType }, 
-            Tags = new List<ProductTag> { glutenFreeTag } 
+            ProductCategory = null, 
+            Tags = null 
         };
+        // Make product tags and type null until used in a test. 
+        // This is because if they're created in the constructor, an infinite loop is created.
 
         var product2 = new Product
         {
             ProductId = 2,
-            ProductName = "Crispy Fries",
+            ProductName = "Tasty Wrap",
             ProductPrice = 4.00m,
-            ProductIngredients = "Potatoes, salt",
+            ProductIngredients = "Tortilla, salt, cabbage",
             ProductPhoto = photo2,
-            ProductCategory = new List<ProductType> { foodType },
-            Tags = new List<ProductTag> { veganTag, glutenFreeTag }
+            ProductCategory = null,
+            Tags = null
         };
 
         // Add products to the context
@@ -68,18 +56,35 @@ public class CartControllerTests
     }
 
     [Fact]
-    public void AddToCart_Success()
+    public void ReturnItemsToView_Success()
     {
         // Arrange
         var context = CreateInMemoryDbContext();
         SeedProducts(context);
 
         var mockSession = new TestSession(); //Simulate sessions
-        var cartItems = new List<OrderItem> 
+
+        var product1 = context.Products.Find(1);
+        var product2 = context.Products.Find(2);
+        // Create tags and types
+        var glutenFreeTag = new ProductTag { TagID = 2, Tag = "gluten free" };
+        var veganTag = new ProductTag { TagID = 1, Tag = "vegan" };
+        var foodType = new ProductType { TypeId = 1, Type = "food" };
+        var drinkType = new ProductType { TypeId = 2, Type = "drink" };
+
+
+        // Avoid full navigation properties to prevent endless cycles
+        product1.ProductCategory = new List<ProductType> { drinkType };
+        product1.Tags = new List<ProductTag> { glutenFreeTag };
+        product2.ProductCategory = new List<ProductType> { foodType };
+        product2.Tags = new List<ProductTag> { glutenFreeTag, veganTag };
+
+        var cartItems = new List<OrderItem>
         {
-            new OrderItem { ProductId = 1, Quantity = 2, Product = context.Products.Find(1) },
-            new OrderItem { ProductId = 2, Quantity = 1, }
+            new OrderItem { ProductId = 1, Quantity = 1, Product = product1 },
+            new OrderItem { ProductId = 2, Quantity = 2, Product = product2 }
         };
+
         mockSession.SetObjectAsJson(_cartSessionKey, cartItems);
 
         var mockHttpContext = new DefaultHttpContext { Session = mockSession };
@@ -98,36 +103,248 @@ public class CartControllerTests
         // make sure viewModel gets populated
         var viewModel = result.Model as CartViewModel;
         Assert.NotNull(viewModel);
+        // Quantity of different products
+        Assert.Equal(2, viewModel.Items.Count);
+        // Quantity of product type
+        Assert.Equal(1, viewModel.Items[0].Quantity);
+        Assert.Equal(2, viewModel.Items[1].Quantity);
+        // Make sure name is the right name
+        Assert.Equal("Classic Juice", viewModel.Items[0].ProductName);
+        Assert.Equal("Tasty Wrap", viewModel.Items[1].ProductName);
+    }
+
+    [Fact]
+    public void AddToCart_Success()
+    {
+        // Arrange
+        using var context = CreateInMemoryDbContext();
+        SeedProducts(context);
+
+        var mockSession = new TestSession();
+        var mockHttpContext = new DefaultHttpContext { Session = mockSession };
+        var controllerContext = new ControllerContext { HttpContext = mockHttpContext };
+
+        var controller = new CartController(context)
+        {
+            ControllerContext = controllerContext
+        };
+
+        var product2 = context.Products.Find(2);
+        // Create tags and types
+        var foodType = new ProductType { TypeId = 1, Type = "food" };
+        var glutenFreeTag = new ProductTag { TagID = 2, Tag = "gluten free" };
+        product2.ProductCategory = new List<ProductType> { foodType };
+        product2.Tags = new List<ProductTag> { glutenFreeTag };
+
+        var request = new CartController.AddToCartRequest { ProductId = 2 };
+
+        // Act
+        var result = controller.AddToCart(request) as JsonResult;
+        var cartItems = mockSession.GetObjectFromJson<List<OrderItem>>("CartItems");
+
+        // Assert
+        Assert.NotNull(result);
+        // Make sure the sessions contains the added productId
+        Assert.Contains(cartItems, i => i.ProductId == 2);
+        // Check for correct quantity
+        Assert.Contains(cartItems, i => i.Quantity == 1);
+        // Check correct product price
+        Assert.Contains(cartItems, i => i.Product.ProductPrice == 4.00m);
     }
 
     [Fact]
     public void AddToCart_Failure()
     {
         // Arrange
+        using var context = CreateInMemoryDbContext();
+        SeedProducts(context); // Only product 1 and 2 exist
+
+        var mockSession = new TestSession();
+        var mockHttpContext = new DefaultHttpContext { Session = mockSession };
+        var controllerContext = new ControllerContext { HttpContext = mockHttpContext };
+
+        var controller = new CartController(context)
+        {
+            ControllerContext = controllerContext
+        };
+
+        var request = new CartController.AddToCartRequest { ProductId = 999 }; // Non-existent product
+
         // Act
+        var result = controller.AddToCart(request);
+
         // Assert
+        // Checks if the product wasn't found
+        Assert.IsType<NotFoundResult>(result);
     }
 
     [Fact]
-    public void UpdateCart_Success()
+    public void UpdateCartAdd_Success()
     {
         // Arrange
+        using var context = CreateInMemoryDbContext();
+        SeedProducts(context);
+
+        var mockSession = new TestSession();
+
+        var product1 = context.Products.Find(1);
+        // Create tags and types
+        var drinkType = new ProductType { TypeId = 2, Type = "drink" };
+        var glutenFreeTag = new ProductTag { TagID = 2, Tag = "gluten free" };
+        product1.ProductCategory = new List<ProductType> { drinkType };
+        product1.Tags = new List<ProductTag> { glutenFreeTag };
+
+        var existingCartItems = new List<OrderItem>
+        {
+            new OrderItem { ProductId = 1, Quantity = 1, Product = product1}
+        };
+        mockSession.SetObjectAsJson(_cartSessionKey, existingCartItems);
+
+        var mockHttpContext = new DefaultHttpContext { Session = mockSession };
+        var controllerContext = new ControllerContext { HttpContext = mockHttpContext };
+
+        var controller = new CartController(context)
+        {
+            ControllerContext = controllerContext
+        };
+
+        var request = new CartController.AddToCartRequest { ProductId = 1 };
+
         // Act
+        var result = controller.AddToCart(request) as JsonResult;
+        var cartItems = mockSession.GetObjectFromJson<List<OrderItem>>("CartItems");
+
         // Assert
+        Assert.NotNull(result);
+        // Make sure the sessions contains the added productId
+        Assert.Contains(cartItems, i => i.ProductId == 1);
+        // Make sure cart only contains the one product
+        Assert.DoesNotContain(cartItems, i => i.ProductId == 2);
+        // Check for correct quantity
+        Assert.Contains(cartItems, i => i.Quantity == 2);
     }
 
     [Fact]
-    public void UpdateCart_Faliure()
+    public void UpdateCartMinus_Success()
     {
         // Arrange
+        using var context = CreateInMemoryDbContext();
+        SeedProducts(context);
+
+        var mockSession = new TestSession();
+
+        var product1 = context.Products.Find(1);
+        // Create tags and types
+        var drinkType = new ProductType { TypeId = 2, Type = "drink" };
+        var glutenFreeTag = new ProductTag { TagID = 2, Tag = "gluten free" };
+        product1.ProductCategory = new List<ProductType> { drinkType };
+        product1.Tags = new List<ProductTag> { glutenFreeTag };
+
+        var existingCartItems = new List<OrderItem>
+        {
+            new OrderItem { ProductId = 1, Quantity = 1, Product = product1}
+        };
+        mockSession.SetObjectAsJson(_cartSessionKey, existingCartItems);
+
+        var mockHttpContext = new DefaultHttpContext { Session = mockSession };
+        var controllerContext = new ControllerContext { HttpContext = mockHttpContext };
+
+        var controller = new CartController(context)
+        {
+            ControllerContext = controllerContext
+        };
+
+        var request = new CartController.AddToCartRequest { ProductId = 1 };
+
         // Act
+        var result = controller.RemoveFromCart(request) as JsonResult;
+        var cartItems = mockSession.GetObjectFromJson<List<OrderItem>>("CartItems");
+
         // Assert
+        Assert.NotNull(result);
+        // Make sure cart does not contain a product
+        Assert.DoesNotContain(cartItems, i => i.ProductId == 1);
+        // Check for quantity less than 1
+        Assert.DoesNotContain(cartItems, i => i.Quantity <= 1);
+    }
+
+    [Fact]
+    public void UpdateCart_Failure()
+    // trying to remove a product that is not in the cart
+    {
+        // Arrange
+        using var context = CreateInMemoryDbContext();
+        SeedProducts(context);
+
+        var mockSession = new TestSession();
+
+        var product2 = context.Products.Find(2);
+        // Create tags and types
+        var foodType = new ProductType { TypeId = 2, Type = "food" };
+        var glutenFreeTag = new ProductTag { TagID = 2, Tag = "gluten free" };
+        product2.ProductCategory = new List<ProductType> { foodType };
+        product2.Tags = new List<ProductTag> { glutenFreeTag };
+
+        var existingCartItems = new List<OrderItem>
+        {
+            new OrderItem { ProductId = 2, Quantity = 1, Product = product2}
+        };
+        mockSession.SetObjectAsJson(_cartSessionKey, existingCartItems);
+
+        var mockHttpContext = new DefaultHttpContext { Session = mockSession };
+        var controllerContext = new ControllerContext { HttpContext = mockHttpContext };
+
+        var controller = new CartController(context)
+        {
+            ControllerContext = controllerContext
+        };
+
+        var request = new CartController.AddToCartRequest { ProductId = 1 }; // Item not in cart
+
+        // Act
+        var result = controller.RemoveFromCart(request) as JsonResult;
+        var cartItems = mockSession.GetObjectFromJson<List<OrderItem>>("CartItems");
+
+        // Assert
+        Assert.NotNull(result);
+        // Make sure cart does not contain the 'removed' product
+        Assert.DoesNotContain(cartItems, i => i.ProductId == 1);
+        // Make sure cart still contains product 2
+        Assert.Contains(cartItems, i => i.ProductId == 2);
+        // Check for correct quantity
+        Assert.Contains(cartItems, i => i.Quantity == 1);
     }
 
     [Fact]
     public void GetCartQuantity_Success()
     {
         // Arrange
+        using var context = CreateInMemoryDbContext();
+        SeedProducts(context);
+
+        var mockSession = new TestSession();
+        var mockHttpContext = new DefaultHttpContext { Session = mockSession };
+        var controllerContext = new ControllerContext { HttpContext = mockHttpContext };
+
+        var controller = new CartController(context)
+        {
+            ControllerContext = controllerContext
+        };
+
+        var product2 = context.Products.Find(2);
+        var product1 = context.Products.Find(1);
+        // Create tags and types
+        var foodType = new ProductType { TypeId = 1, Type = "food" };
+        var drinkType = new ProductType { TypeId = 2, Type = "drink" };
+        var veganTag = new ProductTag { TagID = 1, Tag = "vegan" };
+        var glutenFreeTag = new ProductTag { TagID = 2, Tag = "gluten free" };
+        // Associate tags and types to products
+        product1.ProductCategory = new List<ProductType> { drinkType };
+        product1.Tags = new List<ProductTag> { glutenFreeTag };
+        product2.ProductCategory = new List<ProductType> { foodType };
+        product2.Tags = new List<ProductTag> { glutenFreeTag, veganTag };
+
+        var request = new CartController.AddToCartRequest { ProductId = 2,};
         // Act
         // Assert
     }
