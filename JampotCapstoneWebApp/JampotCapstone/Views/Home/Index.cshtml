@@ -70,7 +70,9 @@
             {
                     string filename = photo.GetFileName();
                     <div class="col-md-6">
-                        <img class="img-fluid landing-img" src="@photo.FileName" alt="@filename"/>
+                        <div class="landing-img-wrapper">
+                            <img class="img-fluid landing-img" src="@photo.FileName" alt="@filename"/>
+                        </div>
                         @if (User.IsInRole("Admin"))
                         {
                             <form asp-controller="Admin" asp-action="EditPhoto" method="get">
