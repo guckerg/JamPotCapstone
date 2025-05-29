@@ -76,14 +76,17 @@
                         string filename = photo.GetFileName();
                         <div class="col">
                             @* edit button *@
-                            <form asp-action="EditPhoto" asp-controller="Admin" method="get">
-                                <input type="hidden" name="id" value="@photo.FileID"/>
-                                <input type="hidden" name="pageTitle" value="@p.PageTitle"/>
-                                <button type="submit" class="btn btn-link"><i class="fa-regular fa-pen-to-square"></i></button>
-                            </form>
-                            <button type="button" class="btn btn-link text-danger" data-bs-toggle="modal" data-bs-target="@("#deleteModal" + photo.FileID)">
-                                <i class="fa-solid fa-trash-can"></i>
-                            </button>
+                            <div class="row">
+                                <form asp-action="EditPhoto" asp-controller="Admin" method="get" class="col-2">
+                                    <input type="hidden" name="id" value="@photo.FileID"/>
+                                    <input type="hidden" name="pageTitle" value="@p.PageTitle"/>
+                                    <button type="submit" class="btn btn-link"><i class="fa-regular fa-pen-to-square"></i></button>
+                                </form>
+                            
+                                <button type="button" class="btn btn-link text-danger col-2" data-bs-toggle="modal" data-bs-target="@("#deleteModal" + photo.FileID)">
+                                    <i class="fa-solid fa-trash-can"></i>
+                                </button>
+                            </div>
                             <img src="@photo.FileName" alt="@filename" style="max-width: 500px" class="w-100"/>
                         </div>
                         @* Confirm Delete Modal *@
@@ -119,12 +122,6 @@
                 {
                     string filename = f.GetFileName();
                     <div class="col">
-                        @* edit button *@
-                        <form asp-action="EditPhoto" asp-controller="Admin" method="get">
-                            <input type="hidden" name="id" value="@f.FileID"/>
-                            <input type="hidden" name="pageTitle" value=""/>
-                            <button type="submit" class="btn btn-link"><i class="fa-regular fa-pen-to-square"></i></button>
-                        </form>
                         @* delete button with modal confirmation *@
                         <button type="button" class="btn btn-link text-danger" data-bs-toggle="modal" data-bs-target="@("#deleteModal" + f.FileID)">
                             <i class="fa-solid fa-trash-can"></i>

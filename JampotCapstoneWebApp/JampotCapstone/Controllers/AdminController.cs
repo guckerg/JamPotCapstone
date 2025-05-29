@@ -143,7 +143,7 @@ public class AdminController : Controller
         // check that a file was sent to the controller
         if (newFile != null)
         {
-            newPhoto = await SaveProductImageAsync(newFile, "pics");
+            newPhoto = await SaveImageAsync(newFile, "pics");
             if (newPhoto == null)
             {
                 TempData["Message"] = "Invalid image file. Only JPG, JPEG, PNG, " +
@@ -248,7 +248,7 @@ public class AdminController : Controller
         return View(viewModel);
     }
 
-    private async Task<File?> SaveProductImageAsync(IFormFile? photoUpload, string photoFolder)
+    private async Task<File?> SaveImageAsync(IFormFile? photoUpload, string photoFolder)
     {
         if (photoUpload == null || photoUpload.Length == 0)
             return null; // No file uploaded or empty file, no validation needed
@@ -313,7 +313,7 @@ public class AdminController : Controller
         File? uploadedImage = null;
         if (viewModel.PhotoUpload != null)
         {
-            uploadedImage = await SaveProductImageAsync(viewModel.PhotoUpload, "productPhotos");
+            uploadedImage = await SaveImageAsync(viewModel.PhotoUpload, "productPhotos");
             if (uploadedImage == null)
             {
                 ModelState.AddModelError("PhotoUpload", "Invalid image file. Only JPG, JPEG, PNG, or WebP images up to 5MB are allowed.");
