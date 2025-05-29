@@ -2,27 +2,28 @@ using JampotCapstone.Data.Interfaces;
 using JampotCapstone.Models;
 using Microsoft.EntityFrameworkCore;
 
-namespace JampotCapstone.Data;
+namespace JampotUnitTests;
 
 public class PagePositionRepository : IPagePositionRepository
 {
-    private readonly ApplicationDbContext _context;
-
-    public PagePositionRepository(ApplicationDbContext ctx)
-    {
-        _context = ctx;
-    }
+    private readonly List<PagePosition> _positions = [];
     
     public async Task<PagePosition> GetPagePosition(int pageId, int fileId)
     {
-        PagePosition? model = await _context.PagePositions
-            .FirstOrDefaultAsync(p => p.PageId == pageId && p.FileId == fileId);
+        PagePosition? model = _positions.Find(p => p.PageId == pageId 
+                                                   && p.FileId == fileId);
         return model;
     }
 
     public async Task<int> UpdatePagePosition(PagePosition pagePosition)
     {
-        _context.PagePositions.Update(pagePosition);
-        return await _context.SaveChangesAsync();
+        int result = 0;
+        int index = pagePosition.PagePositionId - 1;
+        if (_positions[index] == pagePosition)
+        {
+            _positions[index] = pagePosition;
+            result = 1;
+        }
+        return result;
     }
 }
