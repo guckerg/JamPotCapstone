@@ -1,6 +1,3 @@
-using JampotCapstone.Data.Interfaces;
-using JampotCapstone.Models;
-
 namespace JampotCapstone.Data;
 
 public class FakePageRepository : IPageRepository

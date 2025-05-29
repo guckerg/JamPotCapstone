@@ -1,7 +1,3 @@
-using JampotCapstone.Data.Interfaces;
-using JampotCapstone.Models;
-using File = JampotCapstone.Models.File;
-
 namespace JampotUnitTests;
 
 public class FakeFileRepository : IPhotoRepository

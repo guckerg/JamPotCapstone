@@ -92,7 +92,7 @@ namespace JampotCapstone.Controllers
         }
 
         [HttpPost]
-        public IActionResult RemoveFromCart([FromBody] AddToCartRequest request)
+        public IActionResult RemoveFromCart([FromBody] RemoveFromCartRequest request)
         {
             var cartItems = HttpContext.Session.GetObjectFromJson<List<OrderItem>>(CartSessionKey) ?? new List<OrderItem>();
 
