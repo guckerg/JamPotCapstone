@@ -44,7 +44,7 @@ public class AdminController : Controller
         return View(model);
     }
 
-    public async Task<IActionResult> TextEdit(int id = 0)
+    public async Task<IActionResult> TextEdit(int id, string returnUrl)
     {
         TextElement? model = id == 0 ? new TextElement() // if an existing textblock was not sent to the controller, 
             : await _textRepo.GetTextElementByIdAsync(id);   // create a new one

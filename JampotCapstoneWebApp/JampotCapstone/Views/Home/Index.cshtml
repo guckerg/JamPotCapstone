@@ -33,33 +33,6 @@
                     </div>
                 }
             </div>
-            <div class="row">
-                
-                @*@if (special != null)
-                {
-                    @{
-                        File special = 
-                            Model.Photos.Find(p => p.FileName.ToLower().Contains("special"));
-                        int specialStartIndex = special.FileName.LastIndexOf("/");
-                        int specialEndIndex = special.FileName.IndexOf(".");
-                        string specialName = special.FileName.Substring(specialStartIndex, specialEndIndex - specialStartIndex);
-                    }
-                    <img class="landing-special" src="@special.FileName" alt="@specialName"/>
-                    @if (User.IsInRole("Admin"))
-                    {
-                        <a asp-action="EditPhoto" asp-controller="Admin" asp-route-id="@special.FileID">
-                            <i class="fa-regular fa-pen-to-square"></i>
-                        </a>
-                    }
-                }
-                else
-                {
-                    <p>
-                        No special found.
-                    </p>
-                }*@
-                
-            </div>
         </div>
 
     </div>

@@ -18,6 +18,7 @@ public class PhotoRepository : IPhotoRepository
     {
         List<File> photos = await _context.Files
             .Where(p => p.ContentType.Contains("image"))
+            .Include(f => f.Pages.OrderBy(p => p.Position))
             .ToListAsync();
         return photos;
     }
