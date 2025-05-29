@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace JampotUnitTests;
 
-public class PagePositionRepository : IPagePositionRepository
+public class FakePagePositionRepository : IPagePositionRepository
 {
     private readonly List<PagePosition> _positions = [];
     
