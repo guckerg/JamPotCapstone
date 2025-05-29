@@ -81,17 +81,17 @@
                                 <input type="hidden" name="pageTitle" value="@p.PageTitle"/>
                                 <button type="submit" class="btn btn-link"><i class="fa-regular fa-pen-to-square"></i></button>
                             </form>
-                            <button type="button" class="btn btn-link text-danger" data-bs-toggle="modal" data-bs-target="#exampleModal">
+                            <button type="button" class="btn btn-link text-danger" data-bs-toggle="modal" data-bs-target="@("#deleteModal" + photo.FileID)">
                                 <i class="fa-solid fa-trash-can"></i>
                             </button>
                             <img src="@photo.FileName" alt="@filename" style="max-width: 500px" class="w-100"/>
                         </div>
                         @* Confirm Delete Modal *@
-                        <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                        <div class="modal fade" id="@("deleteModal" + photo.FileID)" tabindex="-1" aria-labelledby="deleteModalLabel1" aria-hidden="true">
                             <div class="modal-dialog">
-                                <div class="modal-content">
+                                <div class="modal-content bg-dark text-danger">
                                     <div class="modal-header">
-                                        <h1 class="modal-title fs-5" id="exampleModalLabel">Permanently Delete Photo?</h1>
+                                        <h1 class="modal-title fs-5" id="deleteModalLabel1">Permanently Delete Photo?</h1>
                                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                     </div>
                                     <div class="modal-body">
@@ -125,11 +125,13 @@
                             <input type="hidden" name="pageTitle" value=""/>
                             <button type="submit" class="btn btn-link"><i class="fa-regular fa-pen-to-square"></i></button>
                         </form>
+                        @* delete button with modal confirmation *@
                         <button type="button" class="btn btn-link text-danger" data-bs-toggle="modal" data-bs-target="@("#deleteModal" + f.FileID)">
                             <i class="fa-solid fa-trash-can"></i>
                         </button>
                         <img src="@f.FileName" alt="@filename" class="w-100"/>
                     </div>
+                    @* modeal code *@
                     <div class="modal fade" id="@("deleteModal" + f.FileID)" tabindex="-1" aria-labelledby="deleteModalLabel" aria-hidden="true">
                         <div class="modal-dialog">
                             <div class="modal-content bg-dark text-danger">
