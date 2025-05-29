@@ -18,6 +18,10 @@ public class AdminControllerTests
         _textRepo = new FakeTextElementRepository();
         _admin = new AdminController(_textRepo, _photoRepo, _pageRepo, _prodRepo, _posRepo);
     }
-    
-    
+
+    [Fact]
+    public void TestTextEdit_Success()
+    {
+        
+    }
 }
