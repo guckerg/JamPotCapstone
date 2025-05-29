@@ -419,6 +419,7 @@ public class AdminController : Controller
         return View(viewModel);
     }
 
+    [HttpGet]
     public async Task<IActionResult> DownloadResume(int id)
     {
         //get related resume
@@ -435,8 +436,14 @@ public class AdminController : Controller
         string uploadsFolder = Path.Combine(_hostingEnvironment.WebRootPath, "uploads");
         string filePath = Path.Combine(uploadsFolder, application.ResumeFile.FileName);
 
-        if (!System.IO.File.Exists(filePath))
+        string fullPath = Path.Combine(_hostingEnvironment.WebRootPath, application.ResumeFile.FileName);
+        Console.WriteLine($"Constructed full file path: {fullPath}");
+
+        string normalizedFullPath = fullPath.Replace("/", "\\");
+
+        if (!System.IO.File.Exists(normalizedFullPath))
         {
+            Console.WriteLine($"File does not exist at path: {fullPath}");
             return NotFound();
         }
 

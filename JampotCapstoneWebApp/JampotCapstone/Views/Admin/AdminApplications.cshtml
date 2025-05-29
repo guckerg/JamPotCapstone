@@ -27,10 +27,7 @@
                             <td>@application.PhoneNumber</td>
                             <td>@application.JobTitle?.JobTitleName</td>
                             <td>
-                                <a asp-action="DownloadResume"
-                                   asp-controller="Admin"
-                                   asp-route-id="@application.ApplicationID"
-                                   class="btn btn-sm btn-info text-nowrap">
+                                <a asp-action="DownloadResume" asp-controller="Admin" asp-route-id="@application.ApplicationID" class="btn btn-sm btn-info text-nowrap">
                                     Download Resume
                                 </a>
                             </td>
