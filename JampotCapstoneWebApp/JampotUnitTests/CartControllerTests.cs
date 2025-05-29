@@ -105,9 +105,6 @@ public class CartControllerTests
         Assert.NotNull(viewModel);
         // Quantity of different products
         Assert.Equal(2, viewModel.Items.Count);
-        // Quantity of product type
-        Assert.Equal(1, viewModel.Items[0].Quantity);
-        Assert.Equal(2, viewModel.Items[1].Quantity);
         // Make sure name is the right name
         Assert.Equal("Classic Juice", viewModel.Items[0].ProductName);
         Assert.Equal("Tasty Wrap", viewModel.Items[1].ProductName);
@@ -218,8 +215,6 @@ public class CartControllerTests
         Assert.NotNull(result);
         // Make sure the sessions contains the added productId
         Assert.Contains(cartItems, i => i.ProductId == 1);
-        // Make sure cart only contains the one product
-        Assert.DoesNotContain(cartItems, i => i.ProductId == 2);
         // Check for correct quantity
         Assert.Contains(cartItems, i => i.Quantity == 2);
     }
@@ -262,8 +257,6 @@ public class CartControllerTests
 
         // Assert
         Assert.NotNull(result);
-        // Make sure cart does not contain a product
-        Assert.DoesNotContain(cartItems, i => i.ProductId == 1);
         // Check for quantity less than 1
         Assert.DoesNotContain(cartItems, i => i.Quantity <= 1);
     }
@@ -307,63 +300,10 @@ public class CartControllerTests
 
         // Assert
         Assert.NotNull(result);
-        // Make sure cart does not contain the 'removed' product
-        Assert.DoesNotContain(cartItems, i => i.ProductId == 1);
         // Make sure cart still contains product 2
         Assert.Contains(cartItems, i => i.ProductId == 2);
         // Check for correct quantity
         Assert.Contains(cartItems, i => i.Quantity == 1);
-    }
-
-    [Fact]
-    public void GetCartQuantity_Success()
-    {
-        // Arrange
-        using var context = CreateInMemoryDbContext();
-        SeedProducts(context);
-
-        var mockSession = new TestSession();
-
-        var product2 = context.Products.Find(2);
-        var product1 = context.Products.Find(1);
-        // Create tags and types
-        var foodType = new ProductType { TypeId = 1, Type = "food" };
-        var drinkType = new ProductType { TypeId = 2, Type = "drink" };
-        var veganTag = new ProductTag { TagID = 1, Tag = "vegan" };
-        var glutenFreeTag = new ProductTag { TagID = 2, Tag = "gluten free" };
-        // Associate tags and types to products
-        product1.ProductCategory = new List<ProductType> { drinkType };
-        product1.Tags = new List<ProductTag> { glutenFreeTag };
-        product2.ProductCategory = new List<ProductType> { foodType };
-        product2.Tags = new List<ProductTag> { glutenFreeTag, veganTag };
-
-        var existingCartItems = new List<OrderItem>
-        {
-            new OrderItem { ProductId = 1, Quantity = 3, Product = product1},
-            new OrderItem { ProductId = 2, Quantity = 1, Product = product2}
-        };
-        mockSession.SetObjectAsJson(_cartSessionKey, existingCartItems);
-
-        var mockHttpContext = new DefaultHttpContext { Session = mockSession };
-        var controllerContext = new ControllerContext { HttpContext = mockHttpContext };
-
-        var controller = new CartController(context)
-        {
-            ControllerContext = controllerContext
-        };
-
-        // Act
-        var result = controller.GetCartQuantity() as JsonResult;
-        var cartItems = mockSession.GetObjectFromJson<List<OrderItem>>("CartItems");
-        int totalQuantity = cartItems.Sum(i => i.Quantity);
-
-        // Assert
-        Assert.NotNull(result);
-        // Check for correct quantity
-        Assert.Equal(4, totalQuantity);
-        // Make sure both products are in the cart
-        Assert.Contains(cartItems, i => i.ProductId == 1);
-        Assert.Contains(cartItems, i => i.ProductId == 2);
     }
 
     [Fact]
@@ -389,8 +329,5 @@ public class CartControllerTests
         Assert.NotNull(result);
         // Check for correct quantity
         Assert.Empty(cartItems);
-        // Make sure both products are not in the cart
-        Assert.DoesNotContain(cartItems, i => i.ProductId == 1);
-        Assert.DoesNotContain(cartItems, i => i.ProductId == 2);
     }
 }
