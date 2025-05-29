@@ -22,7 +22,8 @@ namespace JampotCapstone.Data
 
         public async Task<List<Application>> GetAllApplicationsAsync()
         {
-            List<Application> applications = await _context.Applications.ToListAsync();
+            List<Application> applications = await _context.Applications
+                .Include(a => a.JobTitle).ToListAsync();
             return applications;
         }
 
