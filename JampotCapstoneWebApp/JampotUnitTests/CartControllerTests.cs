@@ -355,16 +355,17 @@ public class CartControllerTests
         // Act
         var result = controller.GetCartQuantity() as JsonResult;
         var cartItems = mockSession.GetObjectFromJson<List<OrderItem>>("CartItems");
+        int totalQuantity = cartItems.Sum(i => i.Quantity);
 
         // Assert
         Assert.NotNull(result);
         // Check for correct quantity
-        Assert.Contains(cartItems, i => i.Quantity == 4);
+        Assert.Equal(4, totalQuantity);
         // Make sure both products are in the cart
         Assert.Contains(cartItems, i => i.ProductId == 1);
         Assert.Contains(cartItems, i => i.ProductId == 2);
-
     }
+
     [Fact]
     public void GetCartQuantity_EmptyCart()
     {
