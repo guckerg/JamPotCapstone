@@ -116,19 +116,28 @@ public class AdminController : Controller
     [HttpPost]
     public async Task<IActionResult> EditPhoto(EditViewModel model)
     {
-        int pageId = _pageRepo.GetPageByNameAsync(model.CurrentPage).Result.PageId;
-        PagePosition? oldInstance = await _pagePositionRepo.GetPagePosition(pageId, model.OldPhotoId);
-        oldInstance.FileId = model.NewPhotoId;
-
-        if (await _pagePositionRepo.UpdatePagePosition(oldInstance) > 0)
+        if (ModelState.IsValid)
         {
-            TempData["Message"] = "Photo successfully changed.";
+            int pageId = _pageRepo.GetPageByNameAsync(model.CurrentPage).Result.PageId;
+            PagePosition? oldInstance = await _pagePositionRepo.GetPagePosition(pageId, model.OldPhotoId);
+            oldInstance.FileId = model.NewPhotoId;
+
+            if (await _pagePositionRepo.UpdatePagePosition(oldInstance) > 0)
+            {
+                TempData["Message"] = "Photo successfully changed.";
+            }
+            else
+            {
+                TempData["Message"] = "There was a problem saving the changes. Please try again.";
+            }
+
+            return RedirectToAction("Index");
         }
         else
         {
-            TempData["Message"] = "There was a problem saving the changes. Please try again.";
+            ModelState.AddModelError("", "Something went wrong sending the form. Please try again.");
         }
-        return RedirectToAction("Index");
+        return View(model);
     }
 
     public IActionResult AddPhoto()
@@ -385,8 +394,8 @@ public class AdminController : Controller
 
     public async Task<IActionResult> DeleteProduct(int id)
     {
-        // find the product to delete by the id passed through
-        Product? toDelete = await _productRepo.GetProductByIdAsync(id);
+        // find the product to delete by the id passed through
+        Product? toDelete = await _productRepo.GetProductByIdAsync(id);
 
         if (toDelete != null)
         {
