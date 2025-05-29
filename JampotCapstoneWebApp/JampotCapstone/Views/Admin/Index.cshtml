@@ -75,9 +75,12 @@
                     {
                         string filename = photo.GetFileName();
                         <div class="col">
-                            <a class="btn btn-link col-6" asp-action="EditPhoto" asp-route-id="@photo.FileID">
-                                <i class="fa-regular fa-pen-to-square"></i>
-                            </a>
+                            @* edit button *@
+                            <form asp-action="EditPhoto" asp-controller="Admin" method="get">
+                                <input type="hidden" name="id" value="@photo.FileID"/>
+                                <input type="hidden" name="pageTitle" value="@p.PageTitle"/>
+                                <button type="submit" class="btn btn-link"><i class="fa-regular fa-pen-to-square"></i></button>
+                            </form>
                             <button type="button" class="btn btn-link text-danger" data-bs-toggle="modal" data-bs-target="#exampleModal">
                                 <i class="fa-solid fa-trash-can"></i>
                             </button>
@@ -116,9 +119,12 @@
                 {
                     string filename = f.GetFileName();
                     <div class="col">
-                        <a class="btn btn-link col-5" asp-action="EditPhoto" asp-route-id="@f.FileID">
-                            <i class="fa-regular fa-pen-to-square"></i>
-                        </a>
+                        @* edit button *@
+                        <form asp-action="EditPhoto" asp-controller="Admin" method="get">
+                            <input type="hidden" name="id" value="@f.FileID"/>
+                            <input type="hidden" name="pageTitle" value=""/>
+                            <button type="submit" class="btn btn-link"><i class="fa-regular fa-pen-to-square"></i></button>
+                        </form>
                         <button type="button" class="btn btn-link text-danger" data-bs-toggle="modal" data-bs-target="@("#deleteModal" + f.FileID)">
                             <i class="fa-solid fa-trash-can"></i>
                         </button>
