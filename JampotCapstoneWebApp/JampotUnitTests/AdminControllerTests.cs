@@ -1,3 +1,5 @@
+using Microsoft.AspNetCore.Mvc;
+
 namespace JampotUnitTests;
 
 public class AdminControllerTests
@@ -22,6 +24,15 @@ public class AdminControllerTests
     [Fact]
     public void TestTextEdit_Success()
     {
-        
+        TextElement model = new TextElement
+        {
+            TextElementId = 1,
+            Name = "Sample Text",
+            Content = "Sample Content",
+            PageId = 1,
+            Page = new Page()
+        };
+        var result = _admin.TextEdit(model);
+        Assert.IsType<Task<RedirectToActionResult>>(result);
     }
 }
