@@ -26,4 +26,16 @@ public class FakePagePositionRepository : IPagePositionRepository
         }
         return result;
     }
+
+    public async Task<int> StorePagePosition(PagePosition pos)
+    {
+        int result = 0;
+        if(pos != null)
+        {
+            _positions.Add(pos);
+            _positions[_positions.Count - 1].PagePositionId = _positions.Count;
+            result = 1;
+        }
+        return result;
+    }
 }

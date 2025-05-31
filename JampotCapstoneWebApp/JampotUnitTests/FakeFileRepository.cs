@@ -48,7 +48,7 @@ public class FakeFileRepository : IPhotoRepository
     public async Task<int> AddFileAsync(File photo)
     {
         int result = 0;
-        if(photo != null && photo.Pages.Count > 0)
+        if(photo != null)
         {
             _files.Add(photo);
             _files[_files.Count - 1].FileID = _files.Count;

@@ -12,4 +12,5 @@ public interface IPageRepository
     public Task<Page> GetPageByNameAsync(string name);
     
     public Task<int> UpdatePageAsync(Page page);
+    public Task<int> StorePageAsync(Page page);
 }
