@@ -54,8 +54,8 @@
                 if (p.ProductCategory.Contains(c))
                 {
                     hasProducts = true;
-                    <div class="col-lg-4 col-md-6 p-2">
-                        <img src="@p.ProductPhoto.FileName" alt="@p.ProductName" class="photo rounded"/>
+                    <div class="col-lg-4 col-md-6 p-2" style="border: solid red 10px;">
+                        <img src="@p.ProductPhoto.FileName" alt="@p.ProductName" class="photo rounded-top"/>
                         <div class="container banner text-dark content rounded-bottom">
                             <div class="row">
                                 <p class="col-md fs-4">@p.ProductName</p>
