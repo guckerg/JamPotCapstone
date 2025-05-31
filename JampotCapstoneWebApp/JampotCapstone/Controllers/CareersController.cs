@@ -84,13 +84,13 @@ namespace JampotCapstone.Controllers
                 }
 
                 // Create a relative path for storing in the database.
-                var relativeFilePath = Path.Combine("uploads", Resume.FileName).Replace("\\", "/");
+                var storedFileName = Resume.FileName;
 
 
                 // Save the file metadata using your custom File class.
                 var file = new Models.File
                 {
-                    FileName = relativeFilePath,
+                    FileName = storedFileName,
                     ContentType = Resume.ContentType,
                 };
                 _context.Files.Add(file);

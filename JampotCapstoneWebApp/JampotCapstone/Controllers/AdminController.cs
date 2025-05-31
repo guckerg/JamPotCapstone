@@ -427,28 +427,26 @@ public class AdminController : Controller
         .Include(a => a.ResumeFile)
         .FirstOrDefaultAsync(a => a.ApplicationID == id);
 
+        //confirm fetched resume
         if (application == null || application.ResumeFile == null)
         {
+            Console.WriteLine("Application/Resume not found");
             return NotFound();
         }
 
         //build path
         string uploadsFolder = Path.Combine(_hostingEnvironment.WebRootPath, "uploads");
         string filePath = Path.Combine(uploadsFolder, application.ResumeFile.FileName);
+        string normalizedFilePath = filePath.Replace("/", "\\");
 
-        string fullPath = Path.Combine(_hostingEnvironment.WebRootPath, application.ResumeFile.FileName);
-        Console.WriteLine($"Constructed full file path: {fullPath}");
-
-        string normalizedFullPath = fullPath.Replace("/", "\\");
-
-        if (!System.IO.File.Exists(normalizedFullPath))
+        if (!System.IO.File.Exists(normalizedFilePath))
         {
-            Console.WriteLine($"File does not exist at path: {fullPath}");
+            Console.WriteLine("Resume file not found");
             return NotFound();
         }
 
         //configure return file type
-        byte[] fileBytes = await System.IO.File.ReadAllBytesAsync(filePath);
+        byte[] fileBytes = await System.IO.File.ReadAllBytesAsync(normalizedFilePath);
         string contentType = string.IsNullOrEmpty(application.ResumeFile.ContentType)
             ? "application/octet-stream" : application.ResumeFile.ContentType;
 
