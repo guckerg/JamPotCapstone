@@ -18,8 +18,10 @@
             <div class="row m-5 justify-self-center">
                 @if (Model.Hours != null)
                 {
+                    TextElement textblock = Model.Hours;
+                    <h1 class="title text-jampot-green">@textblock.Name</h1>
                     string[] paragraphs = Model.Hours.Content.Split("\n");
-                    <div class="col text-jampot-green">
+                    <div class="col text-jampot-green landing-hours">
                         @foreach (string par in paragraphs)
                         {
                             <br/>@par
@@ -33,40 +35,13 @@
                     </div>
                 }
             </div>
-            <div class="row">
-                
-                @*@if (special != null)
-                {
-                    @{
-                        File special = 
-                            Model.Photos.Find(p => p.FileName.ToLower().Contains("special"));
-                        int specialStartIndex = special.FileName.LastIndexOf("/");
-                        int specialEndIndex = special.FileName.IndexOf(".");
-                        string specialName = special.FileName.Substring(specialStartIndex, specialEndIndex - specialStartIndex);
-                    }
-                    <img class="landing-special" src="@special.FileName" alt="@specialName"/>
-                    @if (User.IsInRole("Admin"))
-                    {
-                        <a asp-action="EditPhoto" asp-controller="Admin" asp-route-id="@special.FileID">
-                            <i class="fa-regular fa-pen-to-square"></i>
-                        </a>
-                    }
-                }
-                else
-                {
-                    <p>
-                        No special found.
-                    </p>
-                }*@
-                
-            </div>
         </div>
 
     </div>
     <div class="row">
         @if (Model.Photos.Count > 0)
         {
-            foreach (File photo in Model.Photos)
+            foreach(File photo in Model.Photos.Take(4)) //Take makes it so only 4 photos are present
             {
                     string filename = photo.GetFileName();
                     <div class="col-md-6">
