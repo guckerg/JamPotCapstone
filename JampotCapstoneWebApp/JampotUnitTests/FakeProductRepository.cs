@@ -31,9 +31,11 @@ public class FakeProductRepository : IProductRepository
     {
         throw new NotImplementedException();
     }
-    public Task<ProductType> GetProductTypeByIdAsync(int typeId)
+    public async Task<ProductType> GetProductTypeByIdAsync(int typeId)
     {
-        throw new NotImplementedException();
+        var productTypes = GetAllProductTypesAsync().Result;
+        var model = productTypes.Find(c => c.TypeId == typeId);
+        return model;
     }
     public async Task<List<Product>> GetAllProductsAsync()
     {
