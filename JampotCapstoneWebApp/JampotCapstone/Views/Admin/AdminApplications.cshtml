@@ -3,6 +3,13 @@
     ViewBag.Title = "Admin Management";
 }
 
+@if (TempData["SuccessMessage"] != null)
+{
+    <div class="alert alert-success">
+        @TempData["SuccessMessage"]
+    </div>
+}
+
 @if(Model != null) {
     <hr class="yellowLine"/>
     <div>
@@ -32,9 +39,12 @@
                                 </a>
                             </td>
                             <td>
-                                <a asp-action="DeleteApplication" asp-controller="Admin" asp-route-id="@application.ApplicationID">
-                                    <i class="fa-solid fa-trash-can text-danger"></i>
-                                </a>
+                                <form asp-action="DeleteApplication" asp-controller="Careers" asp-route-id="@application.ApplicationID" method="Post">
+                                    @Html.AntiForgeryToken()
+                                    <button type="submit" class="btn btn-link p-0" title="Delete Application">
+                                        <i class="fa-solid fa-trash-can text-danger"></i>
+                                    </button>
+                                </form>
                             </td>
                         </tr>
                     }

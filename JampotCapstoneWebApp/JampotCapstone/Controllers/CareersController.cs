@@ -113,7 +113,8 @@ namespace JampotCapstone.Controllers
         public IActionResult DeleteApplication(int id)
         {
             repo.DeleteApplication(id);
-            return RedirectToAction("Index");
+            TempData["SuccessMessage"] = "The application has been deleted successfully!";
+            return RedirectToAction("AdminApplications", "Admin");
         }
     }
 }
