@@ -48,35 +48,35 @@
                 <label for="name" class="control-label col-lg-2 bodyText">Name</label>
                 <div class="col-lg-10">
                     <span asp-validation-for="Name" class="text-danger"></span>
-                    <input id="name" name="Name" class="form-control col-lg-10" /><br />
+                    <input asp-for="Name" id="name" name="Name" class="form-control col-lg-10" /><br />
                 </div>
             </div>
             <div class="row lg">
                 <label for="phoneNumber" class="control-label col-lg-2 bodyText">Phone Number</label>
                 <div class="col-lg-10">
                     <span asp-validation-for="PhoneNumber" class="text-danger"></span>
-                    <input id="phoneNumber" name="PhoneNumber" class="form-control col-lg-10" /><br />
+                    <input asp-for="PhoneNumber" id="phoneNumber" name="PhoneNumber" class="form-control col-lg-10" /><br />
                 </div>
             </div>
             <div class="row lg">
                 <label for="name" class="control-label col-lg-2 bodyText">Email</label>
                 <div class="col-lg-10">
                     <span asp-validation-for="Email" class="text-danger"></span>
-                    <input id="email" name="Email" class="form-control col-lg-10" /><br />
+                    <input asp-for="Email" id="email" name="Email" class="form-control col-lg-10" /><br />
                 </div>
             </div>
             <div class="row lg">
                 <label for="name" class="control-label col-lg-2 bodyText">Subject</label>
                 <div class="col-lg-10">
                     <span asp-validation-for="Subject" class="text-danger"></span>
-                    <input id="subject" name="Subject" class="form-control col-lg-10" /><br />
+                    <input asp-for="Subject" id="subject" name="Subject" class="form-control col-lg-10" /><br />
                 </div>
             </div>
             <div class="row lg">
                 <label for="name" class="control-label col-lg-2 bodyText">Message</label>
                 <div class="col-lg-10">
                     <span asp-validation-for="MessageText" class="text-danger"></span>
-                    <textarea id="message" name="MessageText" class="form-control col-lg-10" 
+                    <textarea asp-for="MessageText" id="message" name="MessageText" class="form-control col-lg-10" 
                     placeholder="Tell Us What you think!"></textarea>
                 </div>
             </div>
