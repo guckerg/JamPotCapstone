@@ -39,9 +39,28 @@
                         @if (text.Page.PageTitle.ToLower().Contains("faq"))
                         {
                             <td>
-                                <a asp-action="DeleteText" asp-controller="Admin" asp-route-id="@text.TextElementId">
-                                    <i class="fa-solid fa-trash-can text-danger"></i>
-                                </a>
+                                <button type="button" class="btn btn-link text-danger" data-bs-toggle="modal" data-bs-target="@("#deleteTextModal" + text.TextElementId)">
+                                    <i class="fa-solid fa-trash-can"></i>
+                                </button>
+                                <div class="modal fade" id="@("deleteTextModal" + text.TextElementId)" tabindex="-1" aria-labelledby="deleteTextModalLabel" aria-hidden="true">
+                                    <div class="modal-dialog">
+                                        <div class="modal-content bg-dark text-danger">
+                                            <div class="modal-header">
+                                                <h1 class="modal-title fs-5" id="deleteTextModalLabel">Permanently Delete Textblock?</h1>
+                                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                            </div>
+                                            <div class="modal-body">
+                                                Are you sure you want to delete this text block? This action cannot be undone.
+                                            </div>
+                                            <div class="modal-footer">
+                                                <button type="button" class="btn btn-success" data-bs-dismiss="modal">Cancel</button>
+                                                <a asp-action="DeleteText" asp-controller="Admin" asp-route-id="@text.TextElementId" class="btn btn-danger">
+                                                    Delete
+                                                </a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
                             </td>
                             <td>
                                 <a asp-action="TextEdit" asp-controller="Admin" class="btn btn-primary">Add New</a>
@@ -65,16 +84,67 @@
             {
                 string title = p.PageTitle;
                 int pageId = p.PageId;
-                <h4 class="text-jampot-green">@title</h4>
-                foreach (var photo in Model.Photos)
+                List<File> photosOnPage = Model.Photos.Where(f => f.Pages
+                    .Any(p => p.PageId == pageId)).ToList();
+                if (photosOnPage.Count > 0)
                 {
-                    // if current photo (inner loop) contains the current page (outer loop)
-                    if (photo.Pages.Find(p => p.PageId == pageId) != null)
+                    <h4 class="text-jampot-green">@title</h4>
+                    <div class="row">
+                    @foreach (var photo in photosOnPage)
                     {
                         string filename = photo.GetFileName();
-                        <img src="@photo.FileName" alt="@filename" width="200px"/>
-                    }
+                        <div class="col">
+                            @* edit button *@
+                            <div class="row">
+                                <form asp-action="EditPhoto" asp-controller="Admin" method="get" class="col-2">
+                                    <input type="hidden" name="id" value="@photo.FileID"/>
+                                    <input type="hidden" name="pageTitle" value="@p.PageTitle"/>
+                                    <button type="submit" class="btn btn-link"><i class="fa-regular fa-pen-to-square"></i></button>
+                                </form>
+                            </div>
+                            <img src="@photo.FileName" alt="@filename" style="max-width: 500px" class="w-100"/>
+                        </div>
+                        }
+                    </div>
                 }
+            }
+            var misc = Model.Photos.Where(f => f.Pages.Count == 0).ToList();
+            if(misc.Count > 0)
+            {
+                <h4 class="text-jampot-green">Unaffiliated</h4>
+                <div class="row">
+                @foreach (File f in misc)
+                {
+                    string filename = f.GetFileName();
+                    <div class="col">
+                        @* delete button with modal confirmation *@
+                        <button type="button" class="btn btn-link text-danger" data-bs-toggle="modal" data-bs-target="@("#deleteModal" + f.FileID)">
+                            <i class="fa-solid fa-trash-can"></i>
+                        </button>
+                        <img src="@f.FileName" alt="@filename" class="w-100"/>
+                    </div>
+                    @* modal code *@
+                    <div class="modal fade" id="@("deleteModal" + f.FileID)" tabindex="-1" aria-labelledby="deleteModalLabel" aria-hidden="true">
+                        <div class="modal-dialog">
+                            <div class="modal-content bg-dark text-danger">
+                                <div class="modal-header">
+                                    <h1 class="modal-title fs-5" id="deleteModalLabel">Permanently Delete Photo?</h1>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                </div>
+                                <div class="modal-body">
+                                    Are you sure you want to delete this photo? This action cannot be undone.
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-success" data-bs-dismiss="modal">Cancel</button>
+                                    <a class="btn btn-danger" asp-action="DeletePhoto" asp-route-id="@f.FileID">
+                                        Delete
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    }
+                </div>
             }
         }
         <h3 class="text-jampot-yellow text-center content">Products</h3>
@@ -102,9 +172,29 @@
                                 </a>
                             </td>
                             <td>
-                                <a asp-action="DeleteProduct" asp-controller="Admin" asp-route-id="@product.ProductId"> 
-                                     <i class="fa-solid fa-trash-can text-danger"></i> 
-                                 </a>
+                                <button type="button" class="btn btn-link text-danger" data-bs-toggle="modal" data-bs-target="@("#deleteProductModal" + product.ProductId)">
+                                    <i class="fa-solid fa-trash-can"></i>
+                                </button>
+                                <div class="modal fade" id="@("deleteProductModal" + product.ProductId)" tabindex="-1" aria-labelledby="deleteProductModalLabel" aria-hidden="true">
+                                    <div class="modal-dialog">
+                                        <div class="modal-content bg-dark text-danger">
+                                            <div class="modal-header">
+                                                <h1 class="modal-title fs-5" id="deleteProductModalLabel">Permanently Delete Product?</h1>
+                                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                            </div>
+                                            <div class="modal-body">
+                                                Are you sure you want to delete this product? This action cannot be undone.
+                                            </div>
+                                            <div class="modal-footer">
+                                                <button type="button" class="btn btn-success" data-bs-dismiss="modal">Cancel</button>
+                                                <a asp-action="DeleteProduct" asp-controller="Admin" asp-route-id="@product.ProductId" class="btn btn-danger">
+                                                    Delete
+                                                </a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                
                             </td>
                         </tr>
                     }
@@ -113,3 +203,4 @@
         }
     </div>
 }
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
