@@ -396,9 +396,9 @@ public class SeedData
 
             TextElement hours = new TextElement
             {
-                Name = "Landing Hours",
+                Name = "LOCATION AND HOURS",
                 Content =
-                    "7am-5pm Monday-Friday\n8am-5pm Saturday\n65-1158 Mamalahoa Hwy\nWaimea, HI 96743\n(808) 238-0671",
+                    "🕔7am-5pm Monday-Friday\n8am-5pm Saturday\n\n📍65-1158 Mamalahoa Hwy\nWaimea, HI 96743\n\n📞(808) 238-0671",
                 Page = home
             };
             ctx.TextElements.Add(hours);

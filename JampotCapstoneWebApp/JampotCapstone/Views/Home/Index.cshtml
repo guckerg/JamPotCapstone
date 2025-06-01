@@ -18,8 +18,10 @@
             <div class="row m-5 justify-self-center">
                 @if (Model.Hours != null)
                 {
+                    TextElement textblock = Model.Hours;
+                    <h1 class="title text-jampot-green">@textblock.Name</h1>
                     string[] paragraphs = Model.Hours.Content.Split("\n");
-                    <div class="col text-jampot-green">
+                    <div class="col text-jampot-green landing-hours">
                         @foreach (string par in paragraphs)
                         {
                             <br/>@par
@@ -39,11 +41,13 @@
     <div class="row">
         @if (Model.Photos.Count > 0)
         {
-            foreach (File photo in Model.Photos)
+            foreach(File photo in Model.Photos.Take(4)) //Take makes it so only 4 photos are present
             {
                     string filename = photo.GetFileName();
                     <div class="col-md-6">
-                        <img class="img-fluid landing-img" src="@photo.FileName" alt="@filename"/>
+                        <div class="landing-img-wrapper">
+                            <img class="img-fluid landing-img" src="@photo.FileName" alt="@filename"/>
+                        </div>
                         @if (User.IsInRole("Admin"))
                         {
                             <form asp-controller="Admin" asp-action="EditPhoto" method="get">
