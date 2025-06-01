@@ -67,8 +67,10 @@ namespace JampotCapstone.Controllers
                     return View("Index", viewModel);
                 }
 
+                
+                var uploadFolder = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "uploads");
+
                 //Ensure the uploads folder exists.
-                var uploadFolder = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/uploads");
                 if (!Directory.Exists(uploadFolder))
                 {
                     Directory.CreateDirectory(uploadFolder);
@@ -81,14 +83,19 @@ namespace JampotCapstone.Controllers
                     await Resume.CopyToAsync(stream);
                 }
 
-                //Save the file metadata using your custom File class.
+                // Create a relative path for storing in the database.
+                var storedFileName = Resume.FileName;
+
+
+                // Save the file metadata using your custom File class.
                 var file = new Models.File
                 {
-                    FileName = filePath,  // Store the full path, or adjust as needed.
+                    FileName = storedFileName,
                     ContentType = Resume.ContentType,
                 };
                 _context.Files.Add(file);
                 await _context.SaveChangesAsync();
+
 
                 //Link the uploaded file to the application.
                 viewModel.Application.ResumeFileID = file.FileID;
@@ -103,10 +110,11 @@ namespace JampotCapstone.Controllers
 
         [Authorize(Roles = "Admin")]
         [ValidateAntiForgeryToken]
-        public IActionResult DeleteApplication(int ApplicationID)
+        public IActionResult DeleteApplication(int id)
         {
-            repo.DeleteApplication(ApplicationID);
-            return RedirectToAction("Index");
+            repo.DeleteApplication(id);
+            TempData["SuccessMessage"] = "The application has been deleted successfully!";
+            return RedirectToAction("AdminApplications", "Admin");
         }
     }
 }
