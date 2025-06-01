@@ -30,6 +30,9 @@ namespace JampotCapstone.Controllers
                 await _emailSender.SendEmailAsync(model);
 
                 TempData["SuccessMessage"] = "Your message was successfully sent! Thank you!";
+            } else 
+            {
+                return View("Index", model);
             }
 
             return View("Index");
