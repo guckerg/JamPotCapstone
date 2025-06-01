@@ -62,7 +62,7 @@ namespace JampotCapstone.Controllers
                 var fileExtension = Path.GetExtension(Resume.FileName).ToLower();
                 if (!allowedExtensions.Contains(fileExtension))
                 {
-                    ModelState.AddModelError("Resume", "Only .pdf, .doc, and .docx files are allowed.");
+                    ModelState.AddModelError("ResumeUpload", "Only .pdf, .doc, and .docx files are allowed.");
                     viewModel.Positions = new SelectList(_context.JobTitles, "JobTitleID", "JobTitleName");
                     return View("Index", viewModel);
                 }
