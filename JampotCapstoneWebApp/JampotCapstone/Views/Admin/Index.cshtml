@@ -3,7 +3,16 @@
     ViewBag.Title = "Admin Management";
 }
 
-<h2 class="title text-jampot-green">ADMIN MANAGEMENT</h2>
+<div class="container">
+    <div class="d-flex flex-wrap justify-content-between align-items-center p-3">
+        <h2 class="title text-jampot-green">ADMIN MANAGEMENT</h2>
+        <a asp-action="AdminApplications" asp-controller="Admin" class="btn btn-warning text-nowrap title">
+            VIEW APPLICATIONS
+        </a>
+    </div>
+</div>
+
+
 <span class="text-success">@TempData["Message"]</span>
 @if (Model != null)
 {

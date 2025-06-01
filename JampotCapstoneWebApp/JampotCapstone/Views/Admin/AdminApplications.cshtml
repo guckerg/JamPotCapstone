@@ -1,0 +1,56 @@
+﻿@model AdminApplicationsViewModel
+@{
+    ViewBag.Title = "Admin Management";
+}
+
+@if (TempData["SuccessMessage"] != null)
+{
+    <div class="alert alert-success">
+        @TempData["SuccessMessage"]
+    </div>
+}
+
+@if(Model != null) {
+    <hr class="yellowLine"/>
+    <div>
+        <h3 class="text-jampot-yellow text-center content">Applications</h3>
+        @if(Model.Applications.Count > 0)
+        {
+            <table class="table table-striped table-bordered table-dark">
+                <thead>
+                    <tr>
+                        <th>Applicant Name</th>
+                        <th>Phone Number</th>
+                        <th>Position</th>
+                        <th>Resume</th>
+                        <th>Delete</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach(Application application in Model.Applications)
+                    {
+                        <tr>
+                            <td>@application.Name</td>
+                            <td>@application.PhoneNumber</td>
+                            <td>@application.JobTitle?.JobTitleName</td>
+                            <td>
+                                <a asp-action="DownloadResume" asp-controller="Admin" asp-route-id="@application.ApplicationID" class="btn btn-sm btn-info text-nowrap">
+                                    Download Resume
+                                </a>
+                            </td>
+                            <td>
+                                <form asp-action="DeleteApplication" asp-controller="Careers" asp-route-id="@application.ApplicationID" method="Post">
+                                    @Html.AntiForgeryToken()
+                                    <button type="submit" class="btn btn-link p-0" title="Delete Application">
+                                        <i class="fa-solid fa-trash-can text-danger"></i>
+                                    </button>
+                                </form>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+            
+        }
+    </div>
+}

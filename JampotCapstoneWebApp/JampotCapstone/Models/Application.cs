@@ -20,6 +20,8 @@ namespace JampotCapstone.Models
         [Required]
         public int JobTitleID { get; set; }
 
+        public JobTitle? JobTitle { get; set; }
+
         public string Question1 { get; set; } = string.Empty;
 
         public string Question2 { get; set; } = string.Empty;
