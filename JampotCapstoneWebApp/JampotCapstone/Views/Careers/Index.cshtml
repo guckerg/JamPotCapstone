@@ -71,7 +71,7 @@
             <div class="row lg mb-3">
                 <label for="resume" class="control-label col-lg-2 bodyText">Upload Resume</label>
                 <div class="col-lg-4">
-                    <input id="resume" asp-for="ResumeUpload" type="file" class="form-control col-lg-10" />
+                    <input id="resume" asp-for="ResumeUpload" type="file" class="form-control col-lg-10" accept=".pdf, .doc, .docx" />
                     <span asp-validation-for="ResumeUpload" class="text-danger"></span>
                 </div>
             </div>
