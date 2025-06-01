@@ -173,31 +173,25 @@ public class AdminController : Controller
             {
                 if (_photoRepo.GetType() == typeof(PhotoRepository))
                 {
-                    TempData["Message"] = "File successfully added.";
+                    TempData["Message"] = "Invalid image file. Only JPG, JPEG, PNG, " +
+                                          "or WebP images up to 10MB are allowed.";
+                    
                 }
-                return RedirectToAction("Index");
-            }
-            else
-                TempData["Message"] = "Invalid image file. Only JPG, JPEG, PNG, " +
-                                      "or WebP images up to 10MB are allowed.";
                 return View(newFile);
             }
-
             newPhoto.ContentType = newFile.ContentType.ToLowerInvariant();
-            
-
             if (await _photoRepo.AddFileAsync(newPhoto) > 0)
             {
-                TempData["Message"] = "Photo successfully added.";
+                if (_photoRepo.GetType() == typeof(PhotoRepository))
+                {
+                    TempData["Message"] = "Photo successfully added.";
+                }
             }
             else
             {
                 TempData["Message"] = "There was a problem saving the file. Please try again.";
             }
-            
-        }
-        else
-        {
+        } else {
             TempData["Message"] = "File could not be uploaded. Please try again.";
         }
         return RedirectToAction("Index");
@@ -283,7 +277,7 @@ public class AdminController : Controller
         return View(viewModel);
     }
 
-    private async Task<File?> SaveImageAsync(IFormFile? photoUpload, string photoFolder)
+    public async Task<File?> SaveImageAsync(IFormFile? photoUpload, string photoFolder)
     {
         if (photoUpload == null || photoUpload.Length == 0)
             return null; // No file uploaded or empty file, no validation needed
@@ -299,8 +293,11 @@ public class AdminController : Controller
         // Validate file extension
         if (!allowedExtensions.Contains(fileExtension))
         {
-            TempData["Message"] = "Invalid file extension.";
-            TempData["context"] = "danger";
+            if (_photoRepo.GetType() == typeof(PhotoRepository))
+            {
+                TempData["Message"] = "Invalid file extension.";
+                TempData["context"] = "danger";
+            }
             return null;
         }
 

@@ -1,5 +1,8 @@
+using System.Text;
 using JampotCapstone.Models.ViewModels;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Routing.Constraints;
+using Moq;
 using Xunit.Abstractions;
 
 namespace JampotUnitTests;
@@ -12,15 +15,17 @@ public class AdminControllerTests
     private IProductRepository _prodRepo;
     private IPagePositionRepository _posRepo;
     private ITextElementRepository _textRepo;
+    private ITestOutputHelper _output;
 
-    public AdminControllerTests()
+    public AdminControllerTests(ITestOutputHelper output)
     {
+        _output = output;
         _photoRepo = new FakeFileRepository();
         _pageRepo = new FakePageRepository();
         _prodRepo = new FakeProductRepository();
         _posRepo = new FakePagePositionRepository();
         _textRepo = new FakeTextElementRepository();
-        _admin = new AdminController(_textRepo, _photoRepo, _pageRepo, _prodRepo, _posRepo);
+        _admin = new AdminController(_textRepo, _photoRepo, _pageRepo, _prodRepo, null, _posRepo, null, null);
         _textRepo.StoreTextElementAsync(
             new TextElement
             {
@@ -195,21 +200,22 @@ public class AdminControllerTests
     [Fact]
     public void TestAddPhoto_Success()
     {
-        File model = new File
-        {
-            FileID = 0,
-            FileName = "New Image",
-            ContentType = "image/jpeg",
-            Pages = []
-        };
-        var result = _admin.AddPhoto(model).Result;
-        Assert.IsType<RedirectToActionResult>(result);
-    }
+        // Creating a mock IFormFile for the addPhoto method parameter
+        var model = GetMockFile("test.jpg", "image/jpeg");
 
+        // Act
+        var result = _admin.AddPhoto(model).Result;
+        var files = _photoRepo.GetAllPhotosAsync().Result;
+        var newPhoto = files.Find(f => f.FileName.Contains(model.FileName));
+        Assert.IsType<RedirectToActionResult>(result);
+        // since a RedirectToActionResult could mean either success or failure, check that new file was added to the repo
+        Assert.NotNull(newPhoto);
+    }
+    
     [Fact]
-    public void TestAddPhoto_Failure()
+    public void TestAddPhoto_InvalidType()
     {
-        File model = null;
+        var model = GetMockFile("test.pdf", "application/pdf");
         var result = _admin.AddPhoto(model).Result;
         Assert.IsType<ViewResult>(result);
     }
@@ -265,5 +271,23 @@ public class AdminControllerTests
         };
         var result = _admin.ProductEdit(prod.ProductId, model).Result;
         Assert.IsType<ViewResult>(result);
+    }
+
+    public IFormFile? GetMockFile(string fileName, string contentType)
+    {
+        // Arrange
+        var mockFile = new Mock<IFormFile>();
+        var content = "Fake image data";
+        var stream = new MemoryStream();
+        var writer = new StreamWriter(stream);
+        writer.Write(content);
+        writer.Flush();
+        stream.Position = 0;
+
+        mockFile.Setup(_ => _.OpenReadStream()).Returns(stream);
+        mockFile.Setup(_ => _.FileName).Returns(fileName);
+        mockFile.Setup(_ => _.Length).Returns(stream.Length);
+        mockFile.Setup(_ => _.ContentType).Returns(contentType);
+        return mockFile.Object;
     }
 }
