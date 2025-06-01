@@ -51,7 +51,7 @@ public class AdminController : Controller
         return View(model);
     }
 
-    public async Task<IActionResult> TextEdit(int id = 0)
+    public async Task<IActionResult> TextEdit(int id, string returnUrl)
     {
         TextElement? model = id == 0 ? new TextElement() // if an existing textblock was not sent to the controller, 
             : await _textRepo.GetTextElementByIdAsync(id);   // create a new one
@@ -144,25 +144,74 @@ public class AdminController : Controller
     }
 
     [HttpPost]
-    public async Task<IActionResult> AddPhoto(File model)
+    public async Task<IActionResult> AddPhoto(IFormFile newFile)
     {
-        if (ModelState.IsValid)
+        File newPhoto;
+        // check that a file was sent to the controller
+        if (newFile != null)
         {
-            if (await _photoRepo.AddFileAsync(model) > 0)
+            newPhoto = await SaveImageAsync(newFile, "pics");
+            if (newPhoto == null)
             {
-                TempData["Message"] = "File successfully added.";
-                return RedirectToAction("Index");
+                TempData["Message"] = "Invalid image file. Only JPG, JPEG, PNG, " +
+                                      "or WebP images up to 10MB are allowed.";
+                return View(newFile);
+            }
+
+            newPhoto.ContentType = newFile.ContentType.ToLowerInvariant();
+            
+
+            if (await _photoRepo.AddFileAsync(newPhoto) > 0)
+            {
+                TempData["Message"] = "Photo successfully added.";
             }
             else
             {
-                ModelState.AddModelError("", "There was a problem saving the file. Please try again.");
+                TempData["Message"] = "There was a problem saving the file. Please try again.";
             }
+            
         }
         else
         {
-            ModelState.AddModelError("", "There were data-entry errors. Please check the form.");
+            TempData["Message"] = "File could not be uploaded. Please try again.";
         }
-        return View(model);
+        return RedirectToAction("Index");
+    }
+
+    public async Task<IActionResult> DeletePhoto(int id)
+    {
+        File photoToDelete = await _photoRepo.GetFileByIdAsync(id);
+        if (photoToDelete == null)
+        {
+            TempData["Message"] = "File not found. Please try again.";
+            TempData["context"] = "danger";
+        }
+        else
+        {
+            if (await _photoRepo.DeleteFileAsync(photoToDelete) > 0)
+            {
+                // proceed with local deletion
+                string path = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot" + photoToDelete.FileName);
+                FileInfo fileToDelete = new FileInfo(path); // source: https://www.c-sharpcorner.com/UploadFile/9f0ae2/delete-files-from-folder-in-Asp-Net/
+                if (fileToDelete.Exists)
+                {
+                    fileToDelete.Delete();
+                    TempData["Message"] = "Photo successfully deleted.";
+                    TempData["context"] = "success";
+                }
+                else
+                {
+                    TempData["Message"] = "A local instance of the file could not be found.";
+                    TempData["context"] = "danger";
+                }
+            }
+            else
+            {
+                TempData["Message"] = "There was a problem deleting the file entry.";
+                TempData["context"] = "danger";
+            }
+        }
+        return RedirectToAction("Index");
     }
 
     public async Task<IActionResult> ProductEdit(int id = 0)
@@ -206,7 +255,7 @@ public class AdminController : Controller
         return View(viewModel);
     }
 
-    private async Task<File?> SaveProductImageAsync(IFormFile? photoUpload)
+    private async Task<File?> SaveImageAsync(IFormFile? photoUpload, string photoFolder)
     {
         if (photoUpload == null || photoUpload.Length == 0)
             return null; // No file uploaded or empty file, no validation needed
@@ -242,7 +291,7 @@ public class AdminController : Controller
         }
 
         // If all validations pass, proceed with saving the file
-        string productPhotosFolder = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/productPhotos");
+        string productPhotosFolder = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/" + photoFolder);
         Directory.CreateDirectory(productPhotosFolder);
 
         string uniqueFileName = Guid.NewGuid() + "_" + Path.GetFileName(photoUpload.FileName);
@@ -253,7 +302,7 @@ public class AdminController : Controller
             await photoUpload.CopyToAsync(stream);
         }
 
-        return new File { FileName = "/productPhotos/" + uniqueFileName };
+        return new File { FileName = "/" + photoFolder + "/" + uniqueFileName };
     }
 
     [HttpPost]
@@ -271,7 +320,7 @@ public class AdminController : Controller
         File? uploadedImage = null;
         if (viewModel.PhotoUpload != null)
         {
-            uploadedImage = await SaveProductImageAsync(viewModel.PhotoUpload);
+            uploadedImage = await SaveImageAsync(viewModel.PhotoUpload, "productPhotos");
             if (uploadedImage == null)
             {
                 ModelState.AddModelError("PhotoUpload", "Invalid image file. Only JPG, JPEG, PNG, or WebP images up to 5MB are allowed.");
@@ -392,8 +441,8 @@ public class AdminController : Controller
 
     public async Task<IActionResult> DeleteProduct(int id)
     {
-        // find the product to delete by the id passed through
-        Product? toDelete = await _productRepo.GetProductByIdAsync(id);
+        // find the product to delete by the id passed through
+        Product? toDelete = await _productRepo.GetProductByIdAsync(id);
 
         if (toDelete != null)
         {

@@ -1,7 +1,3 @@
-using JampotCapstone.Data.Interfaces;
-using JampotCapstone.Models;
-using Microsoft.EntityFrameworkCore;
-
 namespace JampotUnitTests;
 
 public class FakeProductRepository : IProductRepository
