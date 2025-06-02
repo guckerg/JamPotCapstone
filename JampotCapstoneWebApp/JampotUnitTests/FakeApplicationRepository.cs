@@ -3,7 +3,7 @@ namespace JampotUnitTests
 {
     class FakeApplicationRepository : IApplicationRepository
     {
-        private readonly List<Application> applications = [];
+        public readonly List<Application> applications = [];
 
         public Task AddApplicationAsync(Application model)
         {

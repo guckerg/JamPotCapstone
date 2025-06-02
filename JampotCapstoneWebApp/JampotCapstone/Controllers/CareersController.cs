@@ -13,7 +13,7 @@ namespace JampotCapstone.Controllers
 {
     public class CareersController : Controller
     {
-        IApplicationRepository repo;
+        public IApplicationRepository repo;
         private ApplicationDbContext _context;
         private ITextElementRepository _textRepo;
 
@@ -97,7 +97,12 @@ namespace JampotCapstone.Controllers
 
             var application = viewModel.Application;
             await repo.AddApplicationAsync(application);
-            TempData["SuccessMessage"] = "Your application has been submitted successfully!";
+
+            if(TempData != null)
+            {
+                TempData["SuccessMessage"] = "Your application has been submitted successfully!";
+            }
+            
             return RedirectToAction("Index", viewModel);
         }
 
