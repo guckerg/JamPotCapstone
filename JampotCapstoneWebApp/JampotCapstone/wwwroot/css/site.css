@@ -447,3 +447,9 @@ body {
     padding: 1rem;
     justify-content: center;
 }
+
+.modalText {
+    font-size: 0.85rem;
+    line-height: 1.4;
+    color: var(--JampotYellow);
+}

@@ -16,8 +16,7 @@
                 <div class="slide fade">
                     <div class="numberText">@sequence / @Model.Photos.Count</div>
                     <img src="@filepath" alt="@photo.GetFileName()"/>
-                    <div class="capText">
-                        Caption @sequence
+                    <div>
                         @if (User.IsInRole("Admin"))
                         {
                             <form asp-action="EditPhoto" asp-controller="Admin" method="get">
