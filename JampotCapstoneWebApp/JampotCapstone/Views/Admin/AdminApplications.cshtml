@@ -41,12 +41,31 @@
                                 </a>
                             </td>
                             <td>
-                                <form asp-action="DeleteApplication" asp-controller="Careers" asp-route-id="@application.ApplicationID" method="Post">
-                                    @Html.AntiForgeryToken()
-                                    <button type="submit" class="btn btn-link p-0" title="Delete Application">
-                                        <i class="fa-solid fa-trash-can text-danger"></i>
-                                    </button>
-                                </form>
+                                <button type="button" class="btn btn-link text-danger" data-bs-toggle="modal" data-bs-target="@("#confirmDeleteModal" + application.ApplicationID)">
+                                    <i class="fa-solid fa-trash-can"></i>
+                                </button>
+                                <div class="modal fade" id="@("confirmDeleteModal" + application.ApplicationID)" tabindex="-1" aria-labelledby="confirmDeleteModalLabel" aria-hidden="true">
+                                    <div class="modal-dialog">
+                                        <div class="modal-content bg-dark text-danger">
+                                            <div class="modal-header">
+                                                <h1 class="modal-title fs-5" id="deleteTextModalLabel">Permanently Delete Application?</h1>
+                                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                            </div>
+                                            <div class="modal-body">
+                                                Delete this application? This action cannot be undone.
+                                            </div>
+                                            <div class="modal-footer">
+                                                <button type="button" class="btn btn-success" data-bs-dismiss="modal">Cancel</button>
+                                                <form asp-action="DeleteApplication" asp-controller="Careers" asp-route-id="@application.ApplicationID" method="Post">
+                                                    @Html.AntiForgeryToken()
+                                                    <button type="submit" class="btn btn-danger" title="Delete Application">
+                                                        Delete
+                                                    </button>
+                                                </form>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
                             </td>
                         </tr>
                     }
