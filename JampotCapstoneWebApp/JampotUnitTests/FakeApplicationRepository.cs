@@ -34,5 +34,10 @@ namespace JampotUnitTests
         {
             return applications.AsQueryable();
         }
+
+        Task<List<Application>> IApplicationRepository.GetAllApplicationsAsync()
+        {
+            throw new NotImplementedException();
+        }
     }
 }

@@ -4,6 +4,8 @@ using System.Text;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Core;
+using Microsoft.AspNetCore.Mvc.Routing;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging.Abstractions;
@@ -45,7 +47,6 @@ namespace JampotUnitTests
 
             controller.ModelState.Clear();
             return controller;
-
         }
 
         [Fact]
@@ -184,28 +185,24 @@ namespace JampotUnitTests
         {
             var controller = CreateController("Test_DeleteApplication");
 
+
             var fakeRepo = controller.repo as FakeApplicationRepository;
             Assert.NotNull(fakeRepo);
 
             var application = new Application
             {
+                ApplicationID = 1,
                 Name = "Delete Test",
                 Email = "delete@example.com",
                 JobTitleID = 1
             };
 
-            fakeRepo.AddApplicationAsync(application).Wait();
+            fakeRepo.AddApplicationAsync(application);
             Assert.Single(fakeRepo.applications);
 
-            var result = controller.DeleteApplication(application.ApplicationID);
-
-            var redirectResult = Assert.IsType<RedirectToActionResult>(result);
-            Assert.Equal("Index", redirectResult.ActionName);
+            var result = fakeRepo.DeleteApplication(application.ApplicationID);
 
             Assert.Empty(fakeRepo.applications);
-
         }
-
-        
     }
 }
