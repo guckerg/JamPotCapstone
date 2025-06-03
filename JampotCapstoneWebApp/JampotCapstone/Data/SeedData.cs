@@ -589,15 +589,6 @@ public class SeedData
             };
             ctx.Add(landingDessert);
 
-            PagePosition landingPeople = new PagePosition
-            {
-                PagePositionId = 6,
-                FileId = 5,
-                PageId = 1,
-                Position = 4
-            };
-            ctx.Add(landingPeople);
-
             PagePosition aboutPeople = new PagePosition
             {
                 PagePositionId = 7,
