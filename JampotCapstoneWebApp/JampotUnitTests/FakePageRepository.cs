@@ -37,4 +37,16 @@ public class FakePageRepository : IPageRepository
         }
         return result;
     }
+
+    public async Task<int> StorePageAsync(Page page)
+    {
+        int result = 0;
+        if(page != null)
+        {
+            _pages.Add(page);
+            _pages[_pages.Count - 1].PageId = _pages.Count;
+            result = 1;
+        }
+        return result;
+    }
 }

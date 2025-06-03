@@ -25,4 +25,9 @@ public class PagePositionRepository : IPagePositionRepository
         _context.PagePositions.Update(pagePosition);
         return await _context.SaveChangesAsync();
     }
+
+    public Task<int> StorePagePosition(PagePosition pos)
+    {
+        throw new NotImplementedException();
+    }
 }
