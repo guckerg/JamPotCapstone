@@ -5,20 +5,13 @@
 <ul class="navbar-nav align-items-center">
     @if (SignInManager.IsSignedIn(User))
     {
-        <li class="nav-item m-2">
+        <li class="nav-item">
             <form class="form-inline" asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Action("Index", "Home", new { area = "" })">
-                <button type="submit" class="btn btn-warning text-dark fs-4 d-none d-lg-inline" style="font-size:15px; font-family:'Zinjaro', sans-serif;">LOGOUT</button>
+                <button type="submit" class="btn btn-danger text-dark d-none d-lg-inline fs-5" style="font-size:13px; font-family:'Zinjaro', sans-serif; padding: 4px 6px;">LOGOUT</button>
                 <button type="submit" class="mobile-nav fs-1 d-inline d-lg-none" style="all: unset; font-family:'Zinjaro', sans-serif; color: var(--JampotYellow);">
                     LOGOUT
                 </button>
             </form>
         </li>
     }
-    @* else *@
-    @* { *@
-    @*     <li class="nav-item m-2"> *@
-    @*         <a class="btn btn-warning text-dark fs-4 d-none d-lg-inline" asp-area="Identity" asp-page="/Account/Login">ACCOUNT</a> *@
-    @*         <a class="mobile-nav fs-1 d-inline d-lg-none" asp-area="Identity" asp-page="/Account/Login">ACCOUNT</a> *@
-    @*     </li> *@
-    @* } *@
 </ul>
