@@ -71,7 +71,7 @@ public class SeedData
             File landing5 = new File
             {
                 FileID = 5,
-                FileName = "/pics/People.png",
+                FileName = "/pics/landing/People.png",
                 ContentType = "image/png",
             };
             ctx.Files.Add(landing5);
@@ -588,6 +588,15 @@ public class SeedData
                 Position = 3
             };
             ctx.Add(landingDessert);
+
+            PagePosition landingPeople = new PagePosition
+            {
+                PagePositionId = 6,
+                FileId = 5,
+                PageId = 1,
+                Position = 4
+            };
+            ctx.Add(landingPeople);
 
             PagePosition aboutPeople = new PagePosition
             {

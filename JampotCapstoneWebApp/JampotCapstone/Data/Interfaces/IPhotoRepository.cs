@@ -13,5 +13,5 @@ public interface IPhotoRepository
     public Task<int> AddFileAsync(File photo);
     public Task<int> UpdateFileAsync(File photo);
     public Task<int> DeleteFileAsync(File photo);
-    public Task<List<File>> GetPhotosNotInPageAsync(string pageTitle);
+    
 }
