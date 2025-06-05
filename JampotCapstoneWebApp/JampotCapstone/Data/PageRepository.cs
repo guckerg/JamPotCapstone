@@ -44,4 +44,9 @@ public class PageRepository : IPageRepository
         _context.Pages.Update(page);
         return await _context.SaveChangesAsync();
     }
+
+    public Task<int> StorePageAsync(Page page)
+    {
+        throw new NotImplementedException();
+    }
 }
