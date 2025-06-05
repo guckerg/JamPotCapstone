@@ -116,6 +116,10 @@
 
 <!--Script for updating/removing things from the cart-->
 <script>
+    function getAntiForgeryToken() {
+        return document.querySelector('input[name="__RequestVerificationToken"]')?.value;
+    }
+
     document.addEventListener('DOMContentLoaded', function () {
     @if (Model.Items != null)
     {
@@ -136,8 +140,8 @@
         fetch('/Cart/RemoveFromCart', {
             method: 'POST',
             headers: {
-                'Content-Type': 'application/json'
-                // 'RequestVerificationToken': document.querySelector('input[name="__RequestVerificationToken"]').value
+                'Content-Type': 'application/json',
+                'RequestVerificationToken': getAntiForgeryToken()
             },
             body: JSON.stringify({ productId: productId })
         })
@@ -192,8 +196,8 @@
         fetch('/Cart/AddToCart', {
             method: 'POST',
             headers: {
-                'Content-Type': 'application/json'
-                // 'RequestVerificationToken': document.querySelector('input[name="__RequestVerificationToken"]').value
+                'Content-Type': 'application/json',
+                'RequestVerificationToken': getAntiForgeryToken()
             },
             body: JSON.stringify({productId: productId})
         })
