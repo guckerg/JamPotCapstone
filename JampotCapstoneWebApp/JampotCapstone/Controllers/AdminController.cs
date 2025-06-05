@@ -116,7 +116,7 @@ public class AdminController : Controller
     {
         EditViewModel model = new EditViewModel
         {
-            Photos = await _photoRepo.GetPhotosNotInPageAsync(pageTitle),
+            Photos = await _photoRepo.GetAllPhotosAsync(),
             CurrentPage = pageTitle,
             OldPhotoId = id
         };

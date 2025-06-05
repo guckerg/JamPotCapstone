@@ -14,7 +14,6 @@ public class PhotoRepository : IPhotoRepository
     {
         _context = ctx;
     }
-
     public async Task<List<File>> GetAllPhotosAsync()
     {
         List<File> photos = await _context.Files
@@ -22,32 +21,6 @@ public class PhotoRepository : IPhotoRepository
             .Include(f => f.Pages.OrderBy(p => p.Position))
             .ToListAsync();
         return photos;
-    }
-    public async Task<List<File>> GetPhotosNotInPageAsync(string pageTitle)
-    {
-        // Get the PageId for the given pageTitle
-        var page = await _context.Pages
-                                 .FirstOrDefaultAsync(p => p.PageTitle.ToLower() == pageTitle.ToLower());
-
-        if (page == null)
-        {
-            // If the page doesn't exist, no photos are "on" it, so return all photos.
-            return await _context.Files
-                                 .Where(p => p.ContentType.Contains("image"))
-                                 .ToListAsync();
-        }
-
-        //  Get all photos that are images
-        var allImagePhotos = _context.Files
-                                     .Where(p => p.ContentType.Contains("image"))
-                                     .Include(f => f.Pages); // Include Pages for filtering
-
-        // Filter out photos that are linked to the current page
-        List<File> photosNotInPage = await allImagePhotos
-            .Where(f => !f.Pages.Any(p => p.PageId == page.PageId))
-            .ToListAsync();
-
-        return photosNotInPage;
     }
 
     public async Task<File> GetFileByNameAsync(string name)
