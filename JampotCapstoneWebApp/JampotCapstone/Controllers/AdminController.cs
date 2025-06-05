@@ -60,6 +60,7 @@ public class AdminController : Controller
     }
 
     [HttpPost]
+    [ValidateAntiForgeryToken]
     public async Task<IActionResult> TextEdit(TextElement model)
     {
         if (ModelState.IsValid)
@@ -124,6 +125,7 @@ public class AdminController : Controller
     }
 
     [HttpPost]
+    [ValidateAntiForgeryToken]
     public async Task<IActionResult> EditPhoto(EditViewModel model)
     {
         if (ModelState.IsValid)
@@ -162,6 +164,7 @@ public class AdminController : Controller
     }
 
     [HttpPost]
+    [ValidateAntiForgeryToken]
     public async Task<IActionResult> AddPhoto(IFormFile newFile)
     {
         File newPhoto;

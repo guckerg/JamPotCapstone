@@ -5,6 +5,7 @@
 
 <h2>Change Photo</h2>
 <form method="post" asp-action="EditPhoto">
+    @Html.AntiForgeryToken()
     <div class="row p-2">
         <label asp-for="Photos" class="col-form-label col-md-3 mb-3">New Photo</label>
         <div class="col-md-3">

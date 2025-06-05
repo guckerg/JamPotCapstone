@@ -5,6 +5,7 @@
 <h2 class="title text-jampot-green p-5">ADD NEW PHOTO</h2>
 <div asp-validation-summary="ModelOnly" class="text-danger"></div>
 <form enctype="multipart/form-data" method="post" asp-action="AddPhoto">
+    @Html.AntiForgeryToken()
     <div class="row mb-3">
         <label for="file" class="col-sm-2 col-form-label text-jampot-yellow">New File</label>
         <div class="col-sm-4">
