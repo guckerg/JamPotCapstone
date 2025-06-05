@@ -59,7 +59,8 @@ body {
 }
 
 .logo {
-  width: 100px;
+    width: 125px;
+    margin-right: 100px;
 }
 
 .navbar a {
@@ -68,6 +69,28 @@ body {
 
 .navbar .btn-warning {
   background-color: var(--JampotYellow);
+}
+
+.nav-button {
+    padding: 11px 17px;
+}
+
+.nav-button-menu {
+    padding: 14px 21px;
+}
+
+.navbar-nav {
+    display: flex;
+    gap: 35px; 
+    /* Remove any default margins that might be added by Bootstrap on the nav-item */
+    margin: 0;
+    padding: 0;
+}
+
+.nav-wrapper {
+    display: flex;
+    justify-content: center;
+    width: 100%;
 }
 
 .banner {
@@ -123,6 +146,10 @@ body {
     white-space: nowrap;
     line-height: 20px;
     background-color: black;
+}
+
+.footer ul li {
+    margin: 10px 0; 
 }
 
 .title {

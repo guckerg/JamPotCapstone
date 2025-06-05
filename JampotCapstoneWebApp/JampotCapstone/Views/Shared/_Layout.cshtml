@@ -7,7 +7,6 @@
     <link rel="icon" type="image/x-icon" href="/pics/JampotLogoIcon.png">
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css"/>
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true"/>
-    @*<link rel="stylesheet" href="~/JampotCapstone.styles.css" asp-append-version="true"/>*@
 </head>
 <body class="bg-black text-white">
 <header>
@@ -19,39 +18,37 @@
                 <span class="navbar-toggler-icon"></span>
             </button>
             <div class="navbar-collapse collapse d-lg-inline-flex justify-content-between">
-                <div class="container align-items-center">
-                    <ul class="navbar-nav flex-grow-1 align-items-center">
-                        <li class="nav-item m-2">
+                    <ul class="navbar-nav align-items-center">
+                        <li class="nav-item">
                             <!-- Desktop button -->
-                            <a class="btn btn-warning text-dark fs-4 d-none d-lg-inline" asp-area="" asp-controller="Order" asp-action="Index">ORDER</a>
+                            <a class="btn btn-warning text-dark fs-2 d-none d-lg-inline nav-button" asp-area="" asp-controller="Order" asp-action="Index">ORDER</a>
                             <!-- Mobile text link -->
                             <a class="mobile-nav fs-1 d-inline d-lg-none" asp-area="" asp-controller="Order" asp-action="Index">ORDER</a>
                         </li>
-                        <li class="nav-item m-2">
-                            <a class="btn btn-warning text-dark fs-4 d-none d-lg-inline" asp-area="" asp-controller="Catering" asp-action="Index">CATERING</a>
+                        <li class="nav-item">
+                            <a class="btn btn-warning text-dark fs-2 d-none d-lg-inline nav-button" asp-area="" asp-controller="Catering" asp-action="Index">CATERING</a>
                             <a class="mobile-nav fs-1 d-inline d-lg-none" asp-area="" asp-controller="Catering" asp-action="Index">CATERING</a>
                         </li>
-                        <li class="nav-item m-2">
-                            <a class="btn btn-success text-dark fs-1 d-none d-lg-inline" asp-area="" asp-controller="Menu" asp-action="Index">MENU</a>
+                        <li class="nav-item">
+                            <a class="btn btn-success text-dark fs-1 d-none d-lg-inline nav-button-menu" asp-area="" asp-controller="Menu" asp-action="Index">MENU</a>
                             <a class="mobile-nav fs-1 d-inline d-lg-none" asp-area="" asp-controller="Menu" asp-action="Index">MENU</a>
                         </li>
-                        <li class="nav-item m-2">
-                            <a class="btn btn-warning text-dark fs-4 d-none d-lg-inline" asp-area="" asp-controller="AboutUs" asp-action="Index">ABOUT</a>
+                        <li class="nav-item">
+                            <a class="btn btn-warning text-dark fs-2 d-none d-lg-inline nav-button" asp-area="" asp-controller="AboutUs" asp-action="Index">ABOUT</a>
                             <a class="mobile-nav fs-1 d-inline d-lg-none" asp-area="" asp-controller="AboutUs" asp-action="Index">ABOUT</a>
                         </li>
-                        <li class="nav-item m-2">
-                            <a class="btn btn-warning text-dark fs-4 d-none d-lg-inline" asp-area="" asp-controller="ContactUs" asp-action="Index">CONTACT</a>
+                        <li class="nav-item">
+                            <a class="btn btn-warning text-dark fs-2 d-none d-lg-inline nav-button" asp-area="" asp-controller="ContactUs" asp-action="Index">CONTACT</a>
                             <a class="mobile-nav fs-1 d-inline d-lg-none" asp-area="" asp-controller="ContactUs" asp-action="Index">CONTACT</a>
                         </li>
                         @if (User.IsInRole("Admin"))
                         {
-                            <li class="nav-item m-2">
-                                <a class="btn btn-warning text-dark fs-4 d-none d-lg-inline" asp-area="" asp-controller="Admin" asp-action="Index">ADMIN</a>
+                            <li class="nav-item">
+                                <a class="btn btn-danger text-dark d-none d-lg-inline fs-5" asp-area="" asp-controller="Admin" asp-action="Index">ADMIN</a>
                                 <a class="mobile-nav fs-1 d-inline d-lg-none" asp-area="" asp-controller="Admin" asp-action="Index">ADMIN</a>
                             </li>
                         }
                     </ul>
-                </div>
                 <partial name="_LoginPartial"/>
             </div>
         </div>
@@ -69,6 +66,7 @@
         <div class="row align-items-center text-center">
             <ul class="col list-unstyled">
                 <li><a asp-area="" asp-controller="ContactUs" asp-action="Index">Contact</a></li>
+                <li><a asp-area="Identity" asp-page="/Account/Login">Admin</a></li>
                 <li><a asp-area="" asp-controller="AboutUs" asp-action="Index">About</a></li>
                 <li><a asp-controller="AboutUs" asp-action="Ask">FAQ</a></li>
             </ul>

@@ -41,7 +41,7 @@
     <div class="row">
         @if (Model.Photos.Count > 0)
         {
-            foreach(File photo in Model.Photos.Take(4)) //Take makes it so only 4 photos are present
+            foreach(File photo in Model.Photos) 
             {
                     string filename = photo.GetFileName();
                     <div class="col-md-6">
