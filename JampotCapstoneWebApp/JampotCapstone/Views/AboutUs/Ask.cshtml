@@ -30,7 +30,7 @@
                         </details>
                         @if (User.IsInRole("Admin"))
                         {
-                            <a asp-action="TextEdit" asp-controller="Admin" asp-route-id="@faq.TextElementId" class="col-1">
+                            <a asp-action="TextEdit" asp-controller="Admin" asp-route-id="@faq.TextElementId" class="d-flex align-items-center col-1">
                                 <i class="fa-regular fa-pen-to-square"></i>
                             </a>
 
@@ -38,7 +38,7 @@
                             @*     <i class="fa-solid fa-trash-can text-danger"></i> *@
                             @* </a> *@
 
-                            <button type="button" class="btn btn-link text-danger" data-bs-toggle="modal" data-bs-target="@("#deleteFAQModal" + faq.TextElementId)">
+                            <button type="button" class="btn btn-link text-danger col-1 d-flex align-items-center" data-bs-toggle="modal" data-bs-target="@("#deleteFAQModal" + faq.TextElementId)">
                                 <i class="fa-solid fa-trash-can text-danger"></i>
                             </button>
 
