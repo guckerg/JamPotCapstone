@@ -7,6 +7,7 @@
 <h2>Edit Product</h2>
 <span class="text-danger">@TempData["Message"]</span>
 <form method="post" enctype="multipart/form-data" asp-action="ProductEdit">
+    @Html.AntiForgeryToken()
     <input type="hidden" asp-for="ProductId" />
     <div class="row mb-3">
         <label asp-for="ProductName" class="col-sm-2 col-form-label">Product Name</label>

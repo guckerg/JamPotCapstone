@@ -23,6 +23,7 @@ namespace JampotCapstone.Controllers
             return View();
         }
 
+        [ValidateAntiForgeryToken]
         public async Task<IActionResult> SendMessage(Message model)
         {
             if(ModelState.IsValid)
