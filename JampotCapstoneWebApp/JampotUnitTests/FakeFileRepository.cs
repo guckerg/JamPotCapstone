@@ -80,4 +80,9 @@ public class FakeFileRepository : IPhotoRepository
 
         return result;
     }
+
+    public Task<List<File>> GetPhotosNotInPageAsync(string pageTitle)
+    {
+        throw new NotImplementedException();
+    }
 }
