@@ -1,5 +1,3 @@
-using Microsoft.EntityFrameworkCore;
-
 namespace JampotCapstone.Models;
 public class PagePosition
 {

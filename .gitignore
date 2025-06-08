@@ -278,3 +278,4 @@ __pycache__/
 
 # End of https://www.toptal.com/developers/gitignore/api/aspnetcore
 /JampotCapstoneWebApp/JampotCapstone/appsettings.Development.json
+/JampotCapstoneWebApp/JampotCapstone/appsettings.Production.json

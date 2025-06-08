@@ -1,5 +1,4 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Configuration;
 
 [Route("api/config")]
 public class ConfigController : Controller

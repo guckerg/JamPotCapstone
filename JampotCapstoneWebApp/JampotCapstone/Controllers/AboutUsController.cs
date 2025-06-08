@@ -1,9 +1,6 @@
-﻿using JampotCapstone.Data;
-using JampotCapstone.Data.Interfaces;
+﻿using JampotCapstone.Data.Interfaces;
 using Microsoft.AspNetCore.Mvc;
-using JampotCapstone.Models;
 using JampotCapstone.Models.ViewModels;
-using SQLitePCL;
 using File = JampotCapstone.Models.File;
 
 namespace JampotCapstone.Controllers

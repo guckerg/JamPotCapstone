@@ -1,5 +1,4 @@
-﻿using Microsoft.Build.Framework;
-using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations;
 
 namespace JampotCapstone.Models
 {

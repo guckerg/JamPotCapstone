@@ -1,5 +1,4 @@
 using System.Diagnostics;
-using JampotCapstone.Data;
 using JampotCapstone.Data.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 using JampotCapstone.Models;

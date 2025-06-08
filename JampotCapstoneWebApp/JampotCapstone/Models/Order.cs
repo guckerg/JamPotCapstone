@@ -1,6 +1,4 @@
-﻿using System.ComponentModel.DataAnnotations;
-
-namespace JampotCapstone.Models
+﻿namespace JampotCapstone.Models
 {
     public class Order
     {

@@ -1,5 +1,3 @@
-using System.Net.Mime;
-using System.Reflection;
 using JampotCapstone.Data;
 using JampotCapstone.Data.Interfaces;
 using Microsoft.AspNetCore.Authorization;
@@ -9,9 +7,6 @@ using JampotCapstone.Models.ViewModels;
 using File = JampotCapstone.Models.File;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Mvc.Rendering;
-using Microsoft.CodeAnalysis.Elfie.Diagnostics;
-using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Mvc.ModelBinding;
 
 namespace JampotCapstone.Controllers;
 

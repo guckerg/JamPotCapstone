@@ -10,7 +10,7 @@ namespace JampotCapstone.Data
         public Task SendEmailAsync(Message model)
         {
             //define sender and receiver
-            var recieveEmail = "jampotTesting@gmail.com";
+            var recieveEmail = "jampotlove@gmail.com";
             var sendEmail = "jampotTesting@gmail.com";
             var pw = "snhu jfca qkva mnhr"; //smtp substitute password
 

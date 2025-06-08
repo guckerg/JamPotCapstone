@@ -11,7 +11,7 @@ public class SeedData
         var userManager = provider.GetRequiredService<UserManager<AppUser>>();
         var roleManager = provider.GetRequiredService<RoleManager<IdentityRole>>();
         
-        const string password = "Secret!123";
+        const string password = "1Love808!";
         const string role = "Admin";
         
         if (roleManager.FindByNameAsync("Admin").Result == null)
@@ -21,7 +21,7 @@ public class SeedData
 
         AppUser admin = new AppUser
         {
-            UserName = "admin@example.com",
+            UserName = "jampotlove@gmail.com",
             Name = "admin",
             SignUpDate = DateTime.UtcNow,
             EmailConfirmed = true

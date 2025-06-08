@@ -1,8 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using JampotCapstone.Models;
-using JampotCapstone.Data;
 using JampotCapstone.Data.Interfaces;
-using Microsoft.EntityFrameworkCore;
 
 namespace JampotCapstone.Controllers
 {

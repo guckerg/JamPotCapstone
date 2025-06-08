@@ -1,6 +1,4 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Configuration;
-using System.Threading.Tasks;
 using JampotCapstone.Models;
 using Square;
 using Square.Payments;
@@ -72,7 +70,7 @@ namespace JampotCapstone.Controllers
                     Console.WriteLine($"Detail: {error.Detail}");
                     Console.WriteLine($"Field: {error.Field}");
                 }
-                return BadRequest(new { success = false, error = "my bad return message" });
+                return BadRequest(new { success = false, error = "Error Processing Square Payment" });
             }
         }
     }

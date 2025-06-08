@@ -4,10 +4,7 @@ using JampotCapstone.Models;
 using JampotCapstone.Models.ViewModels;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc.Rendering;
-using Microsoft.EntityFrameworkCore;
-using SQLitePCL;
 
 namespace JampotCapstone.Controllers
 {
