@@ -22,7 +22,7 @@ namespace JampotCapstone.Controllers
                 token: _configuration["Square:AccessToken"],
                 clientOptions: new ClientOptions
                 {
-                    BaseUrl = SquareEnvironment.Sandbox
+                    BaseUrl = SquareEnvironment.Production
                 }
             );
 

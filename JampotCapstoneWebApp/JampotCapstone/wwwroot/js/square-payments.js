@@ -42,7 +42,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 
 async function processPayment(token) {
     //unit conversion from dollars to cents for payment.
-    const cartSubtotal = parseInt(document.getElementById('cartSubtotal').value, 10) * 100;
+    const cartSubtotal = parseFloat(document.getElementById('cartSubtotal').value, 10) * 100;
 
     try {
         const response = await fetch('/api/payment/process', {
